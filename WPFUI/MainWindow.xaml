@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFUI"
+        WindowStyle="None"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        Title="Mario" 
+        Height="448" Width="832"
+        KeyDown="On_KeyDown">
+    
+    <Canvas Name="Background">
+        <Button  Width="50" Height="50" Background="Black" Click="On_Click"/>
+    </Canvas>
 </Window>

@@ -1,11 +1,68 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {}
+    "net6.0-windows7.0": {
+      "Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Models.dll": {}
+        }
+      },
+      "Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Models": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Services.dll": {}
+        }
+      },
+      "ViewModels/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Models": "1.0.0",
+          "Services": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/ViewModels.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ViewModels.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Models/1.0.0": {
+      "type": "project",
+      "path": "../Models/Models.csproj",
+      "msbuildProject": "../Models/Models.csproj"
+    },
+    "Services/1.0.0": {
+      "type": "project",
+      "path": "../Services/Services.csproj",
+      "msbuildProject": "../Services/Services.csproj"
+    },
+    "ViewModels/1.0.0": {
+      "type": "project",
+      "path": "../ViewModels/ViewModels.csproj",
+      "msbuildProject": "../ViewModels/ViewModels.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": []
+    "net6.0-windows7.0": [
+      "Models >= 1.0.0",
+      "ViewModels >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Bouazza\\.nuget\\packages\\": {},
@@ -38,7 +95,14 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\Models\\Models.csproj": {
+              "projectPath": "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\Models\\Models.csproj"
+            },
+            "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\ViewModels\\ViewModels.csproj": {
+              "projectPath": "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\ViewModels\\ViewModels.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
