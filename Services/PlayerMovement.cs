@@ -2,32 +2,13 @@
 
 namespace Services
 {
-    public class Movement
+    public class PlayerMovement
     {
-        private bool HasChangedDirection { get; set; }
-        private string Direction
-        {
-            get => _direction;
-
-            set
-            {
-                if (_direction != null)
-                {
-                    HasChangedDirection = true;
-                }else
-                {
-                    HasChangedDirection = false;
-                }
-
-                if (_direction != value)
-                {
-                    _direction = value;
-                }
-            }
-        }
+        private bool BuildMomentum { get; set; }
+        private string Direction { get; set; }
         private double SpeedX
         {
-            get => Math.Round(_speedX);
+            get => Math.Round(_speedX, 1);
 
             set
             {
@@ -36,7 +17,7 @@ namespace Services
         }
         private double SpeedY
         {
-            get => Math.Round(_speedY);
+            get => Math.Round(_speedY, 1);
 
             set
             {
@@ -47,14 +28,12 @@ namespace Services
         private double _speedX;
 
         private double _speedY;
-
-        private string? _direction;
-        public Movement()
+        public PlayerMovement()
         {
             SpeedX = 0;
             SpeedY = 0;
 
-            Direction = null;
+            Direction = "Stop";
         }
         public void MovePlayer(Player player)
         {
@@ -65,7 +44,14 @@ namespace Services
         }
         public void SetDirection(string direction)
         {
+            if (Direction == direction)
+            {
+                return;
+            }
+
             Direction = direction;
+
+            BuildMomentum = false;
         }
         public string ReturnDirection()
         {
@@ -73,7 +59,8 @@ namespace Services
         }
         private void ChangeMomentum()
         {
-            if (SpeedX == 0 && !string.IsNullOrEmpty(Direction))
+            // When speed reaches 0
+            if (SpeedX == 0 && Direction != "Stop")
             {
                 switch (Direction)
                 {
@@ -85,10 +72,13 @@ namespace Services
                         break;
                 }
 
+                // Start building momentum
+                BuildMomentum = true;
+
                 return;
             }
 
-            if (!HasChangedDirection)
+            if (BuildMomentum)
             {
                 if (SpeedX < 0 && SpeedX >= -3)
                 {
@@ -102,7 +92,8 @@ namespace Services
                 return;
             }
 
-            if (HasChangedDirection)
+            // Lower momentum
+            if (!BuildMomentum)
             {
                 if (SpeedX < 0)
                 {

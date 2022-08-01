@@ -1,14 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Collections.Generic;
-using System.Linq;
 using System;
 using ViewModels;
-using Models;
-using System.Windows.Shapes;
-using System.Windows.Media;
-using System.Windows.Controls;
+using WPFUI.Services;
 
 namespace WPFUI
 {
@@ -16,43 +11,30 @@ namespace WPFUI
     {
         private GameSession _gameSession = new GameSession();
 
-        private List<UIElement> _playerCache = new List<UIElement>(); 
+        private DrawingService _drawingService;
         public MainWindow()
         {
             InitializeComponent();
+            InitializeGameTimer();
+            InitializeServices();
+        }
 
+        #region INITIALIZATIONS
+        private void InitializeGameTimer()
+        {
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(1);
-            timer.Tick += OnRaised;
+            timer.Tick += Update;
             timer.Start();
         }
-        private void OnRaised(object sender, EventArgs e)
+        private void InitializeServices()
         {
-            Draw();
-
-            _gameSession.MovePlayer();
+            _drawingService = new DrawingService(Background);
         }
 
-        private void Draw()
-        {
-            Background.Children.Remove(_playerCache.FirstOrDefault());
+        #endregion INITIALIZATIONS  
 
-            _playerCache.Clear();
-
-            Rectangle rect = new Rectangle()
-            {
-                Width = 32,
-                Height = 32,
-                Fill = Brushes.Red
-            };
-
-            Background.Children.Add(rect);
-
-            Canvas.SetLeft(rect, _gameSession.CurrentPlayer.XCoordinate);
-            Canvas.SetBottom(rect, _gameSession.CurrentPlayer.YCoordinate);
-
-            _playerCache.Add(rect);
-        }
+        #region KEYINPUT
         private void On_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Left)
@@ -64,9 +46,20 @@ namespace WPFUI
                 _gameSession._playerMovement.SetDirection("Right");
             }
         }
-        private void On_Click(object sender, RoutedEventArgs e)
+        private void On_KeyUp(object sender, KeyEventArgs e)
         {
-            Close();
+            if (e.Key == Key.Left || e.Key == Key.Right)
+            {
+                _gameSession._playerMovement.SetDirection("Stop");
+            }
+        }
+
+        #endregion KEYINPUT
+        private void Update(object sender, EventArgs e)
+        {
+            _gameSession.MovePlayer();
+
+            _drawingService.DrawPlayer(_gameSession.CurrentPlayer.XCoordinate, _gameSession.CurrentPlayer.YCoordinate);
         }
     }
 }
