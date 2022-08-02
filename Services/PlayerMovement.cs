@@ -2,106 +2,60 @@
 
 namespace Services
 {
-    public class PlayerMovement
+    public static class PlayerMovement
     {
-        private bool BuildMomentum { get; set; }
-        private string Direction { get; set; }
-        private double SpeedX
+        public static void MovePlayer(Player player)
         {
-            get => Math.Round(_speedX, 1);
+            player.XCoordinate += player.HorizontalSpeed;
+            player.YCoordinate += player.VerticalSpeed;
 
-            set
-            {
-                _speedX = value;
-            }
+            ChangeMomentum(player);
         }
-        private double SpeedY
-        {
-            get => Math.Round(_speedY, 1);
-
-            set
-            {
-                _speedX = value;
-            }
-        }
-        
-        private double _speedX;
-
-        private double _speedY;
-        public PlayerMovement()
-        {
-            SpeedX = 0;
-            SpeedY = 0;
-
-            Direction = "Stop";
-        }
-        public void MovePlayer(Player player)
-        {
-            player.XCoordinate += _speedX;
-            player.YCoordinate += _speedY;
-
-            ChangeMomentum();
-        }
-        public void SetDirection(string direction)
-        {
-            if (Direction == direction)
-            {
-                return;
-            }
-
-            Direction = direction;
-
-            BuildMomentum = false;
-        }
-        public string ReturnDirection()
-        {
-            return Direction;
-        }
-        private void ChangeMomentum()
+        private static void ChangeMomentum(Player player)
         {
             // When speed reaches 0
-            if (SpeedX == 0 && Direction != "Stop")
+            if (player.HorizontalSpeed == 0 && player.HorizontalDirection != "Idle")
             {
-                switch (Direction)
+                switch (player.HorizontalDirection)
                 {
                     case "Left":
-                        SpeedX = -1;
+                        player.HorizontalSpeed = -1;
                         break;
                     case "Right":
-                        SpeedX = 1;
+                        player.HorizontalSpeed = 1;
                         break;
                 }
 
                 // Start building momentum
-                BuildMomentum = true;
+                player.IsBuildingMomentum = true;
 
                 return;
             }
 
-            if (BuildMomentum)
+            if (player.IsBuildingMomentum)
             {
-                if (SpeedX < 0 && SpeedX >= -3)
+                if (player.HorizontalSpeed < 0 && player.HorizontalSpeed > -3)
                 {
-                    SpeedX -= 0.1;
+                    player.HorizontalSpeed -= 0.1;
                 }
-                else if (SpeedX > 0 && SpeedX <= 3)
+                else if (player.HorizontalSpeed > 0 && player.HorizontalSpeed < 3)
                 {
-                    SpeedX += 0.1;
+                    player.HorizontalSpeed += 0.1;
                 }
 
                 return;
             }
 
             // Lower momentum
-            if (!BuildMomentum)
+            if (!player.IsBuildingMomentum)
             {
-                if (SpeedX < 0)
+                if (player.HorizontalSpeed < 0)
                 {
-                    SpeedX += 0.1;
+                    player.HorizontalSpeed += 0.1;
                 }
-                else if (SpeedX > 0)
+                else if (player.HorizontalSpeed > 0)
                 {
-                    SpeedX -= 0.1;
+                    player.HorizontalSpeed -= 0.1;
                 }
 
                 return;

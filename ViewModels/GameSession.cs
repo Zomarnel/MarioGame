@@ -6,16 +6,22 @@ namespace ViewModels
     public class GameSession
     {
         public Player CurrentPlayer { get; set; }   
-        public PlayerMovement _playerMovement { get; set; }
         public GameSession()
         {
-            CurrentPlayer = new Player(100, 100);
-
-            _playerMovement = new PlayerMovement();
+            CurrentPlayer = new Player(100, 72);
         }
         public void MovePlayer()
         {
-            _playerMovement.MovePlayer(CurrentPlayer);
+            PlayerMovement.MovePlayer(CurrentPlayer);
+        }
+        public void SetHorizontalDirection(string direction)
+        {
+            CurrentPlayer.HorizontalDirection = direction;
+
+            if (direction == "Idle")
+            {
+                CurrentPlayer.IsBuildingMomentum = false;
+            }
         }
     }
 }

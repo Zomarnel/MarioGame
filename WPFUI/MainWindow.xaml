@@ -5,11 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFUI"
         WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="Mario" 
-        Height="448" Width="832"
+        Height="584" Width="1024"
         KeyDown="On_KeyDown"
         KeyUp="On_KeyUp">
 
-    <Canvas Name="Background"/>
+    <Canvas Name="Background">
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black" 
+               Canvas.Bottom="0" Canvas.Left="0" Width="1024" Height="72"/>
+        
+        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightBlue" 
+               Canvas.Bottom="72" Canvas.Left="0" Width="1024" Height="512"/>
+    </Canvas>
 </Window>

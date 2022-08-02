@@ -39,18 +39,18 @@ namespace WPFUI
         {
             if(e.Key == Key.Left)
             {
-                _gameSession._playerMovement.SetDirection("Left");
+                _gameSession.SetHorizontalDirection("Left");
             }
             if (e.Key == Key.Right)
             {
-                _gameSession._playerMovement.SetDirection("Right");
+                _gameSession.SetHorizontalDirection("Right");
             }
         }
         private void On_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Left || e.Key == Key.Right)
             {
-                _gameSession._playerMovement.SetDirection("Stop");
+                _gameSession.SetHorizontalDirection("Idle");
             }
         }
 
