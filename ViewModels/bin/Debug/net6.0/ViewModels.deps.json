@@ -15,6 +15,11 @@
           "ViewModels.dll": {}
         }
       },
+      "Core/1.0.0": {
+        "runtime": {
+          "Core.dll": {}
+        }
+      },
       "Models/1.0.0": {
         "runtime": {
           "Models.dll": {}
@@ -22,6 +27,7 @@
       },
       "Services/1.0.0": {
         "dependencies": {
+          "Core": "1.0.0",
           "Models": "1.0.0"
         },
         "runtime": {
@@ -32,6 +38,11 @@
   },
   "libraries": {
     "ViewModels/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

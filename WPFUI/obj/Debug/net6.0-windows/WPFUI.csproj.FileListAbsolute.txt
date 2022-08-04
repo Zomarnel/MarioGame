@@ -26,3 +26,5 @@ C:\Users\Bouazza\Desktop\C#Projects\MarioGame\WPFUI\bin\Debug\net6.0-windows\Vie
 C:\Users\Bouazza\Desktop\C#Projects\MarioGame\WPFUI\obj\Debug\net6.0-windows\WPFUI.csproj.CopyComplete
 C:\Users\Bouazza\Desktop\C#Projects\MarioGame\WPFUI\bin\Debug\net6.0-windows\Services.dll
 C:\Users\Bouazza\Desktop\C#Projects\MarioGame\WPFUI\bin\Debug\net6.0-windows\Services.pdb
+C:\Users\Bouazza\Desktop\C#Projects\MarioGame\WPFUI\bin\Debug\net6.0-windows\Core.dll
+C:\Users\Bouazza\Desktop\C#Projects\MarioGame\WPFUI\bin\Debug\net6.0-windows\Core.pdb

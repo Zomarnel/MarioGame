@@ -8,10 +8,16 @@
     ".NETCoreApp,Version=v6.0": {
       "Services/1.0.0": {
         "dependencies": {
+          "Core": "1.0.0",
           "Models": "1.0.0"
         },
         "runtime": {
           "Services.dll": {}
+        }
+      },
+      "Core/1.0.0": {
+        "runtime": {
+          "Core.dll": {}
         }
       },
       "Models/1.0.0": {
@@ -23,6 +29,11 @@
   },
   "libraries": {
     "Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

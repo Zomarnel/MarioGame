@@ -3,8 +3,22 @@ namespace Models
 {
     public class Player
     {
-        public double XCoordinate { get; set; }
-        public double YCoordinate { get; set; }
+        public double XCoordinate
+        {
+            get => Math.Round(_xCoordinate, 1);
+            set
+            {
+                _xCoordinate = value;
+            }
+        }
+        public double YCoordinate
+        {
+            get => Math.Round(_yCoordinate, 1);
+            set
+            {
+                _yCoordinate = value;
+            }
+        }
 
         public double HorizontalSpeed
         {
@@ -14,23 +28,45 @@ namespace Models
                 _horizontalSpeed = value;
             }
         }
-        public double VerticalSpeed { get; set; }
-
-        public string HorizontalDirection { get; set; }
-
-        public bool IsBuildingMomentum { get; set; }
-
+        public double VerticalSpeed
+        {
+            get => Math.Round(_verticalSpeed, 1);
+            set
+            {
+                _verticalSpeed = value;
+            }
+        }
 
         private double _horizontalSpeed;
+        private double _verticalSpeed;
+
+        private double _xCoordinate;
+        private double _yCoordinate;
+
+        public enum HorizontalActions
+        {
+            IsStanding,
+            IsSpeeding,
+            IsSlowing,
+            ChangeOfDirection
+        };
+        public enum VerticalActions
+        {
+            IsStanding,
+            IsJumping,
+            IsFalling
+        };
+
+        public HorizontalActions HorizontalAction { get; set; }
+        public VerticalActions VerticalAction { get; set; }
 
         public Player(int xCoordinate, int yCoordinate)
         {
             XCoordinate = xCoordinate;
             YCoordinate = yCoordinate;
 
-            HorizontalDirection = "Idle";
-
-            IsBuildingMomentum = false;
+            HorizontalAction = HorizontalActions.IsStanding;
+            VerticalAction = VerticalActions.IsStanding;
 
             HorizontalSpeed = 0;
             VerticalSpeed = 0;

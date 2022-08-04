@@ -2,6 +2,16 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Core.dll": {}
+        }
+      },
       "Models/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -15,6 +25,11 @@
     }
   },
   "libraries": {
+    "Core/1.0.0": {
+      "type": "project",
+      "path": "../Core/Core.csproj",
+      "msbuildProject": "../Core/Core.csproj"
+    },
     "Models/1.0.0": {
       "type": "project",
       "path": "../Models/Models.csproj",
@@ -23,6 +38,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "Core >= 1.0.0",
       "Models >= 1.0.0"
     ]
   },
@@ -58,6 +74,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\Core\\Core.csproj": {
+              "projectPath": "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\Core\\Core.csproj"
+            },
             "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\Models\\Models.csproj": {
               "projectPath": "C:\\Users\\Bouazza\\Desktop\\C#Projects\\MarioGame\\Models\\Models.csproj"
             }

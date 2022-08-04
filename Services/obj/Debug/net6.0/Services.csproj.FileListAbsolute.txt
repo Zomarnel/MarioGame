@@ -13,3 +13,5 @@ C:\Users\Bouazza\Desktop\C#Projects\MarioGame\Services\obj\Debug\net6.0\Services
 C:\Users\Bouazza\Desktop\C#Projects\MarioGame\Services\obj\Debug\net6.0\refint\Services.dll
 C:\Users\Bouazza\Desktop\C#Projects\MarioGame\Services\obj\Debug\net6.0\Services.pdb
 C:\Users\Bouazza\Desktop\C#Projects\MarioGame\Services\obj\Debug\net6.0\ref\Services.dll
+C:\Users\Bouazza\Desktop\C#Projects\MarioGame\Services\bin\Debug\net6.0\Core.dll
+C:\Users\Bouazza\Desktop\C#Projects\MarioGame\Services\bin\Debug\net6.0\Core.pdb

@@ -1,64 +1,125 @@
 ﻿using Models;
+using Core;
 
 namespace Services
 {
-    public static class PlayerMovement
+    public class PlayerMovement
     {
-        public static void MovePlayer(Player player)
-        {
-            player.XCoordinate += player.HorizontalSpeed;
-            player.YCoordinate += player.VerticalSpeed;
+        private Player _player;
 
-            ChangeMomentum(player);
-        }
-        private static void ChangeMomentum(Player player)
+        // Maximum height of the jump
+        private double _playerJumpLimit;
+
+        public PlayerMovement(Player player)
         {
-            // When speed reaches 0
-            if (player.HorizontalSpeed == 0 && player.HorizontalDirection != "Idle")
+            _player = player;
+        }
+        public void MovePlayer()
+        {
+            _player.XCoordinate += _player.HorizontalSpeed;
+            _player.YCoordinate += _player.VerticalSpeed;
+
+            MovementBoost();
+        }
+        private void MovementBoost()
+        {
+            if (_player.HorizontalAction == Player.HorizontalActions.IsSpeeding)
             {
-                switch (player.HorizontalDirection)
+                if (_player.HorizontalSpeed > 0)
+                {
+                    if (_player.HorizontalSpeed < GameInfo.PLAYER_HORIZONTAL_MAX_SPEED)
+                    {
+                        _player.HorizontalSpeed += GameInfo.PLAYER_HORIZONTAL_ACCELERATION_SPEED;
+                    }
+                }
+
+                else if (_player.HorizontalSpeed < 0)
+                {
+                    if (_player.HorizontalSpeed > -GameInfo.PLAYER_HORIZONTAL_MAX_SPEED)
+                    {
+                        _player.HorizontalSpeed -= GameInfo.PLAYER_HORIZONTAL_ACCELERATION_SPEED;
+                    }
+                }
+            }
+
+            else if (_player.HorizontalAction == Player.HorizontalActions.IsSlowing)
+            {
+                if (_player.HorizontalSpeed > 0)
+                {
+                    _player.HorizontalSpeed -= GameInfo.PLAYER_HORIZONTAL_DECELERATION_SPEED;
+
+                    if (_player.HorizontalSpeed <= 0)
+                    {
+                        _player.HorizontalSpeed = 0;
+
+                        _player.HorizontalAction = Player.HorizontalActions.IsStanding;
+                    }
+                }
+                else if (_player.HorizontalSpeed < 0)
+                {
+                    _player.HorizontalSpeed += GameInfo.PLAYER_HORIZONTAL_DECELERATION_SPEED;
+
+                    if (_player.HorizontalSpeed >= 0)
+                    {
+                        _player.HorizontalSpeed = 0;
+
+                        _player.HorizontalAction = Player.HorizontalActions.IsStanding;
+                    }
+                }
+            }
+
+            if (_player.VerticalAction == Player.VerticalActions.IsJumping)
+            {
+                if (_player.YCoordinate >= _playerJumpLimit)
+                {
+                    _player.YCoordinate = _playerJumpLimit;
+
+                    _player.VerticalAction = Player.VerticalActions.IsFalling;
+
+                    _player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
+                }
+            }
+        }
+        public void OnKeyPressed(object sender, string direction)
+        {
+            if (direction == "Space" && _player.VerticalAction == Player.VerticalActions.IsStanding)
+            {
+                _player.VerticalAction = Player.VerticalActions.IsJumping;
+
+                _player.VerticalSpeed = GameInfo.PLAYER_VERTICAL_SPEED;
+
+                _playerJumpLimit = _player.YCoordinate + 5*GameInfo.SPRITE_HEIGHT;
+
+                return;
+            }
+
+            if (direction != "Space" && _player.HorizontalAction == Player.HorizontalActions.IsStanding)
+            {
+                _player.HorizontalAction = Player.HorizontalActions.IsSpeeding;
+
+                switch (direction)
                 {
                     case "Left":
-                        player.HorizontalSpeed = -1;
+                        _player.HorizontalSpeed = -GameInfo.PLAYER_HORIZONTAL_MIN_SPEED;
                         break;
                     case "Right":
-                        player.HorizontalSpeed = 1;
+                        _player.HorizontalSpeed = GameInfo.PLAYER_HORIZONTAL_MIN_SPEED;
                         break;
                 }
+            }
+        }
+        public void OnKeyRemoved(object sender, string direction)
+        {
+            if (direction == "Space")
+            {
+                _player.VerticalAction = Player.VerticalActions.IsFalling;
 
-                // Start building momentum
-                player.IsBuildingMomentum = true;
-
-                return;
+                _player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
             }
 
-            if (player.IsBuildingMomentum)
+            if ((direction == "Left" || direction == "Right") && _player.HorizontalSpeed != 0)
             {
-                if (player.HorizontalSpeed < 0 && player.HorizontalSpeed > -3)
-                {
-                    player.HorizontalSpeed -= 0.1;
-                }
-                else if (player.HorizontalSpeed > 0 && player.HorizontalSpeed < 3)
-                {
-                    player.HorizontalSpeed += 0.1;
-                }
-
-                return;
-            }
-
-            // Lower momentum
-            if (!player.IsBuildingMomentum)
-            {
-                if (player.HorizontalSpeed < 0)
-                {
-                    player.HorizontalSpeed += 0.1;
-                }
-                else if (player.HorizontalSpeed > 0)
-                {
-                    player.HorizontalSpeed -= 0.1;
-                }
-
-                return;
+                _player.HorizontalAction = Player.HorizontalActions.IsSlowing;
             }
         }
     }

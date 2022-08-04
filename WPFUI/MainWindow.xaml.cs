@@ -12,6 +12,8 @@ namespace WPFUI
         private GameSession _gameSession = new GameSession();
 
         private DrawingService _drawingService;
+
+        private int x = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,20 +39,16 @@ namespace WPFUI
         #region KEYINPUT
         private void On_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Left)
+            if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Space)
             {
-                _gameSession.SetHorizontalDirection("Left");
-            }
-            if (e.Key == Key.Right)
-            {
-                _gameSession.SetHorizontalDirection("Right");
+                _gameSession.OnKeyDown.Invoke(this, e.Key.ToString());
             }
         }
         private void On_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left || e.Key == Key.Right)
+            if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Space)
             {
-                _gameSession.SetHorizontalDirection("Idle");
+                _gameSession.OnKeyUp.Invoke(this, e.Key.ToString());
             }
         }
 
