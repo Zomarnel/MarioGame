@@ -1,9 +1,9 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 using System;
 using ViewModels;
 using WPFUI.Services;
+using System.Windows.Media;
 
 namespace WPFUI
 {
@@ -12,23 +12,15 @@ namespace WPFUI
         private GameSession _gameSession = new GameSession();
 
         private DrawingService _drawingService;
-
-        private int x = 0;
         public MainWindow()
         {
             InitializeComponent();
-            InitializeGameTimer();
             InitializeServices();
+
+            CompositionTarget.Rendering += Update;
         }
 
         #region INITIALIZATIONS
-        private void InitializeGameTimer()
-        {
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(1);
-            timer.Tick += Update;
-            timer.Start();
-        }
         private void InitializeServices()
         {
             _drawingService = new DrawingService(Background);

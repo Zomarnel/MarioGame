@@ -12,7 +12,6 @@ namespace WPFUI.Services
 
         private const int SPRITEWIDTH = 32;
         private const int SPRITEHEIGHT = 32;
-
         public DrawingService(Canvas drawingBoard)
         {
             _drawingBoard = drawingBoard;

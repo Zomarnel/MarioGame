@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{09BA739B-F8D0-4E9D-807A-4D278DA5DCC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{8B6C86F7-4B6C-4177-B116-8C742CD1B862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{8B6C86F7-4B6C-4177-B116-8C742CD1B862}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFiles", "GameFiles\GameFiles.csproj", "{8614107D-90A8-4ABD-91EF-925BAFB3C205}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{8B6C86F7-4B6C-4177-B116-8C742CD1B862}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B6C86F7-4B6C-4177-B116-8C742CD1B862}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B6C86F7-4B6C-4177-B116-8C742CD1B862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8614107D-90A8-4ABD-91EF-925BAFB3C205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8614107D-90A8-4ABD-91EF-925BAFB3C205}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8614107D-90A8-4ABD-91EF-925BAFB3C205}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8614107D-90A8-4ABD-91EF-925BAFB3C205}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

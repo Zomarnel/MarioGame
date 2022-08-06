@@ -19,7 +19,7 @@ namespace Core
 
         public static readonly double PLAYER_HORIZONTAL_ACCELERATION_SPEED = 0.1;
 
-        public static readonly double PLAYER_HORIZONTAL_DECELERATION_SPEED = 0.3;
+        public static readonly double PLAYER_HORIZONTAL_DECELERATION_SPEED = 0.2;
 
         public static readonly int PLAYER_VERTICAL_SPEED = 8;
     }
