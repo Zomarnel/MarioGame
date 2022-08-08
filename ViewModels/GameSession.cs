@@ -14,7 +14,7 @@ namespace ViewModels
         public EventHandler<string> OnKeyUp;
         public GameSession()
         {
-            CurrentPlayer = new Player(100, 72);
+            CurrentPlayer = new Player(100, 64);
 
             _playerMovement = new PlayerMovement(CurrentPlayer);
 

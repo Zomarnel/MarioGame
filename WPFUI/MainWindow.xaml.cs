@@ -4,6 +4,8 @@ using System;
 using ViewModels;
 using WPFUI.Services;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace WPFUI
 {
@@ -12,18 +14,22 @@ namespace WPFUI
         private GameSession _gameSession = new GameSession();
 
         private DrawingService _drawingService;
+        private MapService _mapService;
         public MainWindow()
         {
             InitializeComponent();
             InitializeServices();
 
             CompositionTarget.Rendering += Update;
+
+            DrawMap();
         }
 
         #region INITIALIZATIONS
         private void InitializeServices()
         {
             _drawingService = new DrawingService(Background);
+            _mapService = new MapService("World-1", Background);
         }
 
         #endregion INITIALIZATIONS  
@@ -50,6 +56,11 @@ namespace WPFUI
             _gameSession.MovePlayer();
 
             _drawingService.DrawPlayer(_gameSession.CurrentPlayer.XCoordinate, _gameSession.CurrentPlayer.YCoordinate);
+
+        }
+        private void DrawMap()
+        {
+            _mapService.DrawMapOnCanvas();
         }
     }
 }

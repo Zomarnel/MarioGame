@@ -9,15 +9,9 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="Mario" 
-        Height="584" Width="1024"
+        Height="476" Width="1024"
         KeyDown="On_KeyDown"
         KeyUp="On_KeyUp">
 
-    <Canvas Name="Background">
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black" 
-               Canvas.Bottom="0" Canvas.Left="0" Width="1024" Height="72"/>
-        
-        <Label HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightBlue" 
-               Canvas.Bottom="72" Canvas.Left="0" Width="1024" Height="512"/>
-    </Canvas>
+    <Canvas Name="Background" Height="476" Width="1024"/>
 </Window>
