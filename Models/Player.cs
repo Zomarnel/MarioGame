@@ -71,5 +71,10 @@ namespace Models
             HorizontalSpeed = 0;
             VerticalSpeed = 0;
         }
+        public void StopMovingHorizontally()
+        {
+            HorizontalAction = Player.HorizontalActions.IsStanding;
+            HorizontalSpeed = 0;
+        }
     }
 }

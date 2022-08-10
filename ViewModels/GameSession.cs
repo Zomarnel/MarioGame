@@ -7,7 +7,7 @@ namespace ViewModels
     {
         public Player CurrentPlayer { get; set; }
 
-        private PlayerMovement _playerMovement;
+        public PlayerMovement _playerMovement;
 
         public EventHandler<string> OnKeyDown;
 

@@ -7,16 +7,19 @@ namespace Services
     {
         private Player _player;
 
-        // Maximum height of the jump
         private double _playerJumpLimit;
 
+        private bool _hasMapReachedEnd = false;
+
+        public EventHandler<double> MoveMap;
         public PlayerMovement(Player player)
         {
             _player = player;
         }
         public void MovePlayer()
         {
-            _player.XCoordinate += _player.HorizontalSpeed;
+            MovePlayerXCoordinate();
+
             _player.YCoordinate += _player.VerticalSpeed;
 
             MovementBoost();
@@ -80,6 +83,21 @@ namespace Services
                 }
             }
         }
+        private void MovePlayerXCoordinate()
+        {
+            if (_player.HorizontalSpeed < 0 || _player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || _hasMapReachedEnd)
+            {
+                _player.XCoordinate += _player.HorizontalSpeed;
+
+                return;
+            }
+
+            _player.XCoordinate = GameInfo.SCREEN_WIDTH / 2;
+
+            MoveMap.Invoke(this, _player.HorizontalSpeed);
+        }
+
+        #region EVENTS
         public void OnKeyPressed(object sender, string direction)
         {
             if (direction == "Space" && _player.VerticalAction == Player.VerticalActions.IsStanding)
@@ -122,5 +140,11 @@ namespace Services
                 _player.HorizontalAction = Player.HorizontalActions.IsSlowing;
             }
         }
+        public void HasMappedReachedEnd(object sender, EventArgs e)
+        {
+            _hasMapReachedEnd = true;
+        }
+
+        #endregion EVENTS
     }
 }

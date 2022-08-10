@@ -8,7 +8,7 @@ namespace Services
         private static List<Boundary> _boundaries = new List<Boundary>();
         static Boundaries()
         {
-            _boundaries.Add(new Boundary(0, 0, 992, 72));
+            _boundaries.Add(new Boundary(0, 0, 992, 64));
         }
         public static void IsPlayerInsideBoundaries(Player player)
         {

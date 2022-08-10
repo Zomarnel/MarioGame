@@ -1,46 +1,53 @@
-﻿using System.Windows.Media.Imaging;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using Core;
 
 namespace WPFUI.Services
 {
     public class MapService
     {
-        private int XCoordinate { get; set; }
-        private BitmapImage MapImage { get; set; }
+        private double _mapXCoordinate;
 
-        private Canvas _canvas;
-        public MapService(string mapName, Canvas canvas)
+        private readonly Image _mapImage;
+
+        public EventHandler OnMapEnd;
+        public MapService(string imageName, Canvas canvas)
         {
-            MapImage = new BitmapImage(new Uri($"/Images/Worlds/{mapName}.png", UriKind.Relative));
+            _mapXCoordinate = 0;
 
-            MapImage.BaseUri = Application.Current.StartupUri;
+            BitmapImage bitmap = new BitmapImage(new Uri($"/Images/Worlds/{imageName}.png", UriKind.Relative));
 
-            XCoordinate = 0;
+            bitmap.BaseUri = Application.Current.StartupUri;
 
-            _canvas = canvas;
-        }
-        public void DrawMapOnCanvas()
-        {
-            CroppedBitmap croppedBitmap = new CroppedBitmap(MapImage, new Int32Rect(XCoordinate, 0, 512, 238));
-
-            Image image = new Image()
+            _mapImage = new Image()
             {
-                Height = croppedBitmap.PixelHeight * 2,
-                Width = croppedBitmap.PixelWidth * 2,
-                Source = croppedBitmap
+                Source = bitmap,
+                Height = bitmap.PixelHeight * 2,
+                Width = bitmap.PixelWidth * 2
             };
 
-            RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+            RenderOptions.SetBitmapScalingMode(_mapImage, BitmapScalingMode.NearestNeighbor);
 
-            _canvas.Children.Add(image);
+            canvas.Children.Add(_mapImage);
 
-            Canvas.SetBottom(image, 0);
-            Canvas.SetLeft(image, 0);
+            Canvas.SetBottom(_mapImage, 0);
+            Canvas.SetLeft(_mapImage, 0);
         }
+        public void MoveMap(object sender, double speed)
+        {
+            _mapXCoordinate -= speed;
 
+            if (Math.Abs(_mapXCoordinate)+GameInfo.SCREEN_WIDTH >= _mapImage.Width)
+            {
+                _mapXCoordinate = -_mapImage.Width + GameInfo.SCREEN_WIDTH;
 
+                OnMapEnd.Invoke(this, new EventArgs());
+            }
+
+            Canvas.SetLeft(_mapImage, _mapXCoordinate);
+        }
     }
 }
