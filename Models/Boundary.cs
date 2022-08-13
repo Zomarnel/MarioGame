@@ -14,5 +14,14 @@ namespace Models
             XEnd = xEnd;
             YEnd = yEnd;
         }
+        public bool IsPointInsideBoundary(double xCoordinate, double yCoordinate)
+        {
+            if (xCoordinate > XStart && xCoordinate < XEnd && yCoordinate > YStart && yCoordinate < YEnd)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

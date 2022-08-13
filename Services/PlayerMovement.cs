@@ -8,10 +8,6 @@ namespace Services
         private Player _player;
 
         private double _playerJumpLimit;
-
-        private bool _hasMapReachedEnd = false;
-
-        public EventHandler<double> MoveMap;
         public PlayerMovement(Player player)
         {
             _player = player;
@@ -20,7 +16,11 @@ namespace Services
         {
             MovePlayerXCoordinate();
 
+            Boundaries.HorizontalBoundariesCheck(_player);
+
             _player.YCoordinate += _player.VerticalSpeed;
+
+            Boundaries.VerticalBoundariesCheck(_player);
 
             MovementBoost();
         }
@@ -85,7 +85,7 @@ namespace Services
         }
         private void MovePlayerXCoordinate()
         {
-            if (_player.HorizontalSpeed < 0 || _player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || _hasMapReachedEnd)
+            if (_player.HorizontalSpeed < 0 || _player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || MapService.HasMapReachedEnd)
             {
                 _player.XCoordinate += _player.HorizontalSpeed;
 
@@ -94,7 +94,7 @@ namespace Services
 
             _player.XCoordinate = GameInfo.SCREEN_WIDTH / 2;
 
-            MoveMap.Invoke(this, _player.HorizontalSpeed);
+            MapService.MoveMap(_player.HorizontalSpeed);
         }
 
         #region EVENTS
@@ -139,10 +139,6 @@ namespace Services
             {
                 _player.HorizontalAction = Player.HorizontalActions.IsSlowing;
             }
-        }
-        public void HasMappedReachedEnd(object sender, EventArgs e)
-        {
-            _hasMapReachedEnd = true;
         }
 
         #endregion EVENTS

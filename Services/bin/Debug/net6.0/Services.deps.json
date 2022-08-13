@@ -21,6 +21,9 @@
         }
       },
       "Models/1.0.0": {
+        "dependencies": {
+          "Core": "1.0.0"
+        },
         "runtime": {
           "Models.dll": {}
         }

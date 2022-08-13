@@ -24,8 +24,6 @@ namespace ViewModels
         public void MovePlayer()
         {
             _playerMovement.MovePlayer();
-
-            Boundaries.IsPlayerInsideBoundaries(CurrentPlayer);
         }
     }
 }

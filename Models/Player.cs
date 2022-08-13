@@ -1,4 +1,5 @@
-﻿
+﻿using Core;
+
 namespace Models
 {
     public class Player
@@ -69,12 +70,17 @@ namespace Models
             VerticalAction = VerticalActions.IsStanding;
 
             HorizontalSpeed = 0;
-            VerticalSpeed = 0;
+            VerticalSpeed = -GameInfo.GAME_GRAVITY;
         }
         public void StopMovingHorizontally()
         {
             HorizontalAction = Player.HorizontalActions.IsStanding;
             HorizontalSpeed = 0;
+        }
+        public void StopMovingVertically()
+        {
+            VerticalAction = VerticalActions.IsFalling;
+            VerticalSpeed = -GameInfo.GAME_GRAVITY;
         }
     }
 }
