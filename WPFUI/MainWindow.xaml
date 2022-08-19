@@ -11,10 +11,8 @@
         Title="Mario" 
         Height="476" Width="1024"
         KeyDown="On_KeyDown"
-        KeyUp="On_KeyUp"
-        >
+        KeyUp="On_KeyUp">
     <Grid>
         <Canvas Name="Background" Height="476" Width="1024"/>
-        <Label Height="100" Width="100" Name="Label"/>
     </Grid>
 </Window>

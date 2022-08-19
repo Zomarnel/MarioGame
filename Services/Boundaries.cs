@@ -66,20 +66,12 @@ namespace Services
             AddNewBoundary(5792 + 32*6, 64 + 32*5, 6080, 96 + 32*6);
             AddNewBoundary(5792 + 32*7, 64 + 32*6, 6080, 96 + 32*7);
 
-            // Tunnels
-            /*AddNewBoundary(900, 64, 955, 129);
-            AddNewBoundary(1220, 64, 1275, 159);
-            AddNewBoundary(1477, 64, 1532, 189);
-            AddNewBoundary(1828, 64, 1883, 189);
-            AddNewBoundary(5222, 64, 5277, 129);
-            AddNewBoundary(5732, 64, 5787, 129);*/
-
             AddNewBlock("Tunnel", 55, 65, 900, 64);
             AddNewBlock("Tunnel", 55, 95, 1220, 64);
             AddNewBlock("Tunnel", 55, 125, 1477, 64);
             AddNewBlock("Tunnel", 55, 125, 1828, 64);
-            AddNewBlock("Tunnel", 55, 125, 5222, 64);
-            AddNewBlock("Tunnel", 55, 125, 5732, 64);
+            AddNewBlock("Tunnel", 55, 65, 5222, 64);
+            AddNewBlock("Tunnel", 55, 65, 5732, 64);
         }
         public static void HorizontalBoundariesCheck(Player player)
         {
@@ -207,7 +199,6 @@ namespace Services
         {
             _boundaries.Add(new Boundary(xStart, yStart, xEnd, yEnd));
         }
-
         private static void AddNewBlock(string name, int width, int height, double xCoordinate, double yCoordinate)
         {
             _blocks.Add(new Block(name, width, height, xCoordinate, yCoordinate));
