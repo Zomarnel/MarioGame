@@ -26,6 +26,7 @@ namespace Services
         }
         private void MovementBoost()
         {
+
             if (_player.HorizontalAction == Player.HorizontalActions.IsSpeeding)
             {
                 if (_player.HorizontalSpeed > 0)
@@ -107,14 +108,11 @@ namespace Services
                 _player.VerticalSpeed = GameInfo.PLAYER_VERTICAL_SPEED;
 
                 _playerJumpLimit = _player.YCoordinate + 5*GameInfo.SPRITE_HEIGHT;
-
-                return;
             }
 
-            if (direction != "Space" && _player.HorizontalAction == Player.HorizontalActions.IsStanding)
+            if ((direction == "Left" || direction == "Right") && _player.HorizontalAction == Player.HorizontalActions.IsStanding)
             {
                 _player.HorizontalAction = Player.HorizontalActions.IsSpeeding;
-
                 switch (direction)
                 {
                     case "Left":

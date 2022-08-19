@@ -7,6 +7,7 @@ using WPFUI.Services;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Models;
 
 namespace WPFUI
 {
@@ -17,6 +18,7 @@ namespace WPFUI
         private DrawingService _drawingService;
 
         private Image _mapImage;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -58,11 +60,27 @@ namespace WPFUI
         #endregion INITIALIZATIONS  
 
         #region KEYINPUT
+
+        private int x = 0;
         private void On_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Space)
+            if (e.IsRepeat)
             {
-                _gameSession.OnKeyDown.Invoke(this, e.Key.ToString());
+                return;
+            }
+            if (Keyboard.IsKeyDown(Key.Left))
+            {
+                _gameSession.OnKeyDown.Invoke(this, "Left");
+            }
+
+            if (Keyboard.IsKeyDown(Key.Right))
+            {
+                _gameSession.OnKeyDown.Invoke(this, "Right");
+            }
+
+            if (Keyboard.IsKeyDown(Key.Space))
+            {
+                 _gameSession.OnKeyDown.Invoke(this, "Space");
             }
         }
         private void On_KeyUp(object sender, KeyEventArgs e)
@@ -79,6 +97,8 @@ namespace WPFUI
             _gameSession.MovePlayer();
 
             _drawingService.DrawPlayer(_gameSession.CurrentPlayer.XCoordinate, _gameSession.CurrentPlayer.YCoordinate);
+
+            Label.Content = x;
         }
         private void DrawMap(object sender, double xCoordinate)
         {

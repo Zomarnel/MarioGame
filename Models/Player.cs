@@ -49,7 +49,7 @@ namespace Models
             IsStanding,
             IsSpeeding,
             IsSlowing,
-            ChangeOfDirection
+            ChangeOfDirection,
         };
         public enum VerticalActions
         {
@@ -60,7 +60,6 @@ namespace Models
 
         public HorizontalActions HorizontalAction { get; set; }
         public VerticalActions VerticalAction { get; set; }
-
         public Player(int xCoordinate, int yCoordinate)
         {
             XCoordinate = xCoordinate;
@@ -74,7 +73,7 @@ namespace Models
         }
         public void StopMovingHorizontally()
         {
-            HorizontalAction = Player.HorizontalActions.IsStanding;
+            HorizontalAction = HorizontalActions.IsStanding;
             HorizontalSpeed = 0;
         }
         public void StopMovingVertically()

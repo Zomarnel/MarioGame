@@ -6,6 +6,8 @@ namespace Services
     public static class Boundaries
     {
         private static List<Boundary> _boundaries = new List<Boundary>();
+
+        private static List<Block> _blocks = new List<Block>(); 
         static Boundaries()
         {
             // Floors
@@ -65,17 +67,24 @@ namespace Services
             AddNewBoundary(5792 + 32*7, 64 + 32*6, 6080, 96 + 32*7);
 
             // Tunnels
-            AddNewBoundary(900, 64, 955, 129);
+            /*AddNewBoundary(900, 64, 955, 129);
             AddNewBoundary(1220, 64, 1275, 159);
             AddNewBoundary(1477, 64, 1532, 189);
             AddNewBoundary(1828, 64, 1883, 189);
             AddNewBoundary(5222, 64, 5277, 129);
-            AddNewBoundary(5732, 64, 5787, 129);
+            AddNewBoundary(5732, 64, 5787, 129);*/
+
+            AddNewBlock("Tunnel", 55, 65, 900, 64);
+            AddNewBlock("Tunnel", 55, 95, 1220, 64);
+            AddNewBlock("Tunnel", 55, 125, 1477, 64);
+            AddNewBlock("Tunnel", 55, 125, 1828, 64);
+            AddNewBlock("Tunnel", 55, 125, 5222, 64);
+            AddNewBlock("Tunnel", 55, 125, 5732, 64);
         }
         public static void HorizontalBoundariesCheck(Player player)
         {
-            double xCoordinate = player.XCoordinate + Math.Abs(MapService.MapXCoordinate);
-            double yCoordinate = player.YCoordinate;
+            int xCoordinate = (int)(player.XCoordinate + Math.Abs(MapService.MapXCoordinate));
+            int yCoordinate = (int)player.YCoordinate;
 
             // Check borders
             if (player.XCoordinate < 0)
@@ -102,6 +111,13 @@ namespace Services
                     if (bnd.IsPointInsideBoundary(xCoordinate + 32, yCoordinate) || bnd.IsPointInsideBoundary(xCoordinate + 32, yCoordinate + 32))
                     {
                         player.XCoordinate = bnd.XStart - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
+
+                        player.StopMovingHorizontally();
+                        
+                        if (player.VerticalAction == Player.VerticalActions.IsJumping)
+                        {
+                            continue;
+                        }
                     }
                 }
                 else if (player.HorizontalSpeed < 0)
@@ -109,6 +125,30 @@ namespace Services
                     if (bnd.IsPointInsideBoundary(xCoordinate, yCoordinate) || bnd.IsPointInsideBoundary(xCoordinate, yCoordinate + 32))
                     {
                         player.XCoordinate = bnd.XEnd - Math.Abs(MapService.MapXCoordinate);
+
+                        player.StopMovingHorizontally();
+                    }
+                }
+            }
+
+            foreach(Block block in _blocks)
+            {
+                if (player.HorizontalSpeed > 0)
+                {
+                    if (block.IsPointInsideBlock(xCoordinate + 32, yCoordinate) || block.IsPointInsideBlock(xCoordinate + 32, yCoordinate + 32))
+                    {
+                        player.XCoordinate = block.XCoordinate - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
+
+                        player.StopMovingHorizontally();
+                    }
+                }
+                else if (player.HorizontalSpeed < 0)
+                {
+                    if (block.IsPointInsideBlock(xCoordinate, yCoordinate) || block.IsPointInsideBlock(xCoordinate, yCoordinate + 32))
+                    {
+                        player.XCoordinate = block.XCoordinate + block.Width - Math.Abs(MapService.MapXCoordinate);
+
+                        player.StopMovingHorizontally();
                     }
                 }
             }
@@ -116,8 +156,8 @@ namespace Services
         public static void VerticalBoundariesCheck(Player player)
         {
 
-            double xCoordinate = player.XCoordinate + Math.Abs(MapService.MapXCoordinate);
-            double yCoordinate = player.YCoordinate;
+            int xCoordinate = (int)(player.XCoordinate + Math.Abs(MapService.MapXCoordinate));
+            int yCoordinate = (int)(player.YCoordinate);
 
             foreach (Boundary bnd in _boundaries)
             {
@@ -140,10 +180,37 @@ namespace Services
                     }
                 }
             }
+
+            foreach (Block block in _blocks)
+            {
+                if (player.VerticalSpeed > 0)
+                {
+                    if (block.IsPointInsideBlock(xCoordinate, yCoordinate + 32) || block.IsPointInsideBlock(xCoordinate + 32, yCoordinate + 32))
+                    {
+                        player.YCoordinate = block.YCoordinate - 32;
+
+                        player.StopMovingVertically();
+                    }
+                }
+                else if (player.VerticalSpeed < 0)
+                {
+                    if (block.IsPointInsideBlock(xCoordinate, yCoordinate) || block.IsPointInsideBlock(xCoordinate + 32, yCoordinate))
+                    {
+                        player.YCoordinate = block.YCoordinate + block.Height;
+
+                        player.VerticalAction = Player.VerticalActions.IsStanding;
+                    }
+                }
+            }
         }
         private static void AddNewBoundary(double xStart, double yStart, double xEnd, double yEnd)
         {
             _boundaries.Add(new Boundary(xStart, yStart, xEnd, yEnd));
+        }
+
+        private static void AddNewBlock(string name, int width, int height, double xCoordinate, double yCoordinate)
+        {
+            _blocks.Add(new Block(name, width, height, xCoordinate, yCoordinate));
         }
     }
 }
