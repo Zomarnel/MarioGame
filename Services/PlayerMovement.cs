@@ -17,7 +17,7 @@ namespace Services
             MovePlayerXCoordinate();
 
             Boundaries.HorizontalBoundariesCheck(_player);
-
+             
             _player.YCoordinate += _player.VerticalSpeed;
 
             Boundaries.VerticalBoundariesCheck(_player);
@@ -26,7 +26,6 @@ namespace Services
         }
         private void MovementBoost()
         {
-
             if (_player.HorizontalAction == Player.HorizontalActions.IsSpeeding)
             {
                 if (_player.HorizontalSpeed > 0)
