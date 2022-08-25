@@ -15,7 +15,7 @@
         }
         public bool IsPointInsideBoundary(double xCoordinate, double yCoordinate)
         {
-            if (xCoordinate > XStart && xCoordinate < XEnd && yCoordinate > YStart && yCoordinate < YEnd)
+            if (xCoordinate > XStart && xCoordinate < XEnd+0.01 && yCoordinate > YStart && yCoordinate < YEnd)
             {
                 return true;
             }

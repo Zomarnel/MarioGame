@@ -12,17 +12,42 @@ namespace Services
         {
             _player = player;
         }
-        public void MovePlayer()
+        public void MovePlayerAsync()
         {
-            MovePlayerXCoordinate();
+            if (_player.HasChangedSprite == null ||_player.HasChangedSprite == true)
+            {
+                _player.HasChangedSprite = false;
+
+                Task.Delay(100).ContinueWith(_ => _player.ChangeSprite());
+            }
+
+            MoveXCoordinate();
+
+            MoveYCoordinate();
+
+            MovementBoost();
+        }
+
+        private void MoveXCoordinate()
+        {
+            if (_player.HorizontalSpeed < 0 || _player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || MapService.HasMapReachedEnd)
+            {
+                _player.XCoordinate += _player.HorizontalSpeed;
+            }
+            else
+            {
+                _player.XCoordinate = GameInfo.SCREEN_WIDTH / 2;
+
+                MapService.MoveMap(_player.HorizontalSpeed);
+            }
 
             Boundaries.HorizontalBoundariesCheck(_player);
-             
+        }
+        private void MoveYCoordinate()
+        {
             _player.YCoordinate += _player.VerticalSpeed;
 
             Boundaries.VerticalBoundariesCheck(_player);
-
-            MovementBoost();
         }
         private void MovementBoost()
         {
@@ -82,19 +107,6 @@ namespace Services
                     _player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
                 }
             }
-        }
-        private void MovePlayerXCoordinate()
-        {
-            if (_player.HorizontalSpeed < 0 || _player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || MapService.HasMapReachedEnd)
-            {
-                _player.XCoordinate += _player.HorizontalSpeed;
-
-                return;
-            }
-
-            _player.XCoordinate = GameInfo.SCREEN_WIDTH / 2;
-
-            MapService.MoveMap(_player.HorizontalSpeed);
         }
 
         #region EVENTS

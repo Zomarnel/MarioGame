@@ -17,7 +17,6 @@ namespace WPFUI
         private DrawingService _drawingService;
 
         private Image _mapImage;
-
         public MainWindow()
         {
             InitializeComponent();
@@ -33,7 +32,7 @@ namespace WPFUI
         #region INITIALIZATIONS
         private void InitializeServices()
         {
-            _drawingService = new DrawingService(Background);
+            _drawingService = new DrawingService();
         }
         private void InitializeMap()
         {
@@ -59,7 +58,7 @@ namespace WPFUI
         #endregion INITIALIZATIONS  
 
         #region KEYINPUT
-        private void On_KeyDown(object sender, KeyEventArgs e)
+        private void On_KeyDown(object sender, KeyEventArgs? e)
         {
             if (Keyboard.IsKeyDown(Key.Left))
             {
@@ -91,7 +90,9 @@ namespace WPFUI
 
             _gameSession.MovePlayer();
 
-            _drawingService.DrawPlayer(_gameSession.CurrentPlayer.XCoordinate, _gameSession.CurrentPlayer.YCoordinate);
+            _drawingService.DrawPlayer(Background, _gameSession.CurrentPlayer.CurrentSpriteID, 
+                                                   _gameSession.CurrentPlayer.XCoordinate,
+                                                   _gameSession.CurrentPlayer.YCoordinate);
         }
         private void DrawMap(object sender, double xCoordinate)
         {

@@ -105,11 +105,6 @@ namespace Services
                         player.XCoordinate = bnd.XStart - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
 
                         player.StopMovingHorizontally();
-                        
-                        if (player.VerticalAction == Player.VerticalActions.IsJumping)
-                        {
-                            continue;
-                        }
                     }
                 }
                 else if (player.HorizontalSpeed < 0)
@@ -159,6 +154,8 @@ namespace Services
                     {
                         player.YCoordinate = bnd.YStart - 32;
 
+                        player.CurrentSpriteID = 0;
+
                         player.StopMovingVertically();
                     }
                 }
@@ -169,6 +166,8 @@ namespace Services
                         player.YCoordinate = bnd.YEnd;
 
                         player.VerticalAction = Player.VerticalActions.IsStanding;
+
+                        player.CurrentSpriteID = 0;
                     }
                 }
             }
@@ -181,6 +180,8 @@ namespace Services
                     {
                         player.YCoordinate = block.YCoordinate - 32;
 
+                        player.CurrentSpriteID = 0;
+
                         player.StopMovingVertically();
                     }
                 }
@@ -189,6 +190,8 @@ namespace Services
                     if (block.IsPointInsideBlock(xCoordinate, yCoordinate) || block.IsPointInsideBlock(xCoordinate + 32, yCoordinate))
                     {
                         player.YCoordinate = block.YCoordinate + block.Height;
+
+                        player.CurrentSpriteID = 0;
 
                         player.VerticalAction = Player.VerticalActions.IsStanding;
                     }

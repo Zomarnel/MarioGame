@@ -9,16 +9,7 @@ namespace Models
         public double XCoordinate { get; set; }
         public double YCoordinate { get; set; }
 
-        /*public enum BlockType
-        {
-            BrickBlock,
-            LuckyBlock,
-            BlankBlock,
-            StairsBlock,
-            Tunnel
-        }*/
-
-        public string Name { get; init; }    
+        public string Name { get; set; }
         public Block(string name, int width, int height, double xCoordinate, double yCoordinate)
         {
             Name = name;

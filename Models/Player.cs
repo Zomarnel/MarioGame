@@ -37,6 +37,9 @@ namespace Models
                 _verticalSpeed = value;
             }
         }
+        public int CurrentSpriteID { get; set; }
+
+        public bool? HasChangedSprite = null;
 
         private double _horizontalSpeed;
         private double _verticalSpeed;
@@ -70,11 +73,35 @@ namespace Models
 
             HorizontalSpeed = 0;
             VerticalSpeed = -GameInfo.GAME_GRAVITY;
+
+            CurrentSpriteID = 0;
+        }
+        public void ChangeSprite()
+        {
+            if (VerticalAction != VerticalActions.IsStanding)
+            {
+                CurrentSpriteID = 3;
+            }
+            else if (HorizontalAction == HorizontalActions.ChangeOfDirection)
+            {
+                CurrentSpriteID = 4;
+            }
+            else if (HorizontalAction != HorizontalActions.IsStanding && CurrentSpriteID < 2)
+            {
+                CurrentSpriteID++;
+            }
+            else
+            {
+                CurrentSpriteID = 0;
+            }
+
+            HasChangedSprite = true;
         }
         public void StopMovingHorizontally()
         {
             HorizontalAction = HorizontalActions.IsStanding;
             HorizontalSpeed = 0;
+            CurrentSpriteID = 0;
         }
         public void StopMovingVertically()
         {

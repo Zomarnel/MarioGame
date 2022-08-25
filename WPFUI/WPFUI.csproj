@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Spritesheets\Mario\Little.png" />
     <None Remove="Images\Worlds\World-1.png" />
   </ItemGroup>
 
@@ -17,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\Spritesheets\Mario\Little.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Worlds\World-1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

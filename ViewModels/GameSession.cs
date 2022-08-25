@@ -23,7 +23,7 @@ namespace ViewModels
         }
         public void MovePlayer()
         {
-            _playerMovement.MovePlayer();
+            _playerMovement.MovePlayerAsync();
         }
     }
 }
