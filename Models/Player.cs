@@ -37,6 +37,12 @@ namespace Models
                 _verticalSpeed = value;
             }
         }
+
+        public double JumpLimit { get; set; }
+
+        public int Width { get; set; }
+        public int Height { get; set; }
+
         public int CurrentSpriteID { get; set; }
 
         public bool? HasChangedSprite = null;
@@ -72,21 +78,16 @@ namespace Models
             VerticalAction = VerticalActions.IsStanding;
 
             HorizontalSpeed = 0;
-            VerticalSpeed = -GameInfo.GAME_GRAVITY;
+            VerticalSpeed = 0;
 
             CurrentSpriteID = 0;
+
+            Width = 32;
+            Height = 32;
         }
-        public void ChangeSprite()
+        public void ChangeSpriteWhileRunning()
         {
-            if (VerticalAction != VerticalActions.IsStanding)
-            {
-                CurrentSpriteID = 3;
-            }
-            else if (HorizontalAction == HorizontalActions.ChangeOfDirection)
-            {
-                CurrentSpriteID = 4;
-            }
-            else if (HorizontalAction != HorizontalActions.IsStanding && CurrentSpriteID < 2)
+            if(HorizontalAction != HorizontalActions.IsStanding && CurrentSpriteID < 2)
             {
                 CurrentSpriteID++;
             }
@@ -103,10 +104,22 @@ namespace Models
             HorizontalSpeed = 0;
             CurrentSpriteID = 0;
         }
-        public void StopMovingVertically()
+        public void StopMovingVertically(bool fall = false)
         {
-            VerticalAction = VerticalActions.IsFalling;
-            VerticalSpeed = -GameInfo.GAME_GRAVITY;
+            if (!fall)
+            {
+                VerticalAction = VerticalActions.IsStanding;
+                VerticalSpeed = 0;
+
+                CurrentSpriteID = 0;
+            }
+            else
+            {
+                VerticalAction = VerticalActions.IsFalling;
+                VerticalSpeed = -GameInfo.GAME_GRAVITY;
+
+                CurrentSpriteID = 3;
+            }
         }
     }
 }

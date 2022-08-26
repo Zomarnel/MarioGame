@@ -62,24 +62,24 @@ namespace WPFUI
         {
             if (Keyboard.IsKeyDown(Key.Left))
             {
-                _gameSession.OnKeyDown.Invoke(this, "Left");
+                _gameSession.OnKeyPressed("Left");
             }
 
             if (Keyboard.IsKeyDown(Key.Right))
             {
-                _gameSession.OnKeyDown.Invoke(this, "Right");
+                _gameSession.OnKeyPressed("Right");
             }
 
             if (Keyboard.IsKeyDown(Key.Space))
             {
-                _gameSession.OnKeyDown.Invoke(this, "Space");
+                _gameSession.OnKeyPressed("Space");
             }
         }
         private void On_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Space)
             {
-                _gameSession.OnKeyUp.Invoke(this, e.Key.ToString());
+                _gameSession.OnKeyRemoved(e.Key.ToString());
             }
         }
 
