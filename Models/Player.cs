@@ -85,24 +85,11 @@ namespace Models
             Width = 32;
             Height = 32;
         }
-        public void ChangeSpriteWhileRunning()
-        {
-            if(HorizontalAction != HorizontalActions.IsStanding && CurrentSpriteID < 2)
-            {
-                CurrentSpriteID++;
-            }
-            else
-            {
-                CurrentSpriteID = 0;
-            }
 
-            HasChangedSprite = true;
-        }
         public void StopMovingHorizontally()
         {
             HorizontalAction = HorizontalActions.IsStanding;
             HorizontalSpeed = 0;
-            CurrentSpriteID = 0;
         }
         public void StopMovingVertically(bool fall = false)
         {

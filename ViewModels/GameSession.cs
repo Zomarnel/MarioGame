@@ -11,18 +11,8 @@ namespace ViewModels
         {
             CurrentPlayer = new Player(100, 64);
         }
-        public void MovePlayer()
-        {
-            Movement.MoveXCoordinate(CurrentPlayer);
 
-            Collisions.HorizontalBoundariesCheck(CurrentPlayer);
-
-            Movement.MoveYCoordinate(CurrentPlayer);
-
-            Collisions.VerticalBoundariesCheck(CurrentPlayer);
-
-            Movement.MovementBoost(CurrentPlayer);
-        }
+        #region EVENTS
         public void OnKeyPressed(string direction)
         {
             if (direction == "Space" && CurrentPlayer.VerticalAction == Player.VerticalActions.IsStanding)
@@ -33,7 +23,6 @@ namespace ViewModels
 
                 CurrentPlayer.JumpLimit = CurrentPlayer.YCoordinate + 5 * GameInfo.SPRITE_HEIGHT;
 
-                CurrentPlayer.CurrentSpriteID = 3;
             }
 
             if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction == Player.HorizontalActions.IsStanding)
@@ -57,16 +46,44 @@ namespace ViewModels
                 CurrentPlayer.VerticalAction = Player.VerticalActions.IsFalling;
 
                 CurrentPlayer.VerticalSpeed = -GameInfo.GAME_GRAVITY;
-
-                CurrentPlayer.CurrentSpriteID = 3;
             }
 
             if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalSpeed != 0)
             {
                 CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSlowing;
 
-                CurrentPlayer.CurrentSpriteID = 4;
             }
         }
-    }
-}
+
+        #endregion EVENTS
+
+        #region PLAYERMOVEMENT
+        public void MovePlayer()
+        {
+            MovePlayerHorizontally();
+
+            MovePlayerVertically();
+
+            SpriteControl.UpdatePlayerSprite(CurrentPlayer);
+
+            Movement.MovementBoost(CurrentPlayer);
+        }
+        private void MovePlayerHorizontally()
+        {
+            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer))
+            {
+                Movement.MoveXCoordinate(CurrentPlayer);
+
+                Collisions.HorizontalBoundariesCheck(CurrentPlayer);
+            }
+        }
+        private void MovePlayerVertically()
+        {
+                Movement.MoveYCoordinate(CurrentPlayer);
+
+                Collisions.VerticalBoundariesCheck(CurrentPlayer);
+        }
+
+        #endregion PLAYERMOVEMENT
+    } 
+}                  

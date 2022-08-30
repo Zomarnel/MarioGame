@@ -73,6 +73,8 @@ namespace Services
             AddNewBoundary(5222, 64, 5277, 129);
             AddNewBoundary(5732, 64, 5787, 129);
         }
+
+        #region COLLISIONSCHECK
         public static void HorizontalBoundariesCheck(Player player)
         {
             int xCoordinate = (int)(player.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
@@ -98,22 +100,23 @@ namespace Services
 
             foreach (Boundary bnd in _boundaries)
             {
-                if (player.HorizontalSpeed > 0)
+                if (IsPlayerInsideBoundary(bnd, xCoordinate, yCoordinate))
                 {
-                    if (bnd.IsPointInsideBoundary(xCoordinate + player.Width, yCoordinate) || bnd.IsPointInsideBoundary(xCoordinate + player.Width, yCoordinate + player.Height))
+                    if (player.HorizontalSpeed > 0)
                     {
                         player.XCoordinate = bnd.XStart - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
 
                         player.StopMovingHorizontally();
+
+                        SpriteControl.UpdatePlayerSprite(player);
                     }
-                }
-                else if (player.HorizontalSpeed < 0)
-                {
-                    if (bnd.IsPointInsideBoundary(xCoordinate, yCoordinate) || bnd.IsPointInsideBoundary(xCoordinate, yCoordinate + player.Height))
+                    else if (player.HorizontalSpeed < 0)
                     {
                         player.XCoordinate = bnd.XEnd - Math.Abs(MapService.MapXCoordinate);
 
                         player.StopMovingHorizontally();
+
+                        SpriteControl.UpdatePlayerSprite(player);
                     }
                 }
             }
@@ -124,46 +127,84 @@ namespace Services
             int xCoordinate = (int)(player.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
             int yCoordinate = (int)(player.YCoordinate);
 
-            int count = 0;
-
             foreach (Boundary bnd in _boundaries)
             {
-                if (player.VerticalSpeed > 0)
+                if (IsPlayerInsideBoundary(bnd, xCoordinate, yCoordinate))
                 {
-                    if (bnd.IsPointInsideBoundary(xCoordinate, yCoordinate + player.Height) || bnd.IsPointInsideBoundary(xCoordinate + player.Width, yCoordinate + player.Height))
+                    if (player.VerticalSpeed > 0)
                     {
-                          player.YCoordinate = bnd.YStart - 32;
+                        player.YCoordinate = bnd.YStart - 32;
 
                         player.StopMovingVertically(true);
                     }
-                }
-                else if (player.VerticalSpeed < 0)
-                {
-                    if (bnd.IsPointInsideBoundary(xCoordinate, yCoordinate) || bnd.IsPointInsideBoundary(xCoordinate + player.Width, yCoordinate))
+                    else if (player.VerticalSpeed < 0)
                     {
                         player.YCoordinate = bnd.YEnd;
 
                         player.StopMovingVertically();
                     }
                 }
-                else
+
+                if (!_boundaries.Any(b => IsPlayerInsideBoundary(b, xCoordinate, yCoordinate - 1)) && player.VerticalAction == Player.VerticalActions.IsStanding)
                 {
-                    if (!bnd.IsPointInsideBoundary(xCoordinate, yCoordinate - 1) && !bnd.IsPointInsideBoundary(xCoordinate + player.Width, yCoordinate - 1)) 
-                    {
-                        count++;
-                    }
+                    player.StopMovingVertically(true);
                 }
             }
+        }
 
-            if (count == _boundaries.Count() && player.VerticalAction == Player.VerticalActions.IsStanding)
+        #endregion COLLISIONSCHECK
+        public static bool CanPlayerMoveHorizontally(Player player)
+        {
+            int xCoordinate = (int)(player.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
+            int yCoordinate = (int)player.YCoordinate;
+
+            if ((_boundaries.Any(b => IsPlayerInsideBoundary(b, xCoordinate + 1, yCoordinate)) && player.HorizontalSpeed > 0) ||
+                (_boundaries.Any(b => IsPlayerInsideBoundary(b, xCoordinate - 1, yCoordinate)) && player.HorizontalSpeed < 0))
             {
-                player.StopMovingVertically(true);
+                player.HorizontalAction = Player.HorizontalActions.IsStanding;
+                player.HorizontalSpeed = 0;
+
+                SpriteControl.UpdatePlayerSprite(player);
+
+                return false;
             }
 
+            return true;
+        }
+        private static bool IsPlayerInsideBoundary(Boundary boundary, int xCoordinate, int yCoordinate)
+        {
+
+            if (xCoordinate == boundary.XStart && xCoordinate + 32 == boundary.XEnd && yCoordinate > boundary.YStart && yCoordinate < boundary.YEnd) 
+            {
+                return true;
+            }
+
+            if (xCoordinate > boundary.XStart && xCoordinate < boundary.XEnd && yCoordinate > boundary.YStart && yCoordinate < boundary.YEnd)
+            {
+                return true;
+            }
+
+            if (xCoordinate > boundary.XStart && xCoordinate < boundary.XEnd && yCoordinate + 32 > boundary.YStart && yCoordinate + 32 < boundary.YEnd)
+            {
+                return true;
+            }
+
+            if (xCoordinate + 32 > boundary.XStart && xCoordinate + 32 < boundary.XEnd && yCoordinate > boundary.YStart && yCoordinate < boundary.YEnd)
+            {
+                return true;
+            }
+
+            if (xCoordinate + 32 > boundary.XStart && xCoordinate + 32 < boundary.XEnd && yCoordinate + 32 > boundary.YStart && yCoordinate + 32 < boundary.YEnd)
+            {
+                return true;
+            }
+
+            return false;
         }
         private static void AddNewBoundary(double xStart, double yStart, double xEnd, double yEnd)
         {
             _boundaries.Add(new Boundary(xStart, yStart, xEnd, yEnd));
         }
+
     }
 }
