@@ -22,21 +22,30 @@ namespace ViewModels
                 CurrentPlayer.VerticalSpeed = GameInfo.PLAYER_VERTICAL_SPEED;
 
                 CurrentPlayer.JumpLimit = CurrentPlayer.YCoordinate + 5 * GameInfo.SPRITE_HEIGHT;
-
             }
-
-            if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction == Player.HorizontalActions.IsStanding)
+            else if (direction == "Left" || direction == "Right")
             {
-                CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSpeeding;
-                switch (direction)
+                if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.IsStanding)
                 {
-                    case "Left":
-                        CurrentPlayer.HorizontalSpeed = -GameInfo.PLAYER_HORIZONTAL_MIN_SPEED;
-                        break;
-                    case "Right":
-                        CurrentPlayer.HorizontalSpeed = GameInfo.PLAYER_HORIZONTAL_MIN_SPEED;
-                        break;
+                    CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSpeeding;
+                    switch (direction)
+                    {
+                        case "Left":
+                            CurrentPlayer.HorizontalSpeed = -GameInfo.PLAYER_HORIZONTAL_MIN_SPEED;
+                            break;
+                        case "Right":
+                            CurrentPlayer.HorizontalSpeed = GameInfo.PLAYER_HORIZONTAL_MIN_SPEED;
+                            break;
+                    }
                 }
+                else if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.IsSlowing)
+                {
+                    if ((CurrentPlayer.HorizontalSpeed > 0 && direction == "Left") || (CurrentPlayer.HorizontalSpeed < 0 && direction == "Right"))
+                    {
+                        CurrentPlayer.HorizontalAction = Player.HorizontalActions.ChangeOfDirection;
+                    }
+                }
+
             }
         }
         public void OnKeyRemoved(string direction)
@@ -48,10 +57,9 @@ namespace ViewModels
                 CurrentPlayer.VerticalSpeed = -GameInfo.GAME_GRAVITY;
             }
 
-            if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalSpeed != 0)
+            if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction != Player.HorizontalActions.IsStanding)
             {
                 CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSlowing;
-
             }
         }
 

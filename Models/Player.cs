@@ -80,7 +80,7 @@ namespace Models
             HorizontalSpeed = 0;
             VerticalSpeed = 0;
 
-            CurrentSpriteID = 0;
+            CurrentSpriteID = 1;
 
             Width = 32;
             Height = 32;
@@ -98,14 +98,28 @@ namespace Models
                 VerticalAction = VerticalActions.IsStanding;
                 VerticalSpeed = 0;
 
-                CurrentSpriteID = 0;
+                if (CurrentSpriteID > 0)
+                {
+                    CurrentSpriteID = 1;
+                }
+                else
+                {
+                    CurrentSpriteID = -1;
+                }
             }
             else
             {
                 VerticalAction = VerticalActions.IsFalling;
                 VerticalSpeed = -GameInfo.GAME_GRAVITY;
 
-                CurrentSpriteID = 3;
+                if (CurrentSpriteID > 0)
+                {
+                    CurrentSpriteID = 4;
+                }
+                else
+                {
+                    CurrentSpriteID = -4;
+                }
             }
         }
     }

@@ -9,28 +9,74 @@ namespace Services
         private static bool IsUpdating = false;
         public static void UpdatePlayerSprite(Player player)
         {
-            if (player.VerticalAction != Player.VerticalActions.IsStanding)
+            if (player.CurrentSpriteID > 0)
             {
-                player.CurrentSpriteID = 3;
-
-                return;
-            }
-
-            if (player.HorizontalAction == Player.HorizontalActions.IsStanding)
-            {
-                player.CurrentSpriteID = 0;
-            }
-            else if (player.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
-            {
-                player.CurrentSpriteID = 4;
-            }
-            else
-            {
-                if (!IsUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                if (player.HorizontalSpeed >= 0)
                 {
-                    UpdatePlayerSpriteRunningAsync(player);
 
-                    IsUpdating = true;
+                    if (player.VerticalAction != Player.VerticalActions.IsStanding)
+                    {
+                        player.CurrentSpriteID = 4;
+
+                        return;
+                    }
+
+                    if (player.HorizontalAction == Player.HorizontalActions.IsStanding)
+                    {
+                        player.CurrentSpriteID = 1;
+                    }
+                    else if (player.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
+                    {
+                        player.CurrentSpriteID = 5;
+                    }
+                    else
+                    {
+                        if (!IsUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                        {
+                            UpdatePlayerSpriteRunningAsync(player);
+
+                            IsUpdating = true;
+                        }
+                    }
+                }
+                else
+                {
+                    player.CurrentSpriteID = -1;
+                }
+            }
+
+            if (player.CurrentSpriteID < 0)
+            {
+                if (player.HorizontalSpeed <= 0)
+                {
+                    if (player.VerticalAction != Player.VerticalActions.IsStanding)
+                    {
+                        player.CurrentSpriteID = -4;
+
+                        return;
+                    }
+
+                    if (player.HorizontalAction == Player.HorizontalActions.IsStanding)
+                    {
+                        player.CurrentSpriteID = -1;
+                    }
+                    else if (player.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
+                    {
+                        player.CurrentSpriteID = -5;
+                    }
+                    else
+                    {
+                        if (!IsUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                        {
+                            UpdatePlayerSpriteRunningAsync(player);
+
+                            IsUpdating = true;
+                        }
+                    }
+                }
+                else
+                {
+                    player.CurrentSpriteID = 1;
                 }
             }
         }
@@ -38,13 +84,27 @@ namespace Services
         {
             await Task.Delay(SpriteUpdateTime);
 
-            if (player.CurrentSpriteID < 2)
+            if (player.CurrentSpriteID > 0)
             {
-                player.CurrentSpriteID++;
+                if (player.CurrentSpriteID < 3)
+                {
+                    player.CurrentSpriteID++;
+                }
+                else
+                {
+                    player.CurrentSpriteID = 1;
+                }
             }
             else
             {
-                player.CurrentSpriteID = 0;
+                if (player.CurrentSpriteID > -3)
+                {
+                    player.CurrentSpriteID--;
+                }
+                else
+                {
+                    player.CurrentSpriteID = -1;
+                }
             }
 
             IsUpdating = false;
