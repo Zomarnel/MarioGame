@@ -90,6 +90,8 @@ namespace Services
         {
             player.HorizontalAction = Player.HorizontalActions.IsStanding;
             player.HorizontalSpeed = 0;
+
+            SpriteControl.UpdatePlayerSprite(player);
         }
         public static void StopMovingVertically(Player player, bool fall = false)
         {
@@ -97,30 +99,14 @@ namespace Services
             {
                 player.VerticalAction = Player.VerticalActions.IsStanding;
                 player.VerticalSpeed = 0;
-
-                if (player.CurrentSpriteID > 0)
-                {
-                    player.CurrentSpriteID = 1;
-                }
-                else
-                {
-                    player.CurrentSpriteID = -1;
-                }
             }
             else
             {
                 player.VerticalAction = Player.VerticalActions.IsFalling;
                 player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
-
-                if (player.CurrentSpriteID > 0)
-                {
-                    player.CurrentSpriteID = 4;
-                }
-                else
-                {
-                    player.CurrentSpriteID = -4;
-                }
             }
+
+            SpriteControl.UpdatePlayerSprite(player);
         }
     }
 }

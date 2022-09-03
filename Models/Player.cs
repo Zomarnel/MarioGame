@@ -1,12 +1,11 @@
-﻿using Core;
-
+﻿
 namespace Models
 {
     public class Player
     {
         public double XCoordinate
         {
-            get => Math.Round(_xCoordinate, 1);
+            get => Math.Round(_xCoordinate, 2);
             set
             {
                 _xCoordinate = value;
@@ -14,7 +13,7 @@ namespace Models
         }
         public double YCoordinate
         {
-            get => Math.Round(_yCoordinate, 1);
+            get => Math.Round(_yCoordinate, 2);
             set
             {
                 _yCoordinate = value;
@@ -23,7 +22,7 @@ namespace Models
 
         public double HorizontalSpeed
         {
-            get => Math.Round(_horizontalSpeed, 1);
+            get => Math.Round(_horizontalSpeed, 2);
             set
             {
                 _horizontalSpeed = value;
@@ -31,7 +30,7 @@ namespace Models
         }
         public double VerticalSpeed
         {
-            get => Math.Round(_verticalSpeed, 1);
+            get => Math.Round(_verticalSpeed, 2);
             set
             {
                 _verticalSpeed = value;
@@ -84,43 +83,6 @@ namespace Models
 
             Width = 32;
             Height = 32;
-        }
-
-        public void StopMovingHorizontally()
-        {
-            HorizontalAction = HorizontalActions.IsStanding;
-            HorizontalSpeed = 0;
-        }
-        public void StopMovingVertically(bool fall = false)
-        {
-            if (!fall)
-            {
-                VerticalAction = VerticalActions.IsStanding;
-                VerticalSpeed = 0;
-
-                if (CurrentSpriteID > 0)
-                {
-                    CurrentSpriteID = 1;
-                }
-                else
-                {
-                    CurrentSpriteID = -1;
-                }
-            }
-            else
-            {
-                VerticalAction = VerticalActions.IsFalling;
-                VerticalSpeed = -GameInfo.GAME_GRAVITY;
-
-                if (CurrentSpriteID > 0)
-                {
-                    CurrentSpriteID = 4;
-                }
-                else
-                {
-                    CurrentSpriteID = -4;
-                }
-            }
         }
     }
 }

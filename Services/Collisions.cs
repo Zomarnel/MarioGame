@@ -85,7 +85,7 @@ namespace Services
             {
                 player.XCoordinate = 0;
 
-                player.StopMovingHorizontally();
+                Movement.StopMovingHorizontally(player);
 
                 return;
             }
@@ -93,7 +93,7 @@ namespace Services
             {
                 player.XCoordinate = GameInfo.SCREEN_WIDTH - GameInfo.SPRITE_WIDTH;
 
-                player.StopMovingHorizontally();
+                Movement.StopMovingHorizontally(player);
 
                 return;
             }
@@ -106,17 +106,13 @@ namespace Services
                     {
                         player.XCoordinate = bnd.XStart - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
 
-                        player.StopMovingHorizontally();
-
-                        SpriteControl.UpdatePlayerSprite(player);
+                        Movement.StopMovingHorizontally(player);
                     }
                     else if (player.HorizontalSpeed < 0)
                     {
                         player.XCoordinate = bnd.XEnd - Math.Abs(MapService.MapXCoordinate);
 
-                        player.StopMovingHorizontally();
-
-                        SpriteControl.UpdatePlayerSprite(player);
+                        Movement.StopMovingHorizontally(player);
                     }
                 }
             }
@@ -135,19 +131,19 @@ namespace Services
                     {
                         player.YCoordinate = bnd.YStart - 32;
 
-                        player.StopMovingVertically(true);
+                        Movement.StopMovingVertically(player, true);
                     }
                     else if (player.VerticalSpeed < 0)
                     {
                         player.YCoordinate = bnd.YEnd;
 
-                        player.StopMovingVertically();
+                        Movement.StopMovingVertically(player);
                     }
                 }
 
                 if (!_boundaries.Any(b => IsPlayerInsideBoundary(b, xCoordinate, yCoordinate - 1)) && player.VerticalAction == Player.VerticalActions.IsStanding)
                 {
-                    player.StopMovingVertically(true);
+                    Movement.StopMovingVertically(player, true);
                 }
             }
         }
@@ -161,10 +157,7 @@ namespace Services
             if ((_boundaries.Any(b => IsPlayerInsideBoundary(b, xCoordinate + 1, yCoordinate)) && player.HorizontalSpeed > 0) ||
                 (_boundaries.Any(b => IsPlayerInsideBoundary(b, xCoordinate - 1, yCoordinate)) && player.HorizontalSpeed < 0))
             {
-                player.HorizontalAction = Player.HorizontalActions.IsStanding;
-                player.HorizontalSpeed = 0;
-
-                SpriteControl.UpdatePlayerSprite(player);
+                Movement.StopMovingHorizontally(player);
 
                 return false;
             }
