@@ -60,27 +60,38 @@ namespace WPFUI
         #region KEYINPUT
         private void On_KeyDown(object sender, KeyEventArgs? e)
         {
-            if (Keyboard.IsKeyDown(Key.Left))
+            if (Keyboard.IsKeyDown(Key.Left) || Keyboard.IsKeyDown(Key.A))
             {
                 _gameSession.OnKeyPressed("Left");
             }
 
-            if (Keyboard.IsKeyDown(Key.Right))
+            if (Keyboard.IsKeyDown(Key.Right) || Keyboard.IsKeyDown(Key.D))
             {
                 _gameSession.OnKeyPressed("Right");
             }
 
-            if (Keyboard.IsKeyDown(Key.Space))
+            if (Keyboard.IsKeyDown(Key.Space) || Keyboard.IsKeyDown(Key.Up) || Keyboard.IsKeyDown(Key.W))
             {
                 _gameSession.OnKeyPressed("Space");
             }
         }
         private void On_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Space)
+            if (e.Key == Key.Left || e.Key == Key.A) 
             {
-                _gameSession.OnKeyRemoved(e.Key.ToString());
+                _gameSession.OnKeyRemoved("Left");
             }
+
+            if (e.Key == Key.Right || e.Key == Key.D)
+            {
+                _gameSession.OnKeyRemoved("Right");
+            }
+
+            if (e.Key == Key.Space || e.Key == Key.Up || e.Key == Key.W)
+            {
+                _gameSession.OnKeyRemoved("Space");
+            }
+
         }
 
         #endregion KEYINPUT

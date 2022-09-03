@@ -90,7 +90,6 @@ namespace ViewModels
 
             MovePlayerVertically();
 
-            SpriteControl.UpdatePlayerSprite(CurrentPlayer);
 
             Movement.MovementBoost(CurrentPlayer);
         }
@@ -102,12 +101,16 @@ namespace ViewModels
 
                 Collisions.HorizontalBoundariesCheck(CurrentPlayer);
             }
+
+            SpriteControl.UpdatePlayerSprite(CurrentPlayer);
         }
         private void MovePlayerVertically()
         {
-                Movement.MoveYCoordinate(CurrentPlayer);
+            Movement.MoveYCoordinate(CurrentPlayer);
 
-                Collisions.VerticalBoundariesCheck(CurrentPlayer);
+            Collisions.VerticalBoundariesCheck(CurrentPlayer);
+
+            SpriteControl.UpdatePlayerSprite(CurrentPlayer);
         }
 
         #endregion PLAYERMOVEMENT
