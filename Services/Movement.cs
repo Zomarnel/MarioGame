@@ -17,14 +17,10 @@ namespace Services
 
                 MapService.MoveMap(player.HorizontalSpeed);
             }
-
-            Collisions.HorizontalBoundariesCheck(player);
         }
         public static void MoveYCoordinate(Player player)
         {
             player.YCoordinate += player.VerticalSpeed;
-
-            Collisions.VerticalBoundariesCheck(player);
         }
         public static void MovementBoost(Player player)
         {

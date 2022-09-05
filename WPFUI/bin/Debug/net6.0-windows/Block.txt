@@ -1,0 +1,4 @@
+AddNewBlock("Brick", 0, 5376, 160, 32, 32);
+AddNewBlock("Brick", 0, 5408, 160, 32, 32);
+AddNewBlock("LuckyBlock", 0, 5440, 160, 32, 32);
+AddNewBlock("Brick", 0, 5472, 160, 32, 32);

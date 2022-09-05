@@ -7,10 +7,13 @@ namespace ViewModels
     public class GameSession
     {
         public Player CurrentPlayer { get; set; }
+        public World CurrentWorld { get; init; }
         private bool HasJumped { get; set; } = false;
         public GameSession()
         {
-            CurrentPlayer = new Player(100, 64);
+            CurrentPlayer = new Player(100, 64, 0, 0, 32, 32);
+
+            CurrentWorld = WorldFactory.GetWorldByID(0);
         }
 
         #region EVENTS
@@ -95,11 +98,11 @@ namespace ViewModels
         }
         private void MovePlayerHorizontally()
         {
-            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer))
+            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.ReturnBlocks()))
             {
                 Movement.MoveXCoordinate(CurrentPlayer);
 
-                Collisions.HorizontalBoundariesCheck(CurrentPlayer);
+                Collisions.HorizontalBoundariesCheck(CurrentPlayer, CurrentWorld.ReturnBlocks());
             }
 
             SpriteControl.UpdatePlayerSprite(CurrentPlayer);
@@ -108,7 +111,7 @@ namespace ViewModels
         {
             Movement.MoveYCoordinate(CurrentPlayer);
 
-            Collisions.VerticalBoundariesCheck(CurrentPlayer);
+            Collisions.VerticalBoundariesCheck(CurrentPlayer, CurrentWorld.ReturnBlocks());
 
             SpriteControl.UpdatePlayerSprite(CurrentPlayer);
         }

@@ -1,56 +1,13 @@
 ﻿
 namespace Models
 {
-    public class Player
+    public class Player : Entity
     {
-        public double XCoordinate
-        {
-            get => Math.Round(_xCoordinate, 2);
-            set
-            {
-                _xCoordinate = value;
-            }
-        }
-        public double YCoordinate
-        {
-            get => Math.Round(_yCoordinate, 2);
-            set
-            {
-                _yCoordinate = value;
-            }
-        }
-
-        public double HorizontalSpeed
-        {
-            get => Math.Round(_horizontalSpeed, 2);
-            set
-            {
-                _horizontalSpeed = value;
-            }
-        }
-        public double VerticalSpeed
-        {
-            get => Math.Round(_verticalSpeed, 2);
-            set
-            {
-                _verticalSpeed = value;
-            }
-        }
-
         public double JumpLimit { get; set; }
-
-        public int Width { get; set; }
-        public int Height { get; set; }
 
         public int CurrentSpriteID { get; set; }
 
         public bool? HasChangedSprite = null;
-
-        private double _horizontalSpeed;
-        private double _verticalSpeed;
-
-        private double _xCoordinate;
-        private double _yCoordinate;
 
         public enum HorizontalActions
         {
@@ -68,16 +25,21 @@ namespace Models
 
         public HorizontalActions HorizontalAction { get; set; }
         public VerticalActions VerticalAction { get; set; }
-        public Player(int xCoordinate, int yCoordinate)
+
+        public Player(double xCoordinate, double yCoordinate, double horizontalSpeed, double verticalSpeed, int width, int height)
+                    : base(xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height)
         {
             XCoordinate = xCoordinate;
             YCoordinate = yCoordinate;
 
+            HorizontalSpeed = horizontalSpeed;
+            VerticalSpeed = verticalSpeed;
+
+            Width = width;
+            Height = height;
+
             HorizontalAction = HorizontalActions.IsStanding;
             VerticalAction = VerticalActions.IsStanding;
-
-            HorizontalSpeed = 0;
-            VerticalSpeed = 0;
 
             CurrentSpriteID = 1;
 

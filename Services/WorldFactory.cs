@@ -1,0 +1,130 @@
+﻿using Models;
+
+namespace Services
+{
+    public static class WorldFactory
+    {
+        private static List<WorldEntity> _entities = new List<WorldEntity>();
+        static WorldFactory()
+        {
+            #region WORLD-1
+            
+            //Floors
+            AddNewBlock("", 0, 0, 0, 2208, 64);
+            AddNewBlock("", 0, 2272, 0, 480, 64);
+            AddNewBlock("", 0, 2848, 0, 2048, 64);
+            AddNewBlock("", 0, 4960, 0, 1792, 64);
+
+            //Blocks
+            AddNewBlock("LuckyBlock", 0, 512, 160, 32, 32);
+            AddNewBlock("Brick", 0, 640, 160, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 672, 160, 32, 32);
+            AddNewBlock("Brick", 0, 704, 160, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 736, 160, 32, 32);
+            AddNewBlock("Brick", 0, 768, 160, 32, 32);
+
+            AddNewBlock("LuckyBlock", 0, 704, 288, 32, 32);
+
+            AddNewBlock("Brick", 0, 2464, 160, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 2496, 160, 32, 32);
+            AddNewBlock("Brick", 0, 2528, 160, 32, 32);
+
+            AddNewBlock("Brick", 0, 2560, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2592, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2624, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2656, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2688, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2720, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2752, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2784, 288, 32, 32);
+
+            AddNewBlock("Brick", 0, 2912, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2944, 288, 32, 32);
+            AddNewBlock("Brick", 0, 2976, 288, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 3008, 288, 32, 32);
+
+            AddNewBlock("Brick", 0, 3008, 160, 32, 32);
+
+            AddNewBlock("Brick", 0, 3200, 160, 32, 32);
+            AddNewBlock("Brick", 0, 3232, 160, 32, 32);
+
+            AddNewBlock("LuckyBlock", 0, 3392, 160, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 3488, 160, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 3488, 288, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 3584, 160, 32, 32);
+
+            AddNewBlock("Brick", 0, 3776, 160, 32, 32);
+
+            AddNewBlock("Brick", 0, 3872, 288, 32, 32);
+            AddNewBlock("Brick", 0, 3904, 288, 32, 32);
+            AddNewBlock("Brick", 0, 3936, 288, 32, 32);
+
+            AddNewBlock("Brick", 0, 4096, 288, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 4128, 288, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 4160, 288, 32, 32);
+            AddNewBlock("Brick", 0, 4192, 288, 32, 32);
+
+            AddNewBlock("Brick", 0, 4128, 160, 32, 32);
+            AddNewBlock("Brick", 0, 4160, 160, 32, 32);
+
+            AddNewBlock("Brick", 0, 5376, 160, 32, 32);
+            AddNewBlock("Brick", 0, 5408, 160, 32, 32);
+            AddNewBlock("LuckyBlock", 0, 5440, 160, 32, 32);
+            AddNewBlock("Brick", 0, 5472, 160, 32, 32);
+
+            //Tunnels
+            AddNewBlock("", 0, 900, 64, 55, 65);
+            AddNewBlock("", 0, 1220, 64, 55, 95);
+            AddNewBlock("", 0, 1477, 64, 55, 125);
+            AddNewBlock("", 0, 1828, 64, 55, 125);
+            AddNewBlock("", 0, 5222, 64, 55, 65);
+            AddNewBlock("", 0, 5732, 64, 55, 65);
+
+            //Stairs
+            AddNewBlock("", 0, 4288, 0, 128, 96);
+            AddNewBlock("", 0, 4320, 64, 96, 64);
+            AddNewBlock("", 0, 4352, 96, 64, 64);
+            AddNewBlock("", 0, 4384, 128, 32, 64);
+            AddNewBlock("", 0, 4480, 0, 128, 96);
+            AddNewBlock("", 0, 4480, 64, 96, 64);
+            AddNewBlock("", 0, 4480, 96, 64, 64);
+            AddNewBlock("", 0, 4480, 128, 32, 64);
+            AddNewBlock("", 0, 4736, 0, 160, 96);
+            AddNewBlock("", 0, 4768, 64, 128, 64);
+            AddNewBlock("", 0, 4800, 96, 96, 64);
+            AddNewBlock("", 0, 4832, 128, 64, 64);
+            AddNewBlock("", 0, 4960, 0, 128, 96);
+            AddNewBlock("", 0, 4960, 64, 96, 64);
+            AddNewBlock("", 0, 4960, 96, 64, 64);
+            AddNewBlock("", 0, 4960, 128, 32, 64);
+            AddNewBlock("", 0, 5792, 0, 288, 96);
+            AddNewBlock("", 0, 5824, 64, 256, 64);
+            AddNewBlock("", 0, 5856, 96, 224, 64);
+            AddNewBlock("", 0, 5888, 128, 192, 64);
+            AddNewBlock("", 0, 5920, 160, 160, 64);
+            AddNewBlock("", 0, 5952, 192, 128, 64);
+            AddNewBlock("", 0, 5984, 224, 96, 64);
+            AddNewBlock("", 0, 6016, 256, 64, 64);
+
+            //Mobs
+
+            //AddNewEnemy("Mushroom", 0, 160, 192, 32, 32);
+
+            #endregion WORLD-1
+        }
+        public static World GetWorldByID(int worldID)
+        {
+            return new World(_entities.Where(e => e.MapID == worldID));
+        }
+        private static void AddNewEnemy(string fileName, int mapID, double xCoordinate, double yCoordinate,
+                                              int width, int height, double horizontalSpeed = 0, double verticalSpeed = 0)
+        {
+            _entities.Add(new Enemy(fileName, mapID, xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height));
+        }
+        private static void AddNewBlock(string fileName, int mapID, double xCoordinate, double yCoordinate,
+                                              int width, int height, double horizontalSpeed = 0, double verticalSpeed = 0)
+        {
+            _entities.Add(new Block(fileName, mapID, xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height));
+        }
+    }
+}
