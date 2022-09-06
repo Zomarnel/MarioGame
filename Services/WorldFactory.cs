@@ -106,6 +106,8 @@ namespace Services
             AddNewBlock("", 0, 5984, 224, 96, 64);
             AddNewBlock("", 0, 6016, 256, 64, 64);
 
+            AddNewBlock("", 0, 6336, 64, 32, 32);
+
             //Mobs
 
             //AddNewEnemy("Mushroom", 0, 160, 192, 32, 32);

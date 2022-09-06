@@ -31,6 +31,11 @@ namespace ViewModels
             }
             else if (direction == "Left" || direction == "Right")
             {
+                if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
+                {
+                    return;
+                }
+
                 if (CurrentPlayer.VerticalAction != Player.VerticalActions.IsStanding)
                 {
                     if ((direction == "Left" && CurrentPlayer.HorizontalSpeed > 0) || (direction == "Left" && CurrentPlayer.CurrentSpriteID > 0))
@@ -80,6 +85,11 @@ namespace ViewModels
 
             if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction != Player.HorizontalActions.IsStanding)
             {
+                if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
+                {
+                    return;
+                }
+
                 CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSlowing;
             }
         }
