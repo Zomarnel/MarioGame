@@ -104,10 +104,19 @@ namespace WPFUI
             _drawingService.DrawPlayer(Background, _gameSession.CurrentPlayer.CurrentSpriteID, 
                                                    _gameSession.CurrentPlayer.XCoordinate,
                                                    _gameSession.CurrentPlayer.YCoordinate);
+
+            _gameSession.CurrentWorld.Update();
+
+            _drawingService.DrawBlocks(Background, _gameSession.CurrentWorld.ReturnBlocksInChunk());
+
+            _drawingService.DisposeBlocks(Background, _gameSession.CurrentWorld.ReturnDisposableBlocks());
+
         }
         private void DrawMap(object sender, double xCoordinate)
         {
             Canvas.SetLeft(_mapImage, xCoordinate);
+
+            _drawingService.UpdateCurrentBlocks(Math.Abs(xCoordinate));
         }
     }
 }

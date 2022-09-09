@@ -11,13 +11,19 @@ namespace WPFUI.Services
     {
         private static readonly List<Sprite> _sprites = new List<Sprite>();
 
-        private static readonly BitmapImage _littleMarioSpritesheet; 
+        private static readonly BitmapImage _littleMarioSpritesheet;
+
+        private static readonly BitmapImage _blocksSpritesheet;
         static SpritesFactory()
         {
 
             _littleMarioSpritesheet = new BitmapImage(new Uri("/Images/Spritesheets/Mario/Little.png", UriKind.Relative));
 
             _littleMarioSpritesheet.BaseUri = Application.Current.StartupUri;
+
+            _blocksSpritesheet = new BitmapImage(new Uri("/Images/Blocks/Blocks.png", UriKind.Relative));
+
+            _blocksSpritesheet.BaseUri = Application.Current.StartupUri;
 
             //Standing
             AddNewSprite(1, new CroppedBitmap(_littleMarioSpritesheet, new Int32Rect(0, 0, 12, 15)));
@@ -57,6 +63,13 @@ namespace WPFUI.Services
             AddNewSprite(12, new CroppedBitmap(_littleMarioSpritesheet, new Int32Rect(168, 0, 14, 16)));
             AddNewSprite(13, new CroppedBitmap(_littleMarioSpritesheet, new Int32Rect(183, 0, 14, 16)));
 
+            //Blocks
+
+            AddNewSprite(30, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(0, 0, 32, 32)));
+            AddNewSprite(31, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(32, 0, 32, 32)));
+            AddNewSprite(32, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(64, 0, 32, 32)));
+            AddNewSprite(33, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(96, 0, 32, 32)));
+
         }
         public static CroppedBitmap GetSprite(int id)
         {
@@ -69,6 +82,28 @@ namespace WPFUI.Services
 
             return source;
             
+        }
+
+        public static CroppedBitmap GetSpriteByString(string id)
+        {
+            CroppedBitmap? source;
+
+            switch (id)
+            {
+                case "LuckyBlock":
+                    return _sprites.FirstOrDefault(s => s.ID == 30).ImageSource;
+
+                case "LuckyBlockGlow":
+                    return _sprites.FirstOrDefault(s => s.ID == 31).ImageSource;
+
+                case "Brick":
+                    return _sprites.FirstOrDefault(s => s.ID == 32).ImageSource;
+
+                case "Blank":
+                    return _sprites.FirstOrDefault(s => s.ID == 33).ImageSource;
+                default:
+                    throw new ArgumentOutOfRangeException($"Invalid ID, {id}");
+            }
         }
         private static void AddNewSprite(int id, CroppedBitmap source)
         {

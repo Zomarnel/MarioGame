@@ -1,27 +1,62 @@
 ﻿
+using Core;
+
 namespace Models
 {
     public class World
     {
-        public List<WorldEntity> WorldEntities { get; init; }
-        public World(IEnumerable<WorldEntity> worldEntities)
+        public List<Block> Blocks { private get; set; }
+        public List<Enemy> Enemies { private get; set; }
+        public double WorldXCoordinate { get; set; } = 0;
+        public void Update()
         {
-            WorldEntities = worldEntities.ToList();
+            Blocks.ForEach(b => b.OnUpdate?.Invoke(b, new EventArgs()));
         }
+
         public List<Block> ReturnBlocks()
         {
-            List<WorldEntity> worldEntities = WorldEntities.Where(w => w is Block).ToList();
+            return Blocks;
+        }
 
-            List<Block> blocks = new List<Block>();
+        public List<Block> ReturnBlocksInChunk()
+        {
+            List<Block> blocksToReturn = new List<Block>(); 
 
-            foreach(WorldEntity worldEntity in worldEntities)
+            foreach (Block b in Blocks)
             {
-                blocks.Add(new Block(worldEntity.FileName, worldEntity.MapID, worldEntity.XCoordinate, worldEntity.YCoordinate,
-                                    worldEntity.HorizontalSpeed, worldEntity.VerticalSpeed, worldEntity.Width, worldEntity.Height));
+
+                if (b.XCoordinate > WorldXCoordinate && b.XCoordinate < WorldXCoordinate + GameInfo.SCREEN_WIDTH && b.NeedsToBeUpdated)
+                {
+                    blocksToReturn.Add(b);
+                }
+                else if (b.XCoordinate + b.Width > WorldXCoordinate && b.XCoordinate + b.Width < WorldXCoordinate + GameInfo.SCREEN_WIDTH
+                         && b.NeedsToBeUpdated)
+                {
+                    blocksToReturn.Add(b);
+                }
             }
 
-            return blocks;
+            return blocksToReturn;
+        }
+        public List<Block> ReturnDisposableBlocks()
+        {
+            List<Block> blocksToReturn = new List<Block>();
 
+            foreach (Block b in Blocks)
+            {
+                if (b.XCoordinate < WorldXCoordinate && b.XCoordinate + b.Width < WorldXCoordinate && b.HasBeenDrawn)
+                {
+                    blocksToReturn.Add(b);
+                }
+                else if (b.XCoordinate > WorldXCoordinate + GameInfo.SCREEN_WIDTH && b.XCoordinate + b.Width > WorldXCoordinate + GameInfo.SCREEN_WIDTH && b.HasBeenDrawn)
+                {
+                    blocksToReturn.Add(b);
+                }
+            }
+
+            blocksToReturn.ForEach(b => Blocks.Remove(b));
+
+            return blocksToReturn;
         }
     }
 }

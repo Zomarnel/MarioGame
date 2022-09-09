@@ -36,20 +36,6 @@ namespace ViewModels
                     return;
                 }
 
-                if (CurrentPlayer.VerticalAction != Player.VerticalActions.IsStanding)
-                {
-                    if ((direction == "Left" && CurrentPlayer.HorizontalSpeed > 0) || (direction == "Left" && CurrentPlayer.CurrentSpriteID > 0))
-                    {
-                        return;
-                    }
-
-                    if ((direction == "Right" && CurrentPlayer.HorizontalSpeed < 0) || (direction == "Right" && CurrentPlayer.CurrentSpriteID < 0))
-                    {
-                        return;
-                    }
-
-                }
-
                 if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.IsStanding)
                 {
                     CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSpeeding;
@@ -103,7 +89,6 @@ namespace ViewModels
 
             MovePlayerVertically();
 
-
             Movement.MovementBoost(CurrentPlayer);
         }
         private void MovePlayerHorizontally()
@@ -111,6 +96,8 @@ namespace ViewModels
             if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.ReturnBlocks()))
             {
                 Movement.MoveXCoordinate(CurrentPlayer);
+
+                CurrentWorld.WorldXCoordinate = Math.Abs(MapService.MapXCoordinate);
 
                 Collisions.HorizontalBoundariesCheck(CurrentPlayer, CurrentWorld.ReturnBlocks());
             }

@@ -108,15 +108,83 @@ namespace Services
 
             AddNewBlock("", 0, 6336, 64, 32, 32);
 
-            //Mobs
-
-            //AddNewEnemy("Mushroom", 0, 160, 192, 32, 32);
-
             #endregion WORLD-1
         }
         public static World GetWorldByID(int worldID)
         {
-            return new World(_entities.Where(e => e.MapID == worldID));
+            World world = new World();
+
+            PopulateWorldObject(world, worldID);
+
+            return world;
+        }
+
+        public static void OnUpdateGlow(object sender, EventArgs e)
+        {
+            Block? block = sender as Block;
+
+            if (block is null)
+            {
+                return;
+            }
+
+            if (!block.IsUpdating)
+            {
+                block.IsUpdating = true;
+                OnUpdateGlowAsync(block);
+            }
+        }
+        private static async Task OnUpdateGlowAsync(Block block)
+        {
+            await Task.Delay(400);
+
+            switch (block.FileName)
+            {
+                case "LuckyBlock":
+                    block.FileName = "LuckyBlockGlow";
+                    block.NeedsToBeUpdated = true;
+                    break;
+
+                case "LuckyBlockGlow":
+                    block.FileName = "LuckyBlock";
+                    block.NeedsToBeUpdated = true;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException($"Invalid file name, {block.FileName}");
+            }
+
+            block.IsUpdating = false;
+        }
+        private static void PopulateWorldObject(World world, int worldID)
+        {
+            List<WorldEntity> entities = _entities.Where(e => e.WorldID == worldID).ToList();
+
+            List<Block> blocks = new List<Block>();
+            List<Enemy> enemies = new List<Enemy>();
+
+            foreach (WorldEntity e in entities)
+            {
+                if (e is Block)
+                {
+                    Block block = new Block(e.FileName, e.WorldID, e.XCoordinate, e.YCoordinate, e.HorizontalSpeed, e.VerticalSpeed, e.Width, e.Height);
+
+                    if (block.FileName == "LuckyBlock")
+                    {
+                        block.OnUpdate += OnUpdateGlow;
+                    }
+
+                    blocks.Add(block);
+                }
+
+                if (e is Enemy)
+                {
+                    enemies.Add(new Enemy(e.FileName, e.WorldID, e.XCoordinate, e.YCoordinate, e.HorizontalSpeed, e.VerticalSpeed, e.Width, e.Height));
+                }
+            }
+
+            world.Blocks = blocks;
+            world.Enemies = enemies;
         }
         private static void AddNewEnemy(string fileName, int mapID, double xCoordinate, double yCoordinate,
                                               int width, int height, double horizontalSpeed = 0, double verticalSpeed = 0)
