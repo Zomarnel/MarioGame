@@ -69,6 +69,7 @@ namespace WPFUI.Services
             AddNewSprite(31, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(32, 0, 32, 32)));
             AddNewSprite(32, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(64, 0, 32, 32)));
             AddNewSprite(33, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(96, 0, 32, 32)));
+            AddNewSprite(34, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(128, 0, 32, 32)));
 
         }
         public static CroppedBitmap GetSprite(int id)
@@ -96,11 +97,14 @@ namespace WPFUI.Services
                 case "LuckyBlockGlow":
                     return _sprites.FirstOrDefault(s => s.ID == 31).ImageSource;
 
-                case "Brick":
+                case "LuckyBlockGlowGlow":
                     return _sprites.FirstOrDefault(s => s.ID == 32).ImageSource;
 
                 case "Blank":
                     return _sprites.FirstOrDefault(s => s.ID == 33).ImageSource;
+
+                case "Brick":
+                    return _sprites.FirstOrDefault(s => s.ID == 34).ImageSource;
                 default:
                     throw new ArgumentOutOfRangeException($"Invalid ID, {id}");
             }

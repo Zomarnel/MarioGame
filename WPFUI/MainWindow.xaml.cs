@@ -97,20 +97,27 @@ namespace WPFUI
         #endregion KEYINPUT
         private void Update(object sender, EventArgs e)
         {
+            UpdatePlayer();
+
+            UpdateWorldMap();
+        }
+        private void UpdatePlayer()
+        {
             On_KeyDown(this, null);
 
             _gameSession.MovePlayer();
 
-            _drawingService.DrawPlayer(Background, _gameSession.CurrentPlayer.CurrentSpriteID, 
+            _drawingService.DrawPlayer(Background, _gameSession.CurrentPlayer.CurrentSpriteID,
                                                    _gameSession.CurrentPlayer.XCoordinate,
                                                    _gameSession.CurrentPlayer.YCoordinate);
-
+        }
+        private void UpdateWorldMap()
+        {
             _gameSession.CurrentWorld.Update();
 
-            _drawingService.DrawBlocks(Background, _gameSession.CurrentWorld.ReturnBlocksInChunk());
+            _drawingService.DrawBlocks(Background, _gameSession.CurrentWorld.ReturnUpdatedBlocks());
 
             _drawingService.DisposeBlocks(Background, _gameSession.CurrentWorld.ReturnDisposableBlocks());
-
         }
         private void DrawMap(object sender, double xCoordinate)
         {

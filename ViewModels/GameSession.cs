@@ -93,13 +93,13 @@ namespace ViewModels
         }
         private void MovePlayerHorizontally()
         {
-            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.ReturnBlocks()))
+            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.Blocks))
             {
                 Movement.MoveXCoordinate(CurrentPlayer);
 
                 CurrentWorld.WorldXCoordinate = Math.Abs(MapService.MapXCoordinate);
 
-                Collisions.HorizontalBoundariesCheck(CurrentPlayer, CurrentWorld.ReturnBlocks());
+                Collisions.HorizontalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
             }
 
             SpriteControl.UpdatePlayerSprite(CurrentPlayer);
@@ -108,7 +108,7 @@ namespace ViewModels
         {
             Movement.MoveYCoordinate(CurrentPlayer);
 
-            Collisions.VerticalBoundariesCheck(CurrentPlayer, CurrentWorld.ReturnBlocks());
+            Collisions.VerticalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
 
             SpriteControl.UpdatePlayerSprite(CurrentPlayer);
         }

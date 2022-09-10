@@ -118,44 +118,6 @@ namespace Services
 
             return world;
         }
-
-        public static void OnUpdateGlow(object sender, EventArgs e)
-        {
-            Block? block = sender as Block;
-
-            if (block is null)
-            {
-                return;
-            }
-
-            if (!block.IsUpdating)
-            {
-                block.IsUpdating = true;
-                OnUpdateGlowAsync(block);
-            }
-        }
-        private static async Task OnUpdateGlowAsync(Block block)
-        {
-            await Task.Delay(400);
-
-            switch (block.FileName)
-            {
-                case "LuckyBlock":
-                    block.FileName = "LuckyBlockGlow";
-                    block.NeedsToBeUpdated = true;
-                    break;
-
-                case "LuckyBlockGlow":
-                    block.FileName = "LuckyBlock";
-                    block.NeedsToBeUpdated = true;
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException($"Invalid file name, {block.FileName}");
-            }
-
-            block.IsUpdating = false;
-        }
         private static void PopulateWorldObject(World world, int worldID)
         {
             List<WorldEntity> entities = _entities.Where(e => e.WorldID == worldID).ToList();
@@ -168,11 +130,6 @@ namespace Services
                 if (e is Block)
                 {
                     Block block = new Block(e.FileName, e.WorldID, e.XCoordinate, e.YCoordinate, e.HorizontalSpeed, e.VerticalSpeed, e.Width, e.Height);
-
-                    if (block.FileName == "LuckyBlock")
-                    {
-                        block.OnUpdate += OnUpdateGlow;
-                    }
 
                     blocks.Add(block);
                 }

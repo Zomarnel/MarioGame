@@ -5,7 +5,6 @@
         public string FileName { get; set; }
         public int WorldID { get; init; }
         public bool NeedsToBeUpdated { get; set; } = false;
-        public bool IsUpdating { get; set; } = false;
         public bool HasBeenDrawn { get; set; } = false;
         public EventHandler OnPlayerCollision { get; set; }
         public EventHandler OnUpdate { get; set; }
