@@ -113,11 +113,11 @@ namespace WPFUI
         }
         private void UpdateWorldMap()
         {
-            _gameSession.CurrentWorld.Update();
+            _gameSession.UpdateCurrentWorld();
 
-            _drawingService.DrawBlocks(Background, _gameSession.CurrentWorld.ReturnUpdatedBlocks());
+            _drawingService.DrawBlocks(Background, WorldFactory.ReturnUpdatedBlocks(_gameSession.CurrentWorld));
 
-            _drawingService.DisposeBlocks(Background, _gameSession.CurrentWorld.ReturnDisposableBlocks());
+            _drawingService.DisposeBlocks(Background, WorldFactory.ReturnDisposableBlocks(_gameSession.CurrentWorld));
         }
         private void DrawMap(object sender, double xCoordinate)
         {

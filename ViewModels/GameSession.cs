@@ -114,5 +114,10 @@ namespace ViewModels
         }
 
         #endregion PLAYERMOVEMENT
+
+        public void UpdateCurrentWorld()
+        {
+            WorldEntitiesControl.UpdateWorldBlocks(CurrentWorld.Blocks);
+        }
     } 
 }                  

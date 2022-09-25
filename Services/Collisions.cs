@@ -66,6 +66,8 @@ namespace Services
                     {
                         player.YCoordinate = block.YCoordinate - 32;
 
+                        block.PlayerHasBumped = true;
+
                         Movement.StopMovingVertically(player, true);
 
                         break;

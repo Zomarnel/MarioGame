@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Core;
+using Models;
 
 namespace Services
 {
@@ -117,6 +118,48 @@ namespace Services
             PopulateWorldObject(world, worldID);
 
             return world;
+        }
+        public static List<Block> ReturnDisposableBlocks(World world)
+        {
+            List<Block> blocksToReturn = new List<Block>();
+
+            List<Block> blocksToRemove = new List<Block>();
+
+            foreach (Block b in world.Blocks)
+            {
+                if (b.XCoordinate < world.WorldXCoordinate && b.XCoordinate + b.Width < world.WorldXCoordinate)
+                {
+                    blocksToRemove.Add(b);
+                }
+
+                if (b.XCoordinate < world.WorldXCoordinate && b.XCoordinate + b.Width < world.WorldXCoordinate && b.HasBeenDrawn)
+                {
+                    blocksToReturn.Add(b);
+                }
+            }
+
+            blocksToRemove.ForEach(b => world.Blocks.Remove(b));
+
+            return blocksToReturn;
+        }
+        public static List<Block> ReturnUpdatedBlocks(World world)
+        {
+            List<Block> blocksToReturn = new List<Block>();
+
+            foreach (Block b in world.Blocks)
+            {
+
+                if (b.XCoordinate > world.WorldXCoordinate && b.XCoordinate < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH && b.NeedsToBeUpdated)
+                {
+                    blocksToReturn.Add(b);
+                }
+                else if (b.XCoordinate + b.Width > world.WorldXCoordinate && b.XCoordinate + b.Width < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH && b.NeedsToBeUpdated)
+                {
+                    blocksToReturn.Add(b);
+                }
+            }
+
+            return blocksToReturn;
         }
         private static void PopulateWorldObject(World world, int worldID)
         {
