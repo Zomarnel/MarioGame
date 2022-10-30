@@ -23,7 +23,7 @@ namespace Models
             Corners.Append(new Point(X + Width, Y + Height, Point.Location.TopRight));
             Corners.Append(new Point(X, Y + Height, Point.Location.TopLeft));
         }
-        public static Rectangle ConvertEntity(Entity entity)
+        public static Rectangle ConvertEntityToRectangle(Entity entity)
         {
             return new Rectangle(entity.Width, entity.Height, entity.XCoordinate, entity.YCoordinate);
         }
@@ -42,8 +42,8 @@ namespace Models
                     int width = Math.Abs((int)(rect2.Corners[index].X - point.X));
                     int height = Math.Abs((int)(rect2.Corners[index].Y - point.Y));
 
-                    double x;
-                    double y;
+                    double x = 0;
+                    double y = 0;
 
                     switch (point.PointLocation)
                     {

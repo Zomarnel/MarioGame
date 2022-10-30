@@ -53,6 +53,8 @@ namespace WPFUI.Services
                     Source = SpritesFactory.GetSpriteByString(block.FileName)
                 };
 
+                RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+
                 block.NeedsToBeUpdated = false;
 
                 block.HasBeenDrawn = true;

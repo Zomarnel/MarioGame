@@ -121,8 +121,10 @@ namespace Services
         }
         public static List<Block> ReturnDisposableBlocks(World world)
         {
+            //Blocks that will be removed on the canvas's children
             List<Block> blocksToReturn = new List<Block>();
 
+            //Blocks that will be removed on the world's list of blocks
             List<Block> blocksToRemove = new List<Block>();
 
             foreach (Block b in world.Blocks)

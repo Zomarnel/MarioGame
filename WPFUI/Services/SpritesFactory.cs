@@ -78,7 +78,7 @@ namespace WPFUI.Services
 
             if (source == null)
             {
-                throw new ArgumentOutOfRangeException($"No spite had the given ID {id}, dumbass");
+                throw new ArgumentOutOfRangeException($"No sprite had the given ID {id}, dumbass");
             }
 
             return source;

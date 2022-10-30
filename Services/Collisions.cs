@@ -54,7 +54,6 @@ namespace Services
         }
         public static void VerticalBoundariesCheck(Player player, List<Block> blocks)
         {
-
             int xCoordinate = (int)(player.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
             int yCoordinate = (int)(player.YCoordinate);
 
@@ -107,6 +106,8 @@ namespace Services
         }
         private static bool IsPlayerInsideBlock(Block block, int xCoordinate, int yCoordinate)
         {
+            // Checks if any of the player's rectangle's points are in the block
+
             if (xCoordinate == block.XCoordinate && xCoordinate + 32 == block.XCoordinate + block.Width && yCoordinate > block.YCoordinate && yCoordinate < block.YCoordinate + block.Height)
             {
                 return true;
