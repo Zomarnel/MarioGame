@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using Core;
+using Models;
 
 namespace Services
 {
@@ -9,6 +10,17 @@ namespace Services
         private static bool IsUpdatingLuckyBlocks = false;
         public static void UpdateWorldBlocks(List<Block> blocks)
         {
+            foreach (Block block in blocks)
+            {
+                if (block.XCoordinate >= Math.Abs(MapService.MapXCoordinate)
+                    && block.XCoordinate + block.Width <= Math.Abs(MapService.MapXCoordinate) + GameInfo.SCREEN_WIDTH
+                    && !string.IsNullOrEmpty(block.FileName)
+                    && !block.HasBeenDrawn)
+                {
+                    block.NeedsToBeUpdated = true;
+                }
+            }
+
             List<Block> luckyBlocks = blocks.Where(b => b.FileName == "LuckyBlock" ||
                                                         b.FileName == "LuckyBlockGlow" ||
                                                         b.FileName == "LuckyBlockGlowGlow").ToList();
