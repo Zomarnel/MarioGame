@@ -29,34 +29,124 @@ namespace Services
                 return;
             }
 
-            foreach(Block block in blocks)
+            Rectangle playerRect = new Rectangle(player.Width, player.Height, xCoordinate, yCoordinate);
+
+            List<int> rectSizes = new List<int>();
+
+            foreach (Block block in blocks)
+            {
+
+                Rectangle blockRect = Rectangle.ConvertEntityToRectangle(block);
+
+                Rectangle? intersectRect = Rectangle.Intersect(playerRect, blockRect);
+
+                if (intersectRect is null)
+                {
+                    rectSizes.Add(0);
+                    continue;
+                }
+
+                rectSizes.Add(intersectRect.Width + intersectRect.Height);
+            }
+
+            int maxSize = rectSizes.Max();
+
+            if (maxSize == 0)
+            {
+                return;
+            }
+
+            Block intersectBlock = blocks[rectSizes.IndexOf(maxSize)];
+
+            if (player.HorizontalSpeed > 0)
+            {
+                player.XCoordinate = intersectBlock.XCoordinate - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
+
+                Movement.StopMovingHorizontally(player);
+
+            }
+            else if (player.HorizontalSpeed < 0)
+            {
+                player.XCoordinate = intersectBlock.XCoordinate + intersectBlock.Width - Math.Abs(MapService.MapXCoordinate);
+
+                Movement.StopMovingHorizontally(player);
+            }
+
+            /*foreach(Block block in blocks)
             {
                 if (IsPlayerInsideBlock(block, xCoordinate, yCoordinate))
                 {
                     if (player.HorizontalSpeed > 0)
-                    {
-                        player.XCoordinate = block.XCoordinate - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
+            {
+                player.XCoordinate = intersectBlock.XCoordinate - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
 
-                        Movement.StopMovingHorizontally(player);
+                Movement.StopMovingHorizontally(player);
 
-                        break;
-                    }
-                    else if (player.HorizontalSpeed < 0)
-                    {
-                        player.XCoordinate = block.XCoordinate + block.Width - Math.Abs(MapService.MapXCoordinate);
-
-                        Movement.StopMovingHorizontally(player);
-
-                        break;
-                    }
-                }
             }
+            else if (player.HorizontalSpeed < 0)
+            {
+                player.XCoordinate = intersectBlock.XCoordinate + intersectBlock.Width - Math.Abs(MapService.MapXCoordinate);
+
+                Movement.StopMovingHorizontally(player);
+            }
+                }
+            }*/
         }
         public static void VerticalBoundariesCheck(Player player, List<Block> blocks)
         {
             int xCoordinate = (int)(player.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
             int yCoordinate = (int)(player.YCoordinate);
 
+            Rectangle playerRect = new Rectangle(player.Width, player.Height, xCoordinate, yCoordinate);
+
+            List<int> rectSizes = new List<int>();
+
+            foreach (Block block in blocks)
+            {
+
+                Rectangle blockRect = Rectangle.ConvertEntityToRectangle(block);
+
+                Rectangle? intersectRect = Rectangle.Intersect(playerRect, blockRect);
+
+                if (intersectRect is null)
+                {
+                    rectSizes.Add(0);
+                    continue;
+                }
+
+                rectSizes.Add(intersectRect.Width + intersectRect.Height);
+            }
+
+            int maxSize = rectSizes.Max();
+
+            if (!blocks.Any(b => IsPlayerInsideBlock(b, xCoordinate, yCoordinate - 1)) && player.VerticalAction == Player.VerticalActions.IsStanding)
+            {
+                Movement.StopMovingVertically(player, true);
+            }
+
+            if (maxSize == 0)
+            {
+                return;
+            }
+
+            Block intersectBlock = blocks[rectSizes.IndexOf(maxSize)];
+
+            if (player.VerticalSpeed > 0)
+            {
+                player.YCoordinate = intersectBlock.YCoordinate - 32;
+
+                intersectBlock.PlayerHasBumped = true;
+
+                Movement.StopMovingVertically(player, true);
+            }
+            else if (player.VerticalSpeed < 0)
+            {
+                player.YCoordinate = intersectBlock.YCoordinate + intersectBlock.Height;
+
+                Movement.StopMovingVertically(player);
+            }
+
+            /*
             foreach (Block block in blocks)
             {
                 if (IsPlayerInsideBlock(block, xCoordinate, yCoordinate))
@@ -86,6 +176,7 @@ namespace Services
             {
                 Movement.StopMovingVertically(player, true);
             }
+            */
         }
 
         #endregion COLLISIONSCHECK

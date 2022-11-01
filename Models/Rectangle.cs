@@ -18,10 +18,10 @@ namespace Models
 
             Y = y;
 
-            Corners.Append(new Point(X, Y, Point.Location.BottomLeft));
-            Corners.Append(new Point(X + Width, Y, Point.Location.BottomRight));
-            Corners.Append(new Point(X + Width, Y + Height, Point.Location.TopRight));
-            Corners.Append(new Point(X, Y + Height, Point.Location.TopLeft));
+            Corners[0] = new Point(X, Y, Point.Location.BottomLeft);
+            Corners[1] = new Point(X + Width, Y, Point.Location.BottomRight);
+            Corners[2] = new Point(X + Width, Y + Height, Point.Location.TopRight);
+            Corners[3] = new Point(X, Y + Height, Point.Location.TopLeft);
         }
         public static Rectangle ConvertEntityToRectangle(Entity entity)
         {
@@ -31,11 +31,28 @@ namespace Models
         {
             List<Rectangle> commonRectangles = new List<Rectangle>();
 
+            // Checks for special cases as such as when: 
+            // The widths of the two rectangles are equal
+
+            if (rect1.X == rect2.X && rect1.Width == rect2.Width) 
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Point point = rect1.Corners[i];
+
+                    if (point.Y > rect2.Y && point.Y < rect2.Y + rect2.Height)
+                    {
+                        commonRectangles.Add(new Rectangle(rect1.Width, Math.Abs(rect1.Height - rect2.Height), rect2.X, rect2.Y));
+                        break;
+                    }
+                }
+            }
+
             for (int i = 0; i < 4; i++)
             {
                 Point point = rect1.Corners[i];
 
-                if (point.X >= rect2.X && point.X <= rect2.X + rect2.Width && point.Y >= rect2.Y && point.Y <= rect2.Y + rect2.Height)
+                if (point.X > rect2.X && point.X < rect2.X + rect2.Width && point.Y > rect2.Y && point.Y < rect2.Y + rect2.Height)
                 {
                     int index = (i + 2) % 4;
 

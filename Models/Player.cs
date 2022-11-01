@@ -29,7 +29,7 @@ namespace Models
         public Player(double xCoordinate, double yCoordinate, double horizontalSpeed, double verticalSpeed, int width, int height)
                     : base(xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height)
         {
-            XCoordinate = xCoordinate;
+            XCoordinate = 512;
             YCoordinate = yCoordinate;
 
             HorizontalSpeed = horizontalSpeed;
