@@ -117,7 +117,7 @@ namespace ViewModels
 
         public void UpdateCurrentWorld()
         {
-            WorldEntitiesControl.UpdateWorldBlocks(CurrentWorld.Blocks);
+            WorldFactory.UpdateWorld(CurrentWorld);
         }
     } 
 }                  

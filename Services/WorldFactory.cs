@@ -163,6 +163,34 @@ namespace Services
 
             return blocksToReturn;
         }
+        public static void UpdateWorld(World world)
+        {
+            foreach (Block block in world.Blocks)
+            {
+                if (block.XCoordinate >= Math.Abs(MapService.MapXCoordinate)
+                    && block.XCoordinate + block.Width <= Math.Abs(MapService.MapXCoordinate) + GameInfo.SCREEN_WIDTH
+                    && !string.IsNullOrEmpty(block.FileName)
+                    && !block.HasBeenDrawn)
+                {
+                    block.NeedsToBeUpdated = true;
+                }
+            }
+
+            List<Block> luckyBlocks = world.Blocks.Where(b => b.FileName == "LuckyBlock" ||
+                                                         b.FileName == "LuckyBlockGlow" ||
+                                                         b.FileName == "LuckyBlockGlowGlow").ToList();
+
+            Block? bumbedBlock = world.Blocks.FirstOrDefault(b => b.FileName == "Brick" && b.PlayerHasInteracted);
+
+            UpdateService.CreateGlowingTasks(luckyBlocks);
+            
+            if (bumbedBlock is not null)
+            {
+                UpdateService.CreateMovementTask(bumbedBlock);
+            }
+
+            UpdateService.UpdateBlocks();
+        }
         private static void PopulateWorldObject(World world, int worldID)
         {
             List<WorldEntity> entities = _entities.Where(e => e.WorldID == worldID).ToList();

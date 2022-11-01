@@ -1,15 +1,13 @@
 ﻿
 namespace Models
 {
-    public class MovementTask
+    public class MovementTask : ITask
     {
         public WorldEntity WorldEntity { get; set; }
         public double HorizontalSpeed { get; set; }
         public double VerticalSpeed { get; set; }
         public double VerticalLimit { get; set; }
         public bool IsFulfilled { get; set; } = false;
-
-        private double _oldXCoordinate;
 
         private double _oldYCoordinate;
         public MovementTask(WorldEntity worldEntity, double horizontalSpeed, double verticalSpeed, double verticalLimit)
@@ -19,7 +17,6 @@ namespace Models
             VerticalSpeed = verticalSpeed;
             VerticalLimit = verticalLimit;
 
-            _oldXCoordinate = worldEntity.XCoordinate;
             _oldYCoordinate = worldEntity.YCoordinate;
         }
         public void Execute()

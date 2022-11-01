@@ -71,26 +71,6 @@ namespace Services
 
                 Movement.StopMovingHorizontally(player);
             }
-
-            /*foreach(Block block in blocks)
-            {
-                if (IsPlayerInsideBlock(block, xCoordinate, yCoordinate))
-                {
-                    if (player.HorizontalSpeed > 0)
-            {
-                player.XCoordinate = intersectBlock.XCoordinate - Math.Abs(MapService.MapXCoordinate) - GameInfo.SPRITE_WIDTH;
-
-                Movement.StopMovingHorizontally(player);
-
-            }
-            else if (player.HorizontalSpeed < 0)
-            {
-                player.XCoordinate = intersectBlock.XCoordinate + intersectBlock.Width - Math.Abs(MapService.MapXCoordinate);
-
-                Movement.StopMovingHorizontally(player);
-            }
-                }
-            }*/
         }
         public static void VerticalBoundariesCheck(Player player, List<Block> blocks)
         {
@@ -135,7 +115,7 @@ namespace Services
             {
                 player.YCoordinate = intersectBlock.YCoordinate - 32;
 
-                intersectBlock.PlayerHasBumped = true;
+                intersectBlock.PlayerHasInteracted = true;
 
                 Movement.StopMovingVertically(player, true);
             }
@@ -146,37 +126,6 @@ namespace Services
                 Movement.StopMovingVertically(player);
             }
 
-            /*
-            foreach (Block block in blocks)
-            {
-                if (IsPlayerInsideBlock(block, xCoordinate, yCoordinate))
-                {
-                    if (player.VerticalSpeed > 0)
-                    {
-                        player.YCoordinate = block.YCoordinate - 32;
-
-                        block.PlayerHasBumped = true;
-
-                        Movement.StopMovingVertically(player, true);
-
-                        break;
-                    }
-                    else if (player.VerticalSpeed < 0)
-                    {
-                        player.YCoordinate = block.YCoordinate + block.Height;
-
-                        Movement.StopMovingVertically(player);
-
-                        break;
-                    }
-                }
-            }
-
-            if (!blocks.Any(b => IsPlayerInsideBlock(b, xCoordinate, yCoordinate - 1)) && player.VerticalAction == Player.VerticalActions.IsStanding)
-            {
-                Movement.StopMovingVertically(player, true);
-            }
-            */
         }
 
         #endregion COLLISIONSCHECK
