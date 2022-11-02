@@ -119,6 +119,8 @@ namespace Services
 
             return world;
         }
+
+        #region Update World
         public static List<Block> ReturnDisposableBlocks(World world)
         {
             //Blocks that will be removed on the canvas's children
@@ -185,6 +187,10 @@ namespace Services
 
             UpdateService.UpdateBlocks();
         }
+
+        #endregion Update World
+
+        #region Populate World Functions
         private static void PopulateWorldObject(World world, int worldID)
         {
             List<WorldEntity> entities = _entities.Where(e => e.WorldID == worldID).ToList();
@@ -220,5 +226,6 @@ namespace Services
         {
             _entities.Add(new Block(fileName, mapID, xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height));
         }
+        #endregion Populate World Functions
     }
 }

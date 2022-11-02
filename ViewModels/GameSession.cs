@@ -19,7 +19,7 @@ namespace ViewModels
         #region EVENTS
         public void OnKeyPressed(string direction)
         {
-            if (direction == "Space" && CurrentPlayer.VerticalAction == Player.VerticalActions.IsStanding && !HasJumped)
+            if (direction == "Space" && CurrentPlayer.VerticalAction == Player.VerticalActions.IsStanding && !HasJumped && CurrentPlayer.CanJumpCooldown)
             {
                 CurrentPlayer.VerticalAction = Player.VerticalActions.IsJumping;
 
@@ -29,12 +29,9 @@ namespace ViewModels
 
                 HasJumped = true;
             }
-            else if (direction == "Left" || direction == "Right")
+
+            else if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction != Player.HorizontalActions.ChangeOfDirection)
             {
-                if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
-                {
-                    return;
-                }
 
                 if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.IsStanding)
                 {
@@ -69,13 +66,9 @@ namespace ViewModels
                 HasJumped = false;
             }
 
-            if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction != Player.HorizontalActions.IsStanding)
+            if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction != Player.HorizontalActions.IsStanding
+                && CurrentPlayer.HorizontalAction != Player.HorizontalActions.ChangeOfDirection)
             {
-                if (CurrentPlayer.HorizontalAction == Player.HorizontalActions.ChangeOfDirection)
-                {
-                    return;
-                }
-
                 CurrentPlayer.HorizontalAction = Player.HorizontalActions.IsSlowing;
             }
         }

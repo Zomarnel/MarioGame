@@ -7,6 +7,7 @@ using WPFUI.Services;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
 
 namespace WPFUI
 {
@@ -91,7 +92,6 @@ namespace WPFUI
             {
                 _gameSession.OnKeyRemoved("Space");
             }
-
         }
 
         #endregion KEYINPUT
@@ -106,6 +106,8 @@ namespace WPFUI
             On_KeyDown(this, null);
 
             _gameSession.MovePlayer();
+
+            UpdateService.UpdatePlayerSprite(_gameSession.CurrentPlayer);
 
             _drawingService.DrawPlayer(Background, _gameSession.CurrentPlayer.CurrentSpriteID,
                                                    _gameSession.CurrentPlayer.XCoordinate,

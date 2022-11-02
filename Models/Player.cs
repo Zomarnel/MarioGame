@@ -4,6 +4,7 @@ namespace Models
     public class Player : Entity
     {
         public double JumpLimit { get; set; }
+        public bool CanJumpCooldown { get; set; } = true;
 
         public int CurrentSpriteID { get; set; }
 
@@ -45,6 +46,12 @@ namespace Models
 
             Width = 32;
             Height = 32;
+        }
+        public async void JumpCooldown()
+        {
+            await Task.Delay(250);
+
+            CanJumpCooldown = true;
         }
     }
 }

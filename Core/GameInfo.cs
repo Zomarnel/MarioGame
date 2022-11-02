@@ -10,7 +10,7 @@
 
         public static readonly double SPRITE_HEIGHT = 32;
 
-        public static readonly double GAME_GRAVITY = 6;
+        public static readonly double GAME_GRAVITY = 5;
 
         public static readonly double PLAYER_HORIZONTAL_MIN_SPEED = 0.5;
 
@@ -20,6 +20,6 @@
 
         public static readonly double PLAYER_HORIZONTAL_DECELERATION_SPEED = 0.1;
 
-        public static readonly double PLAYER_VERTICAL_SPEED = 5;
+        public static readonly double PLAYER_VERTICAL_SPEED = 5.5;
     }
 }

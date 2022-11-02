@@ -95,6 +95,10 @@ namespace Services
             {
                 player.VerticalAction = Player.VerticalActions.IsStanding;
                 player.VerticalSpeed = 0;
+
+                player.CanJumpCooldown = false;
+
+                player.JumpCooldown();
             }
             else
             {

@@ -24,6 +24,8 @@ namespace WPFUI.Services
                 _playerSprite.Source = SpritesFactory.GetSprite(id);
             }
 
+            RenderOptions.SetBitmapScalingMode(_playerSprite, BitmapScalingMode.NearestNeighbor);
+
             Canvas.SetLeft(_playerSprite, xCoordinate);
             Canvas.SetBottom(_playerSprite, yCoordinate);
         }
