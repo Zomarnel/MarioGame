@@ -102,7 +102,7 @@ namespace ViewModels
                 Collisions.HorizontalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
             }
 
-            SpriteControl.UpdatePlayerSprite(CurrentPlayer);
+            UpdateService.UpdatePlayerSprite(CurrentPlayer);
         }
         private void MovePlayerVertically()
         {
@@ -110,7 +110,7 @@ namespace ViewModels
 
             Collisions.VerticalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
 
-            SpriteControl.UpdatePlayerSprite(CurrentPlayer);
+            UpdateService.UpdatePlayerSprite(CurrentPlayer);
         }
 
         #endregion PLAYERMOVEMENT

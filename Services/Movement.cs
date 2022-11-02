@@ -87,7 +87,7 @@ namespace Services
             player.HorizontalAction = Player.HorizontalActions.IsStanding;
             player.HorizontalSpeed = 0;
 
-            SpriteControl.UpdatePlayerSprite(player);
+            UpdateService.UpdatePlayerSprite(player);
         }
         public static void StopMovingVertically(Player player, bool fall = false)
         {
@@ -102,7 +102,7 @@ namespace Services
                 player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
             }
 
-            SpriteControl.UpdatePlayerSprite(player);
+            UpdateService.UpdatePlayerSprite(player);
         }
     }
 }
