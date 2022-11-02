@@ -84,7 +84,6 @@ namespace WPFUI.Services
             return source;
             
         }
-
         public static CroppedBitmap GetSpriteByString(string id)
         {
             CroppedBitmap? source;

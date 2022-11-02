@@ -159,23 +159,17 @@ namespace Services
                 {
                     blocksToReturn.Add(b);
                 }
+                else if (b.XCoordinate > world.WorldXCoordinate && b.XCoordinate < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH && !string.IsNullOrEmpty(b.FileName)
+                    && !b.HasBeenDrawn)
+                {
+                    blocksToReturn.Add(b);
+                }
             }
 
             return blocksToReturn;
         }
         public static void UpdateWorld(World world)
         {
-            foreach (Block block in world.Blocks)
-            {
-                if (block.XCoordinate >= Math.Abs(MapService.MapXCoordinate)
-                    && block.XCoordinate + block.Width <= Math.Abs(MapService.MapXCoordinate) + GameInfo.SCREEN_WIDTH
-                    && !string.IsNullOrEmpty(block.FileName)
-                    && !block.HasBeenDrawn)
-                {
-                    block.NeedsToBeUpdated = true;
-                }
-            }
-
             List<Block> luckyBlocks = world.Blocks.Where(b => b.FileName == "LuckyBlock" ||
                                                          b.FileName == "LuckyBlockGlow" ||
                                                          b.FileName == "LuckyBlockGlowGlow").ToList();

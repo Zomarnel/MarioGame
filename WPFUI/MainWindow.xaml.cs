@@ -121,9 +121,11 @@ namespace WPFUI
         }
         private void DrawMap(object sender, double xCoordinate)
         {
+
             Canvas.SetLeft(_mapImage, xCoordinate);
 
             _drawingService.UpdateCurrentBlocks(Math.Abs(xCoordinate));
+
         }
     }
 }
