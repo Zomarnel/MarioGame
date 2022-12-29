@@ -8,8 +8,6 @@ namespace Models
 
         public int CurrentSpriteID { get; set; }
 
-        public bool? HasChangedSprite = null;
-
         public enum HorizontalActions
         {
             IsStanding,

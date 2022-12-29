@@ -106,7 +106,7 @@ namespace Services
 
             if (maxSize == 0)
             {
-                return;
+                return; 
             }
 
             Block intersectBlock = blocks[rectSizes.IndexOf(maxSize)];

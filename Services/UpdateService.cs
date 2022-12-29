@@ -1,4 +1,5 @@
 ﻿using Models;
+using System.Linq;
 
 namespace Services
 {
@@ -31,6 +32,28 @@ namespace Services
 
             }
         }
+        public static async void OnBlockBumbed(Block block)
+        {
+            if (block.FileName == "Brick")
+            {
+                CreateMovementTask(block);
+            }
+            else if (block.FileName == "LuckyBlock" ||
+                     block.FileName == "LuckyBlockGlow" ||
+                     block.FileName == "LuckyBlockGlowGlow")
+            {
+                // Preventing an exception
+                _tasksQueue.Remove(_tasksQueue.Find(t => t.WorldEntity == block));
+
+                block.FileName = "Blank";
+
+                CreateMovementTask(block);
+            }
+            else
+            {
+                block.PlayerHasInteracted = false;
+            }
+        }
         public static void CreateGlowingTasks(List<Block> blocks)
         {
             if (!_isUpdatingLuckyBlocks)
@@ -40,6 +63,7 @@ namespace Services
                     _tasksQueue.Add(new GlowingTask(block));
                 }
             }
+            
         }
         public static void CreateMovementTask(Block block)
         {
@@ -62,6 +86,7 @@ namespace Services
 
             _isUpdatingLuckyBlocks = false;
         }
+        
 
         #endregion World Update
 
@@ -156,6 +181,7 @@ namespace Services
                 {
                     player.CurrentSpriteID = 1;
                 }
+
             }
             else
             {

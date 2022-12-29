@@ -172,18 +172,21 @@ namespace Services
         }
         public static void UpdateWorld(World world)
         {
+            // Bumbed Block
+            Block? bumbedBlock = world.Blocks.FirstOrDefault(b => b.PlayerHasInteracted);
+
+            if (bumbedBlock is not null)
+            {
+                UpdateService.OnBlockBumbed(bumbedBlock);
+            }
+
+            // Lucky Blocks
             List<Block> luckyBlocks = world.Blocks.Where(b => b.FileName == "LuckyBlock" ||
                                                          b.FileName == "LuckyBlockGlow" ||
                                                          b.FileName == "LuckyBlockGlowGlow").ToList();
 
-            Block? bumbedBlock = world.Blocks.FirstOrDefault(b => b.FileName == "Brick" && b.PlayerHasInteracted);
 
             UpdateService.CreateGlowingTasks(luckyBlocks);
-            
-            if (bumbedBlock is not null)
-            {
-                UpdateService.CreateMovementTask(bumbedBlock);
-            }
 
             UpdateService.UpdateBlocks();
         }

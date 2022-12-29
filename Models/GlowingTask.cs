@@ -24,8 +24,6 @@ namespace Models
                     WorldEntity.FileName = "LuckyBlock";
                     IsFulfilled = true;
                     break;
-                default:
-                    throw new ArgumentException($"{WorldEntity.FileName} was an invalid filename.");
             }
 
             WorldEntity.NeedsToBeUpdated = true;

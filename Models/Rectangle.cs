@@ -41,7 +41,8 @@ namespace Models
                     Point point = rect1.Corners[i];
 
                     if (point.Y > rect2.Y && point.Y < rect2.Y + rect2.Height)
-                    {
+                    {   
+                        // TODO: Fix this
                         commonRectangles.Add(new Rectangle(rect1.Width, Math.Abs(rect1.Height - rect2.Height), rect2.X, rect2.Y));
                         break;
                     }
