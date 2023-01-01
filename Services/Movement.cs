@@ -5,6 +5,7 @@ namespace Services
 {
     public static class Movement
     {
+        private static double _initialY;
         public static void MoveXCoordinate(Player player)
         {
             if (player.HorizontalSpeed < 0 || player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || MapService.HasMapReachedEnd)
@@ -19,8 +20,28 @@ namespace Services
             }
         }
         public static void MoveYCoordinate(Player player)
-        {
+        {   
             player.YCoordinate += player.VerticalSpeed;
+            
+            if (player.VerticalAction != Player.VerticalActions.IsStanding)
+            {
+                player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
+            }
+
+             
+            if (player.VerticalAction == Player.VerticalActions.IsJumping)
+            {
+                if (player.YCoordinate >= player.JumpLimit || player.VerticalSpeed == 0)
+                {
+                    player.VerticalAction = Player.VerticalActions.IsFalling;
+                }
+            }
+        }
+
+        public static void OnJump(Player player)
+        {
+            _initialY = player.YCoordinate;
+            player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
         }
         public static void MovementBoost(Player player)
         {
@@ -69,17 +90,7 @@ namespace Services
                 }
             }
 
-            if (player.VerticalAction == Player.VerticalActions.IsJumping)
-            {
-                if (player.YCoordinate >= player.JumpLimit)
-                {
-                    player.YCoordinate = player.JumpLimit;
-
-                    player.VerticalAction = Player.VerticalActions.IsFalling;
-
-                    player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
-                }
-            }
+            
         }
 
         public static void StopMovingHorizontally(Player player)
@@ -93,6 +104,8 @@ namespace Services
         {
             if (!fall)
             {
+                //_distance = 0;
+
                 player.VerticalAction = Player.VerticalActions.IsStanding;
                 player.VerticalSpeed = 0;
 
@@ -107,6 +120,21 @@ namespace Services
             }
 
             UpdateService.UpdatePlayerSprite(player);
+        }
+        public static double CalculatePlayerVerticalSpeed(Player player)
+        {
+            double u = GameInfo.PLAYER_VERTICAL_SPEED * GameInfo.PLAYER_VERTICAL_SPEED;
+
+            double gravity = -2 * GameInfo.GAME_GRAVITY * Math.Abs((player.YCoordinate - _initialY));
+
+            double speed = u + gravity;
+
+            if (player.VerticalAction != Player.VerticalActions.IsFalling && speed >= 0)
+            {
+                return Math.Sqrt(speed);
+            }
+
+            return -Math.Sqrt(Math.Abs(speed));
         }
     }
 }
