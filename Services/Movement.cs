@@ -38,11 +38,6 @@ namespace Services
             }
         }
 
-        public static void OnJump(Player player)
-        {
-            _initialY = player.YCoordinate;
-            player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
-        }
         public static void MovementBoost(Player player)
         {
             if (player.HorizontalAction == Player.HorizontalActions.IsSpeeding)
@@ -104,8 +99,6 @@ namespace Services
         {
             if (!fall)
             {
-                //_distance = 0;
-
                 player.VerticalAction = Player.VerticalActions.IsStanding;
                 player.VerticalSpeed = 0;
 
@@ -116,11 +109,22 @@ namespace Services
             else
             {
                 player.VerticalAction = Player.VerticalActions.IsFalling;
-                OnJump(player);
+
+                _initialY = player.YCoordinate;
             }
 
             UpdateService.UpdatePlayerSprite(player);
         }
+
+        public static void OnJump(Player player)
+        {
+            _initialY = player.YCoordinate;
+
+            player.JumpLimit = player.YCoordinate + 5 * GameInfo.SPRITE_HEIGHT;
+
+            player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
+        }
+
         public static double CalculatePlayerVerticalSpeed(Player player)
         {
             double u = GameInfo.PLAYER_VERTICAL_SPEED * GameInfo.PLAYER_VERTICAL_SPEED;

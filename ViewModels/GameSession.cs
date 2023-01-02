@@ -23,10 +23,7 @@ namespace ViewModels
             {
                 CurrentPlayer.VerticalAction = Player.VerticalActions.IsJumping;
 
-                //CurrentPlayer.VerticalSpeed = Movement.CalculatePlayerVerticalSpeed(CurrentPlayer);
                 Movement.OnJump(CurrentPlayer);
-
-                CurrentPlayer.JumpLimit = CurrentPlayer.YCoordinate + 5 * GameInfo.SPRITE_HEIGHT;
 
                 HasJumped = true;
             }
@@ -61,8 +58,6 @@ namespace ViewModels
             if (direction == "Space")
             {
                 CurrentPlayer.VerticalAction = Player.VerticalActions.IsFalling;
-
-                CurrentPlayer.VerticalSpeed = Movement.CalculatePlayerVerticalSpeed(CurrentPlayer);
 
                 HasJumped = false;
             }
