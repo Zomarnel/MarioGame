@@ -116,7 +116,7 @@ namespace Services
             else
             {
                 player.VerticalAction = Player.VerticalActions.IsFalling;
-                player.VerticalSpeed = -GameInfo.GAME_GRAVITY;
+                OnJump(player);
             }
 
             UpdateService.UpdatePlayerSprite(player);
@@ -125,16 +125,21 @@ namespace Services
         {
             double u = GameInfo.PLAYER_VERTICAL_SPEED * GameInfo.PLAYER_VERTICAL_SPEED;
 
-            double gravity = -2 * GameInfo.GAME_GRAVITY * Math.Abs((player.YCoordinate - _initialY));
+            double gravity = -2 * GameInfo.GAME_GRAVITY * (player.YCoordinate - _initialY);
 
-            double speed = u + gravity;
+            double speed;
 
-            if (player.VerticalAction != Player.VerticalActions.IsFalling && speed >= 0)
+            if (player.VerticalAction == Player.VerticalActions.IsFalling)
             {
-                return Math.Sqrt(speed);
+                speed = u + gravity;
+
+                return -Math.Sqrt(Math.Abs(speed));
             }
 
-            return -Math.Sqrt(Math.Abs(speed));
+            speed = u + gravity;
+
+            return Math.Sqrt(Math.Abs(speed));
+
         }
     }
 }
