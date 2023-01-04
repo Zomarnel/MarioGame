@@ -7,7 +7,8 @@ using WPFUI.Services;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace WPFUI
 {
@@ -18,6 +19,8 @@ namespace WPFUI
         private DrawingService _drawingService;
 
         private Image _mapImage;
+
+        private Stopwatch _watch = new Stopwatch();
         public MainWindow()
         {
             InitializeComponent();
@@ -94,9 +97,26 @@ namespace WPFUI
             }
         }
 
+        private List<double> times = new List<double>();
+
         #endregion KEYINPUT
         private void Update(object sender, EventArgs e)
         {
+            if (_watch.IsRunning)
+            {
+                _watch.Stop();
+
+                double time = _watch.ElapsedMilliseconds;
+
+                double FPS = 1000 / time;
+
+                times.Add(FPS);
+
+                _watch.Restart();
+            }
+
+            _watch.Start();
+
             UpdatePlayer();
 
             UpdateWorldMap();

@@ -111,6 +111,8 @@ namespace Services
                 player.VerticalAction = Player.VerticalActions.IsFalling;
 
                 _initialY = player.YCoordinate;
+
+                player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
             }
 
             UpdateService.UpdatePlayerSprite(player);
@@ -120,7 +122,7 @@ namespace Services
         {
             _initialY = player.YCoordinate;
 
-            player.JumpLimit = player.YCoordinate + 5 * GameInfo.SPRITE_HEIGHT;
+            player.JumpLimit = player.YCoordinate + 4 * GameInfo.SPRITE_HEIGHT;
 
             player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
         }

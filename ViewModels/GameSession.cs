@@ -57,9 +57,22 @@ namespace ViewModels
         {
             if (direction == "Space")
             {
-                CurrentPlayer.VerticalAction = Player.VerticalActions.IsFalling;
 
-                HasJumped = false;
+                void localFunction()
+                {
+                    Thread.Sleep(150);
+
+                    if (CurrentPlayer.VerticalAction != Player.VerticalActions.IsStanding)
+                    {
+                        CurrentPlayer.VerticalAction = Player.VerticalActions.IsFalling;
+                    }
+
+                    HasJumped = false;
+                }
+
+                Thread e = new Thread(localFunction);
+
+                e.Start();
             }
 
             if ((direction == "Left" || direction == "Right") && CurrentPlayer.HorizontalAction != Player.HorizontalActions.IsStanding
