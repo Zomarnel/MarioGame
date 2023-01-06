@@ -1,7 +1,7 @@
 ﻿
 namespace Models
 {
-    public class Player : Entity
+    public class Player : BaseEntity
     {
         public double JumpLimit { get; set; }
         public bool CanJumpCooldown { get; set; } = true;

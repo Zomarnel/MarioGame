@@ -1,7 +1,7 @@
 ﻿
 namespace Models
 {
-    public class MovementTask : ITask
+    public class MovementTask
     {
         public WorldEntity WorldEntity { get; set; }
         public double HorizontalSpeed { get; set; }

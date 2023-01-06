@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class WorldEntity : Entity
+    public class WorldEntity : BaseEntity
     {
         public string FileName { get; set; }
         public int WorldID { get; init; }
@@ -12,5 +12,6 @@
             FileName = fileName;
             WorldID = worldID;
         }
+
     }
 }

@@ -1,11 +1,16 @@
 ﻿using Core;
 using Models;
+using System.Runtime.InteropServices;
 
 namespace Services
 {
     public static class WorldFactory
     {
         private static List<WorldEntity> _entities = new List<WorldEntity>();
+
+        private static bool _isUpdatingLuckyBlocks = false;
+
+        private static MovementTask? _movementTask;
         static WorldFactory()
         {
             #region WORLD-1
@@ -172,23 +177,81 @@ namespace Services
         }
         public static void UpdateWorld(World world)
         {
-            // Bumbed Block
-            Block? bumbedBlock = world.Blocks.FirstOrDefault(b => b.PlayerHasInteracted);
+
+            List<Block> blocks = world.Blocks;
+
+            List<Block>? luckyBlocks = blocks.Where(b => b.FileName == "LuckyBlock" ||
+                                                b.FileName == "LuckyBlockGlow" ||
+                                                b.FileName == "LuckyBlockGlowGlow").ToList();
+
+            Block? bumbedBlock = blocks.FirstOrDefault(b => b.PlayerHasInteracted);
+
+            if (!_isUpdatingLuckyBlocks && luckyBlocks is not null)
+            {
+                Thread updateThread = new Thread(() => UpdateLuckyBlocks(luckyBlocks));
+
+                updateThread.Start();
+            }
 
             if (bumbedBlock is not null)
             {
-                UpdateService.OnBlockBumbed(bumbedBlock);
+                OnInteractedBlock(bumbedBlock);
             }
 
-            // Lucky Blocks
-            List<Block> luckyBlocks = world.Blocks.Where(b => b.FileName == "LuckyBlock" ||
-                                                         b.FileName == "LuckyBlockGlow" ||
-                                                         b.FileName == "LuckyBlockGlowGlow").ToList();
+            if (_movementTask is not null)
+            {
+                _movementTask.Execute();
 
+                if (_movementTask.IsFulfilled)
+                {
+                    _movementTask = null;
+                }
+            }
 
-            UpdateService.CreateGlowingTasks(luckyBlocks);
+        }
+        private static void UpdateLuckyBlocks(List<Block> luckyBlocks)
+        {
+            _isUpdatingLuckyBlocks = true;
 
-            UpdateService.UpdateBlocks();
+            Thread.Sleep(250);
+
+            foreach (Block block in luckyBlocks)
+            {
+                switch (block.FileName)
+                {
+                    case "LuckyBlock":
+                        block.FileName = "LuckyBlockGlow";
+                        break;
+                    case "LuckyBlockGlow":
+                        block.FileName = "LuckyBlockGlowGlow";
+                        break;
+                    case "LuckyBlockGlowGlow":
+                        block.FileName = "LuckyBlock";
+                        break;
+                }
+
+                block.NeedsToBeUpdated = true;
+            }
+
+            _isUpdatingLuckyBlocks = false;
+        }
+        private static void OnInteractedBlock(Block block)
+        {
+            if (block.FileName.Contains("Lucky"))
+            {
+                block.FileName = "Blank";
+
+                block.NeedsToBeUpdated = true;
+
+                _movementTask = new MovementTask(block, 0, 1, block.YCoordinate + 4);
+
+            }
+            else if (block.FileName == "Brick")
+            {
+                _movementTask = new MovementTask(block, 0, 1, block.YCoordinate + 4);
+            }
+
+            block.PlayerHasInteracted = false;
         }
 
         #endregion Update World

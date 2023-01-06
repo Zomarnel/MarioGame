@@ -23,7 +23,7 @@ namespace Models
             Corners[2] = new Point(X + Width, Y + Height, Point.Location.TopRight);
             Corners[3] = new Point(X, Y + Height, Point.Location.TopLeft);
         }
-        public static Rectangle ConvertEntityToRectangle(Entity entity)
+        public static Rectangle ConvertEntityToRectangle(BaseEntity entity)
         {
             return new Rectangle(entity.Width, entity.Height, entity.XCoordinate, entity.YCoordinate);
         }
