@@ -15,7 +15,7 @@ namespace Services
             {
                 if (player.HorizontalSpeed >= 0)
                 {
-
+                    
                     if (player.VerticalAction != Player.VerticalActions.IsStanding)
                     {
                         player.CurrentSpriteID = 4;
@@ -35,11 +35,12 @@ namespace Services
                     {
                         if (!IsUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
                         {
-                            UpdatePlayerSpriteRunningAsync(player);
-
                             IsUpdating = true;
+
+                            UpdatePlayerSpriteRunningAsync(player);
                         }
                     }
+                    
                 }
                 else
                 {

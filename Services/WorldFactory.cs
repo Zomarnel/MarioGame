@@ -1,6 +1,5 @@
 ﻿using Core;
 using Models;
-using System.Runtime.InteropServices;
 
 namespace Services
 {
@@ -166,6 +165,7 @@ namespace Services
                 {
                     blocksToReturn.Add(b);
                 }
+                // TODO: Fix this thing
                 else if (b.XCoordinate > world.WorldXCoordinate && b.XCoordinate < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH && !string.IsNullOrEmpty(b.FileName)
                     && !b.HasBeenDrawn)
                 {
@@ -186,6 +186,8 @@ namespace Services
 
             Block? bumbedBlock = blocks.FirstOrDefault(b => b.PlayerHasInteracted);
 
+
+            // TODO: Export in a new separate file
             if (!_isUpdatingLuckyBlocks && luckyBlocks is not null)
             {
                 Thread updateThread = new Thread(() => UpdateLuckyBlocks(luckyBlocks));
