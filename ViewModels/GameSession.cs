@@ -101,7 +101,7 @@ namespace ViewModels
 
                 CurrentWorld.WorldXCoordinate = Math.Abs(MapService.MapXCoordinate);
 
-                Collisions.HorizontalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
+                Collisions.HorizontalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
             }
 
             UpdateService.UpdatePlayerSprite(CurrentPlayer);
@@ -110,7 +110,7 @@ namespace ViewModels
         {
             Movement.MovePlayerYCoordinate(CurrentPlayer);
 
-            Collisions.VerticalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
+            Collisions.VerticalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
 
             UpdateService.UpdatePlayerSprite(CurrentPlayer);
         }
