@@ -77,6 +77,9 @@ namespace Services
             AddNewBlock("LuckyBlock", 0, 5440, 160, 32, 32);
             AddNewBlock("Brick", 0, 5472, 160, 32, 32);
 
+            //Mobs
+            AddNewEnemy("Mushroom", 0, 704, 192, 32, 32, 1, 50);
+
             //Tunnels
             AddNewBlock("", 0, 900, 64, 55, 65);
             AddNewBlock("", 0, 1220, 64, 55, 95);
@@ -180,9 +183,34 @@ namespace Services
 
             List<Block> blocks = world.Blocks;
 
+            List<Enemy> enemies = world.Enemies;
+
+            UpdateBlocks(blocks);
+
+            UpdateEnemies(enemies, blocks);
+
+        }
+
+        private static void UpdateEnemies(List<Enemy> enemies, List<Block> blocks)
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.XCoordinate += enemy.HorizontalSpeed;
+
+                Collisions.HorizontalEnemyBoundariesCheck(enemy, blocks);
+
+                enemy.YCoordinate += enemy.VerticalSpeed;
+
+                Collisions.VerticalEnemyBoundariesCheck(enemy, blocks);
+            }
+
+            UpdateService.UpdateMobsSprite(enemies);
+        }
+        private static void UpdateBlocks(List<Block> blocks)
+        {
             List<Block>? luckyBlocks = blocks.Where(b => b.FileName == "LuckyBlock" ||
-                                                b.FileName == "LuckyBlockGlow" ||
-                                                b.FileName == "LuckyBlockGlowGlow").ToList();
+                                               b.FileName == "LuckyBlockGlow" ||
+                                               b.FileName == "LuckyBlockGlowGlow").ToList();
 
             Block? bumbedBlock = blocks.FirstOrDefault(b => b.PlayerHasInteracted);
 
@@ -209,7 +237,6 @@ namespace Services
                     _movementTask = null;
                 }
             }
-
         }
         private static void UpdateLuckyBlocks(List<Block> luckyBlocks)
         {
@@ -277,7 +304,9 @@ namespace Services
 
                 if (e is Enemy)
                 {
-                    enemies.Add(new Enemy(e.FileName, e.WorldID, e.XCoordinate, e.YCoordinate, e.HorizontalSpeed, e.VerticalSpeed, e.Width, e.Height));
+                    Enemy? enemy = e as Enemy;
+
+                    enemies.Add(new Enemy(e.FileName, e.WorldID, e.XCoordinate, e.YCoordinate, e.HorizontalSpeed, e.VerticalSpeed, e.Width, e.Height, enemy.EntityID, enemy.SpriteID));
                 }
             }
 
@@ -285,9 +314,9 @@ namespace Services
             world.Enemies = enemies;
         }
         private static void AddNewEnemy(string fileName, int mapID, double xCoordinate, double yCoordinate,
-                                              int width, int height, double horizontalSpeed = 0, double verticalSpeed = 0)
+                                              int width, int height, int entityID, int spriteID, double horizontalSpeed = 0, double verticalSpeed = 0)
         {
-            _entities.Add(new Enemy(fileName, mapID, xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height));
+            _entities.Add(new Enemy(fileName, mapID, xCoordinate, yCoordinate, horizontalSpeed, verticalSpeed, width, height, entityID, spriteID));
         }
         private static void AddNewBlock(string fileName, int mapID, double xCoordinate, double yCoordinate,
                                               int width, int height, double horizontalSpeed = 0, double verticalSpeed = 0)

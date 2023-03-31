@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <None Remove="Images\Blocks\Blocks.png" />
+    <None Remove="Images\Mobs\Mushroom.png" />
+    <None Remove="Images\Mobs\Turtle.png" />
     <None Remove="Images\Spritesheets\Mario\Little.png" />
     <None Remove="Images\Worlds\World-1.png" />
   </ItemGroup>
@@ -20,6 +22,12 @@
 
   <ItemGroup>
     <Resource Include="Images\Blocks\Blocks.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Mobs\Mushroom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Mobs\Turtle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\Spritesheets\Mario\Little.png">

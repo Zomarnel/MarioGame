@@ -19,8 +19,6 @@ namespace WPFUI
         private DrawingService _drawingService;
 
         private Image _mapImage;
-
-        private Stopwatch _watch = new Stopwatch();
         public MainWindow()
         {
             InitializeComponent();
@@ -102,21 +100,6 @@ namespace WPFUI
         #endregion KEYINPUT
         private void Update(object sender, EventArgs e)
         {
-            if (_watch.IsRunning)
-            {
-                _watch.Stop();
-
-                double time = _watch.ElapsedMilliseconds;
-
-                double FPS = 1000 / time;
-
-                times.Add(FPS);
-
-                _watch.Restart();
-            }
-
-            _watch.Start();
-
             UpdatePlayer();
 
             UpdateWorldMap();
@@ -140,6 +123,8 @@ namespace WPFUI
             _drawingService.DrawBlocks(Background, WorldFactory.ReturnUpdatedBlocks(_gameSession.CurrentWorld));
 
             _drawingService.DisposeBlocks(Background, WorldFactory.ReturnDisposableBlocks(_gameSession.CurrentWorld));
+
+            _drawingService.DrawEnemies(Background, _gameSession.CurrentWorld.Enemies);
         }
         private void DrawMap(object sender, double xCoordinate)
         {

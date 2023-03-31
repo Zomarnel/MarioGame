@@ -14,6 +14,8 @@ namespace WPFUI.Services
         private static readonly BitmapImage _littleMarioSpritesheet;
 
         private static readonly BitmapImage _blocksSpritesheet;
+
+        private static readonly BitmapImage _mushroomSpritesheet;
         static SpritesFactory()
         {
 
@@ -24,6 +26,10 @@ namespace WPFUI.Services
             _blocksSpritesheet = new BitmapImage(new Uri("/Images/Blocks/Blocks.png", UriKind.Relative));
 
             _blocksSpritesheet.BaseUri = Application.Current.StartupUri;
+
+            _mushroomSpritesheet = new BitmapImage(new Uri("/Images/Mobs/Mushroom.png", UriKind.Relative));
+
+            _mushroomSpritesheet.BaseUri = Application.Current.StartupUri;
 
             //Standing
             AddNewSprite(1, new CroppedBitmap(_littleMarioSpritesheet, new Int32Rect(0, 0, 12, 15)));
@@ -70,6 +76,13 @@ namespace WPFUI.Services
             AddNewSprite(32, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(64, 0, 32, 32)));
             AddNewSprite(33, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(96, 0, 32, 32)));
             AddNewSprite(34, new CroppedBitmap(_blocksSpritesheet, new Int32Rect(128, 0, 32, 32)));
+
+            // Mobs
+
+            //Mushroom
+            AddNewSprite(50, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(0, 0, 16, 16)));
+            AddNewSprite(51, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(16, 0, 16, 16)));
+            AddNewSprite(52, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(32, 0, 16, 16)));
 
         }
         public static CroppedBitmap GetSprite(int id)

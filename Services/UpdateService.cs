@@ -8,7 +8,7 @@ namespace Services
         #region Player Sprite Update
         private static int SpriteUpdateTime { get; set; } = 100;
 
-        private static bool IsUpdating = false;
+        private static bool IsPlayerUpdating = false;
         public static void UpdatePlayerSprite(Player player)
         {
             if (player.CurrentSpriteID > 0)
@@ -33,9 +33,9 @@ namespace Services
                     }
                     else
                     {
-                        if (!IsUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                        if (!IsPlayerUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
                         {
-                            IsUpdating = true;
+                            IsPlayerUpdating = true;
 
                             UpdatePlayerSpriteRunningAsync(player);
                         }
@@ -69,11 +69,11 @@ namespace Services
                     }
                     else
                     {
-                        if (!IsUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                        if (!IsPlayerUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
                         {
                             UpdatePlayerSpriteRunningAsync(player);
 
-                            IsUpdating = true;
+                            IsPlayerUpdating = true;
                         }
                     }
                 }
@@ -111,9 +111,29 @@ namespace Services
                 }
             }
 
-            IsUpdating = false;
+            IsPlayerUpdating = false;
         }
 
         #endregion Player Sprite Update
+
+        private static bool IsMobsUpdating = false;
+
+        public static async void UpdateMobsSprite(List<Enemy> enemies)
+        {
+            await Task.Delay(1000);
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.FileName == "Mushroom")
+                {
+                    enemy.SpriteID += 1;
+
+                    if (enemy.SpriteID > 51)
+                    {
+                        enemy.SpriteID = 50;
+                    }
+                }
+            }
+        } 
     }
 }

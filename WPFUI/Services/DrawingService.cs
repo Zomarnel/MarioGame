@@ -13,6 +13,9 @@ namespace WPFUI.Services
     {
         private Image _playerSprite { get; set; }
         private List<BlockImage> _blocksCache { get; set; } = new List<BlockImage>();
+        private List<EnemyImage> _enemiesCache { get; set;} = new List<EnemyImage>();
+
+        #region PLAYER
         public void DrawPlayer(Canvas canvas, int id, double xCoordinate, double yCoordinate)
         {
             if (_playerSprite == null)
@@ -29,6 +32,26 @@ namespace WPFUI.Services
             Canvas.SetLeft(_playerSprite, xCoordinate);
             Canvas.SetBottom(_playerSprite, yCoordinate);
         }
+        private void InitializePlayerSprite(int id, Canvas canvas)
+        {
+            _playerSprite = new Image()
+            {
+                Width = 32,
+                Height = 32,
+                Source = SpritesFactory.GetSprite(id)
+            };
+
+            RenderOptions.SetBitmapScalingMode(_playerSprite, BitmapScalingMode.NearestNeighbor);
+
+            canvas.Children.Add(_playerSprite);
+
+            Canvas.SetZIndex(_playerSprite, 99);
+        }
+
+        #endregion PLAYER
+
+        #region BLOCKS
+
         public void DrawBlocks(Canvas canvas, List<Block> blocks)
         {
             if (blocks.Count == 0)
@@ -88,20 +111,49 @@ namespace WPFUI.Services
         {
             _blocksCache.ForEach(bi => Canvas.SetLeft(bi.FileImage, bi.BlockID.XCoordinate - mapXCoordinate));
         }
-        private void InitializePlayerSprite(int id, Canvas canvas)
+
+        #endregion BLOCKS
+
+        public void DrawEnemies(Canvas canvas, List<Enemy> enemies)
         {
-            _playerSprite = new Image()
+            if (enemies.Count == 0)
             {
-                Width = 32,
-                Height = 32,
-                Source = SpritesFactory.GetSprite(id)
-            };
+                return;
+            }
 
-            RenderOptions.SetBitmapScalingMode(_playerSprite, BitmapScalingMode.NearestNeighbor);
+            foreach (Enemy enemy in enemies)
+            {
+                if (_enemiesCache.Any(e => e.EntityID == enemy.EntityID))
+                {
+                    Image enemyImage = _enemiesCache.First(e => e.EntityID == enemy.EntityID).FileImage;
 
-            canvas.Children.Add(_playerSprite);
+                    enemyImage.Source = SpritesFactory.GetSprite(enemy.SpriteID);
 
-            Canvas.SetZIndex(_playerSprite, 99);
+                    Canvas.SetLeft(enemyImage, enemy.XCoordinate - Math.Abs(MapService.MapXCoordinate));
+                    Canvas.SetBottom(enemyImage, enemy.YCoordinate);
+                }
+                else
+                {
+                    Image image = new Image
+                    {
+                        Width = enemy.Width,
+                        Height = enemy.Height,
+                        Source = SpritesFactory.GetSprite(enemy.SpriteID)
+                    };
+
+                    RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.NearestNeighbor);
+
+                    canvas.Children.Add(image);
+
+                    Canvas.SetLeft(image, enemy.XCoordinate - Math.Abs(MapService.MapXCoordinate));
+                    Canvas.SetBottom(image, enemy.YCoordinate);
+
+                    Canvas.SetZIndex(image, 99);
+
+                    _enemiesCache.Add(new EnemyImage(enemy.EntityID, image));
+                }
+            }
         }
+
     }
 }

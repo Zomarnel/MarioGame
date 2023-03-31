@@ -91,13 +91,13 @@ namespace ViewModels
 
             MovePlayerVertically();
 
-            Movement.MovementBoost(CurrentPlayer);
+            Movement.PlayerMovementBoost(CurrentPlayer);
         }
         private void MovePlayerHorizontally()
         {
             if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.Blocks))
             {
-                Movement.MoveXCoordinate(CurrentPlayer);
+                Movement.MovePlayerXCoordinate(CurrentPlayer);
 
                 CurrentWorld.WorldXCoordinate = Math.Abs(MapService.MapXCoordinate);
 
@@ -108,7 +108,7 @@ namespace ViewModels
         }
         private void MovePlayerVertically()
         {
-            Movement.MoveYCoordinate(CurrentPlayer);
+            Movement.MovePlayerYCoordinate(CurrentPlayer);
 
             Collisions.VerticalBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
 

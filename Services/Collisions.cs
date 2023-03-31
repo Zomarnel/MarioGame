@@ -1,10 +1,12 @@
 ﻿using Core;
 using Models;
+using System.Numerics;
 
 namespace Services
 {
     public static class Collisions
     {
+
         #region COLLISIONSCHECK
         public static void HorizontalBoundariesCheck(Player player, List<Block> blocks)
         {
@@ -174,6 +176,119 @@ namespace Services
             }
 
             return false;
+        }
+
+        public static void HorizontalEnemyBoundariesCheck(Enemy enemy, List<Block> blocks)
+        {
+            int xCoordinate = (int)enemy.XCoordinate;
+            int yCoordinate = (int)enemy.YCoordinate;
+
+            // Check borders
+            if (enemy.XCoordinate < 0)
+            {
+                enemy.XCoordinate = 0;
+
+                enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
+
+                return;
+            }
+            else if (enemy.XCoordinate > GameInfo.SCREEN_WIDTH - GameInfo.SPRITE_WIDTH)
+            {
+                enemy.XCoordinate = GameInfo.SCREEN_WIDTH - GameInfo.SPRITE_WIDTH;
+
+                enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
+
+                return;
+            }
+
+            Rectangle enemyRect = new Rectangle(enemy.Width, enemy.Height, xCoordinate, yCoordinate);
+
+            List<int> rectSizes = new List<int>();
+
+            foreach (Block block in blocks)
+            {
+
+                Rectangle blockRect = Rectangle.ConvertEntityToRectangle(block);
+
+                Rectangle? intersectRect = Rectangle.Intersect(enemyRect, blockRect);
+
+                if (intersectRect is null)
+                {
+                    rectSizes.Add(0);
+                    continue;
+                }
+
+                rectSizes.Add(intersectRect.Width + intersectRect.Height);
+            }
+
+            int maxSize = rectSizes.Max();
+
+            if (maxSize == 0)
+            {
+                return;
+            }
+
+            Block intersectBlock = blocks[rectSizes.IndexOf(maxSize)];
+
+            if (enemy.HorizontalSpeed > 0)
+            {
+                enemy.XCoordinate = intersectBlock.XCoordinate - GameInfo.SPRITE_WIDTH;
+
+                enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
+
+            }
+            else if (enemy.HorizontalSpeed < 0)
+            {
+                enemy.XCoordinate = intersectBlock.XCoordinate + intersectBlock.Width;
+
+                enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
+            }
+        }
+        public static void VerticalEnemyBoundariesCheck(Enemy enemy, List<Block> blocks)
+        {
+            int xCoordinate = (int)(enemy.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
+            int yCoordinate = (int)(enemy.YCoordinate);
+
+            Rectangle enemyRect = new Rectangle(enemy.Width, enemy.Height, xCoordinate, yCoordinate);
+
+            List<int> rectSizes = new List<int>();
+
+            foreach (Block block in blocks)
+            {
+
+                Rectangle blockRect = Rectangle.ConvertEntityToRectangle(block);
+
+                Rectangle? intersectRect = Rectangle.Intersect(enemyRect, blockRect);
+
+                if (intersectRect is null)
+                {
+                    rectSizes.Add(0);
+                    continue;
+                }
+
+                rectSizes.Add(intersectRect.Width + intersectRect.Height);
+            }
+
+            int maxSize = rectSizes.Max();
+
+            if (!blocks.Any(b => IsPlayerInsideBlock(b, xCoordinate, yCoordinate - 1)) && enemy.VerticalSpeed == 0)
+            {
+                enemy.VerticalSpeed = -3;
+            }
+
+            if (maxSize == 0)
+            {
+                return;
+            }
+
+            Block intersectBlock = blocks[rectSizes.IndexOf(maxSize)];
+
+            if (enemy.VerticalSpeed < 0)
+            {
+                enemy.YCoordinate = intersectBlock.YCoordinate + intersectBlock.Height;
+
+                enemy.VerticalSpeed = 0;
+            }
         }
     }
 }

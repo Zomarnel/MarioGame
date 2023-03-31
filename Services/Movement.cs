@@ -5,8 +5,9 @@ namespace Services
 {
     public static class Movement
     {
+        #region PLAYER  
         private static double _initialY;
-        public static void MoveXCoordinate(Player player)
+        public static void MovePlayerXCoordinate(Player player)
         {
             if (player.HorizontalSpeed < 0 || player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || MapService.HasMapReachedEnd)
             {
@@ -19,13 +20,13 @@ namespace Services
                 MapService.MoveMap(player.HorizontalSpeed);
             }
         }
-        public static void MoveYCoordinate(Player player)
+        public static void MovePlayerYCoordinate(Player player)
         {   
             player.YCoordinate += player.VerticalSpeed;
             
             if (player.VerticalAction != Player.VerticalActions.IsStanding)
             {
-                player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
+                player.VerticalSpeed = CalculateVerticalSpeed(player);
             }
 
              
@@ -38,7 +39,7 @@ namespace Services
             }
         }
 
-        public static void MovementBoost(Player player)
+        public static void PlayerMovementBoost(Player player)
         {
             if (player.HorizontalAction == Player.HorizontalActions.IsSpeeding)
             {
@@ -112,7 +113,7 @@ namespace Services
 
                 _initialY = player.YCoordinate;
 
-                player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
+                player.VerticalSpeed = CalculateVerticalSpeed(player);
             }
 
             UpdateService.UpdatePlayerSprite(player);
@@ -124,18 +125,20 @@ namespace Services
 
             player.JumpLimit = player.YCoordinate + 4 * GameInfo.SPRITE_HEIGHT;
 
-            player.VerticalSpeed = CalculatePlayerVerticalSpeed(player);
+            player.VerticalSpeed = CalculateVerticalSpeed(player);
         }
 
-        public static double CalculatePlayerVerticalSpeed(Player player)
+        #endregion PLAYER
+
+        public static double CalculateVerticalSpeed(BaseEntity entity)
         {
             double u = GameInfo.PLAYER_VERTICAL_SPEED * GameInfo.PLAYER_VERTICAL_SPEED;
 
-            double gravity = -2 * GameInfo.GAME_GRAVITY * (player.YCoordinate - _initialY);
+            double gravity = -2 * GameInfo.GAME_GRAVITY * (entity.YCoordinate - _initialY);
 
             double speed;
 
-            if (player.VerticalAction == Player.VerticalActions.IsFalling)
+            if (((Player)entity).VerticalAction == Player.VerticalActions.IsFalling)
             {
                 speed = u + gravity;
 
