@@ -6,9 +6,10 @@ namespace Services
     public static class UpdateService
     {
         #region Player Sprite Update
-        private static int SpriteUpdateTime { get; set; } = 100;
 
-        private static bool IsPlayerUpdating = false;
+        private static int _playerSpriteUpdateTime = 100;
+
+        private static bool _isPlayerUpdating = false;
         public static void UpdatePlayerSprite(Player player)
         {
             if (player.CurrentSpriteID > 0)
@@ -33,10 +34,8 @@ namespace Services
                     }
                     else
                     {
-                        if (!IsPlayerUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                        if (!_isPlayerUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
                         {
-                            IsPlayerUpdating = true;
-
                             UpdatePlayerSpriteRunningAsync(player);
                         }
                     }
@@ -69,11 +68,11 @@ namespace Services
                     }
                     else
                     {
-                        if (!IsPlayerUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
+                        if (!_isPlayerUpdating && player.HorizontalAction != Player.HorizontalActions.IsStanding)
                         {
+
                             UpdatePlayerSpriteRunningAsync(player);
 
-                            IsPlayerUpdating = true;
                         }
                     }
                 }
@@ -85,7 +84,9 @@ namespace Services
         }
         private static async void UpdatePlayerSpriteRunningAsync(Player player)
         {
-            await Task.Delay(SpriteUpdateTime);
+            _isPlayerUpdating = true;
+
+            await Task.Delay(_playerSpriteUpdateTime);
 
             if (player.CurrentSpriteID > 0)
             {
@@ -111,29 +112,157 @@ namespace Services
                 }
             }
 
-            IsPlayerUpdating = false;
+            _isPlayerUpdating = false;
         }
 
         #endregion Player Sprite Update
 
-        private static bool IsMobsUpdating = false;
+        #region Enemy Sprite Update
+        private static int _enemySpriteUpdateTime = 500;
+        private static bool _isMobsUpdating = false;
 
-        public static async void UpdateMobsSprite(List<Enemy> enemies)
+        public static void UpdateMobsSprite(List<Enemy> enemies)
         {
-            await Task.Delay(1000);
-
-            foreach (Enemy enemy in enemies)
+            void UpdateSprite()
             {
-                if (enemy.FileName == "Mushroom")
-                {
-                    enemy.SpriteID += 1;
+                _isMobsUpdating = true;
 
-                    if (enemy.SpriteID > 51)
+                Thread.Sleep(_enemySpriteUpdateTime);
+
+                foreach (Enemy enemy in enemies)
+                {
+                    if (enemy.FileName == "Mushroom")
                     {
-                        enemy.SpriteID = 50;
+                        enemy.SpriteID += 1;
+
+                        if (enemy.SpriteID > 51)
+                        {
+                            enemy.SpriteID = 50;
+                        }
                     }
                 }
+
+                _isMobsUpdating = false;
             }
-        } 
+
+            if (!_isMobsUpdating)
+            {
+                Thread updateThread = new Thread(UpdateSprite);
+
+                updateThread.Start();
+            }
+        }
+
+        #endregion Enemy Sprite Update
+
+        #region Update World
+
+        private static bool _isUpdatingLuckyBlocks = false;
+
+        private static MovementTask? _movementTask;
+        public static void UpdateWorld(World world)
+        {
+            List<Block> blocks = world.Blocks;
+
+            List<Enemy> enemies = world.Enemies;
+
+            UpdateBlocks(blocks);
+
+            UpdateEnemies(enemies, blocks);
+        }
+
+        private static void UpdateBlocks(List<Block> blocks)
+        {
+            List<Block>? luckyBlocks = blocks.Where(b => b.FileName == "LuckyBlock" ||
+                                               b.FileName == "LuckyBlockGlow" ||
+                                               b.FileName == "LuckyBlockGlowGlow").ToList();
+
+            Block? bumbedBlock = blocks.FirstOrDefault(b => b.PlayerHasInteracted);
+
+
+            // TODO: Export in a new separate file
+            if (!_isUpdatingLuckyBlocks && luckyBlocks is not null)
+            {
+                Thread updateThread = new Thread(() => UpdateLuckyBlocks(luckyBlocks));
+
+                updateThread.Start();
+            }
+
+            if (bumbedBlock is not null)
+            {
+                CreateMovementTask(bumbedBlock);
+            }
+
+            if (_movementTask is not null)
+            {
+                _movementTask.Execute();
+
+                if (_movementTask.IsFulfilled)
+                {
+                    _movementTask = null;
+                }
+            }
+        }
+        private static void UpdateEnemies(List<Enemy> enemies, List<Block> blocks)
+        {
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.XCoordinate += enemy.HorizontalSpeed;
+
+                Collisions.HorizontalEnemyBoundariesCheck(enemy, blocks);
+
+                enemy.YCoordinate += enemy.VerticalSpeed;
+
+                Collisions.VerticalEnemyBoundariesCheck(enemy, blocks);
+            }
+
+            UpdateMobsSprite(enemies);
+        }
+        private static void CreateMovementTask(Block block)
+        {
+            if (block.FileName.Contains("Lucky"))
+            {
+                block.FileName = "Blank";
+
+                block.NeedsToBeUpdated = true;
+
+                _movementTask = new MovementTask(block, 0, 1, block.YCoordinate + 4);
+
+            }
+            else if (block.FileName == "Brick")
+            {
+                _movementTask = new MovementTask(block, 0, 1, block.YCoordinate + 4);
+            }
+
+            block.PlayerHasInteracted = false;
+        }
+        private static void UpdateLuckyBlocks(List<Block> luckyBlocks)
+        {
+            _isUpdatingLuckyBlocks = true;
+
+            Thread.Sleep(250);
+
+            foreach (Block block in luckyBlocks)
+            {
+                switch (block.FileName)
+                {
+                    case "LuckyBlock":
+                        block.FileName = "LuckyBlockGlow";
+                        break;
+                    case "LuckyBlockGlow":
+                        block.FileName = "LuckyBlockGlowGlow";
+                        break;
+                    case "LuckyBlockGlowGlow":
+                        block.FileName = "LuckyBlock";
+                        break;
+                }
+
+                block.NeedsToBeUpdated = true;
+            }
+
+            _isUpdatingLuckyBlocks = false;
+        }
+
+        #endregion Update World
     }
 }

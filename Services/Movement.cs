@@ -26,7 +26,14 @@ namespace Services
             
             if (player.VerticalAction != Player.VerticalActions.IsStanding)
             {
-                player.VerticalSpeed = CalculateVerticalSpeed(player);
+                if (player.VerticalAction == Player.VerticalActions.IsFalling)
+                {
+                    player.VerticalSpeed = CalculateVerticalSpeed(player, true);
+                }
+                else
+                {
+                    player.VerticalSpeed = CalculateVerticalSpeed(player);
+                }
             }
 
              
@@ -113,7 +120,7 @@ namespace Services
 
                 _initialY = player.YCoordinate;
 
-                player.VerticalSpeed = CalculateVerticalSpeed(player);
+                player.VerticalSpeed = CalculateVerticalSpeed(player, fall);
             }
 
             UpdateService.UpdatePlayerSprite(player);
@@ -130,7 +137,7 @@ namespace Services
 
         #endregion PLAYER
 
-        public static double CalculateVerticalSpeed(BaseEntity entity)
+        public static double CalculateVerticalSpeed(BaseEntity entity, bool isFalling = false)
         {
             double u = GameInfo.PLAYER_VERTICAL_SPEED * GameInfo.PLAYER_VERTICAL_SPEED;
 
@@ -138,7 +145,7 @@ namespace Services
 
             double speed;
 
-            if (((Player)entity).VerticalAction == Player.VerticalActions.IsFalling)
+            if (isFalling)
             {
                 speed = u + gravity;
 

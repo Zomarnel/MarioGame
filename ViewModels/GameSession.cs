@@ -119,7 +119,7 @@ namespace ViewModels
 
         public void UpdateCurrentWorld()
         {
-            WorldFactory.UpdateWorld(CurrentWorld);
+            UpdateService.UpdateWorld(CurrentWorld);
         }
     } 
 }                  
