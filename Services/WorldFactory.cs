@@ -6,10 +6,6 @@ namespace Services
     public static class WorldFactory
     {
         private static List<WorldEntity> _entities = new List<WorldEntity>();
-
-        private static bool _isUpdatingLuckyBlocks = false;
-
-        private static MovementTask? _movementTask;
         static WorldFactory()
         {
             #region WORLD-1
@@ -126,8 +122,6 @@ namespace Services
 
             return world;
         }
-
-        #region Update World
         public static List<Block> ReturnDisposableBlocks(World world)
         {
             //Blocks that will be removed on the canvas's children
@@ -178,8 +172,44 @@ namespace Services
 
             return blocksToReturn;
         }
+        public static List<Enemy> ReturnVisibleEnemies(World world)
+        {
+            List<Enemy> enemiesToReturn = new List<Enemy>();
 
-        #endregion Update World
+            foreach (Enemy e in world.Enemies)
+            {
+
+                if (e.XCoordinate > world.WorldXCoordinate && e.XCoordinate < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH)
+                {
+                    enemiesToReturn.Add(e);
+                }
+                else if (e.XCoordinate + e.Width > world.WorldXCoordinate && e.XCoordinate + e.Width < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH)
+                {
+                    enemiesToReturn.Add(e);
+                }
+            }
+
+            return enemiesToReturn;
+        }
+
+        public static List<Enemy> ReturnDisposableEnemies(World world)
+        {
+            //Blocks that will be removed on the world's list of blocks
+            List<Enemy> enemiesToRemove = new List<Enemy>();
+
+            foreach (Enemy e in world.Enemies)
+            {
+
+                if (e.XCoordinate < world.WorldXCoordinate && e.XCoordinate + e.Width < world.WorldXCoordinate)
+                {
+                    enemiesToRemove.Add(e);
+                }
+            }
+
+            enemiesToRemove.ForEach(e => world.Enemies.Remove(e));
+
+            return enemiesToRemove;
+        }
 
         #region Populate World Functions
         private static void PopulateWorldObject(World world, int worldID)

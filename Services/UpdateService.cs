@@ -1,6 +1,5 @@
 ﻿using Models;
 
-
 namespace Services
 {
     public static class UpdateService
@@ -164,7 +163,7 @@ namespace Services
         {
             List<Block> blocks = world.Blocks;
 
-            List<Enemy> enemies = world.Enemies;
+            List<Enemy> enemies = WorldFactory.ReturnVisibleEnemies(world);
 
             UpdateBlocks(blocks);
 
@@ -210,6 +209,11 @@ namespace Services
                 enemy.XCoordinate += enemy.HorizontalSpeed;
 
                 Collisions.HorizontalEnemyBoundariesCheck(enemy, blocks);
+
+                if (enemy.VerticalSpeed < 0)
+                {
+                    enemy.VerticalSpeed = Movement.CalculateVerticalSpeed(enemy, true);
+                }
 
                 enemy.YCoordinate += enemy.VerticalSpeed;
 

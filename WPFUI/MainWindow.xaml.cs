@@ -124,7 +124,9 @@ namespace WPFUI
 
             _drawingService.DisposeBlocks(Background, WorldFactory.ReturnDisposableBlocks(_gameSession.CurrentWorld));
 
-            _drawingService.DrawEnemies(Background, _gameSession.CurrentWorld.Enemies);
+            _drawingService.DrawEnemies(Background, WorldFactory.ReturnVisibleEnemies(_gameSession.CurrentWorld));
+
+            _drawingService.DisposeEnemies(Background, WorldFactory.ReturnDisposableEnemies(_gameSession.CurrentWorld));
         }
         private void DrawMap(object sender, double xCoordinate)
         {

@@ -141,7 +141,16 @@ namespace Services
         {
             double u = GameInfo.PLAYER_VERTICAL_SPEED * GameInfo.PLAYER_VERTICAL_SPEED;
 
-            double gravity = -2 * GameInfo.GAME_GRAVITY * (entity.YCoordinate - _initialY);
+            double gravity;
+
+            if (entity is Player)
+            {
+                gravity = -2 * GameInfo.GAME_GRAVITY * (entity.YCoordinate - _initialY);
+            }
+            else
+            {
+                gravity = -2 * GameInfo.GAME_GRAVITY * (entity.YCoordinate - ((Enemy)entity).InitialY);
+            }
 
             double speed;
 

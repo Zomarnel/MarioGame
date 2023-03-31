@@ -155,5 +155,19 @@ namespace WPFUI.Services
             }
         }
 
+        public void DisposeEnemies(Canvas canvas, List<Enemy> enemies)
+        {
+            if (enemies.Count == 0)
+            {
+                return;
+            }
+
+            List<EnemyImage> imagesToRemove = _enemiesCache.Where(ei => enemies.Any(e => e.EntityID == ei.EntityID)).ToList();
+
+            imagesToRemove.ForEach(i => canvas.Children.Remove(i.FileImage));
+
+            imagesToRemove.ForEach(i => _enemiesCache.Remove(i));
+        }
+
     }
 }

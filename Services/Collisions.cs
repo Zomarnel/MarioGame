@@ -174,7 +174,9 @@ namespace Services
 
             if (!blocks.Any(b => IsEntityInsideBlock(b, xCoordinate, yCoordinate - 1)) && enemy.VerticalSpeed == 0)
             {
-                enemy.VerticalSpeed = -3;
+                enemy.InitialY = enemy.YCoordinate;
+
+                enemy.VerticalSpeed = -1;
             }
 
             if (maxSize == 0)
