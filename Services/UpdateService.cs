@@ -117,7 +117,7 @@ namespace Services
         #endregion Player Sprite Update
 
         #region Enemy Sprite Update
-        private static int _enemySpriteUpdateTime = 500;
+        private static int _enemySpriteUpdateTime = 250;
         private static bool _isMobsUpdating = false;
 
         public static void UpdateMobsSprite(List<Enemy> enemies)

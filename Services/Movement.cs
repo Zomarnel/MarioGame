@@ -1,5 +1,6 @@
 ﻿using Models;
 using Core;
+using System.Diagnostics;
 
 namespace Services
 {
@@ -7,6 +8,8 @@ namespace Services
     {
         #region PLAYER  
         private static double _initialY;
+
+        private static Stopwatch _timer = new Stopwatch();
         public static void MovePlayerXCoordinate(Player player)
         {
             if (player.HorizontalSpeed < 0 || player.XCoordinate < GameInfo.SCREEN_WIDTH / 2 || MapService.HasMapReachedEnd)

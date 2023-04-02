@@ -113,27 +113,6 @@ namespace Services
 
         public static void HorizontalEnemyBoundariesCheck(Enemy enemy, List<Block> blocks)
         {
-            int xCoordinate = (int)enemy.XCoordinate;
-            int yCoordinate = (int)enemy.YCoordinate;
-
-            // Check borders
-            if (xCoordinate < 0)
-            {
-                enemy.XCoordinate = 0;
-
-                enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
-
-                return;
-            }
-            else if (xCoordinate > GameInfo.SCREEN_WIDTH - GameInfo.SPRITE_WIDTH)
-            {
-                enemy.XCoordinate = GameInfo.SCREEN_WIDTH - GameInfo.SPRITE_WIDTH;
-
-                enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
-
-                return;
-            }
-
             Rectangle enemyRect = Rectangle.ConvertEntityToRectangle(enemy);
 
             List<int> rectSizes = RectangleIntersection(enemyRect, blocks);

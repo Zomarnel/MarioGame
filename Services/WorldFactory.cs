@@ -74,7 +74,7 @@ namespace Services
             AddNewBlock("Brick", 0, 5472, 160, 32, 32);
 
             //Mobs
-            AddNewEnemy("Mushroom", 0, 704, 192, 32, 32, 1, 50);
+            AddNewEnemy("Mushroom", 0, 704, 64, 32, 32, 1, 50, -1);
 
             //Tunnels
             AddNewBlock("", 0, 900, 64, 55, 65);
