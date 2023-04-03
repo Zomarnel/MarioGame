@@ -6,6 +6,8 @@ namespace Models
         public double JumpLimit { get; set; }
         public bool CanJumpCooldown { get; set; } = true;
 
+        public bool HasKilledEnemyCooldown { get; set; } = false;
+
         public int CurrentSpriteID { get; set; }
 
         public enum HorizontalActions

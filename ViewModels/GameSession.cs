@@ -102,6 +102,8 @@ namespace ViewModels
                 CurrentWorld.WorldXCoordinate = Math.Abs(MapService.MapXCoordinate);
 
                 Collisions.HorizontalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
+
+                Collisions.EntitiesCollisionsCheck(CurrentPlayer, CurrentWorld.Enemies);
             }
 
             UpdateService.UpdatePlayerSprite(CurrentPlayer);
@@ -111,6 +113,8 @@ namespace ViewModels
             Movement.MovePlayerYCoordinate(CurrentPlayer);
 
             Collisions.VerticalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
+
+            Collisions.EntitiesCollisionsCheck(CurrentPlayer, CurrentWorld.Enemies);
 
             UpdateService.UpdatePlayerSprite(CurrentPlayer);
         }

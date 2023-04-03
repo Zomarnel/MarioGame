@@ -204,6 +204,11 @@ namespace Services
                 {
                     enemiesToRemove.Add(e);
                 }
+
+                if (e.HasBeenKilled)
+                {
+                    enemiesToRemove.Add(e);
+                }
             }
 
             enemiesToRemove.ForEach(e => world.Enemies.Remove(e));

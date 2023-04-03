@@ -172,6 +172,35 @@ namespace Services
                 enemy.VerticalSpeed = 0;
             }
         }
+        public static void EntitiesCollisionsCheck(Player player, List<Enemy> enemies)
+        {
+            double xCoordinate = player.XCoordinate + Math.Abs(MapService.MapXCoordinate);
+
+            Rectangle playerRect = new Rectangle(player.Width, player.Height, xCoordinate, player.YCoordinate);
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.HasBeenKilled)
+                {
+                    continue;
+                }
+
+                Rectangle enemyRect = Rectangle.ConvertEntityToRectangle(enemy);
+
+                Rectangle? intersectRect = Rectangle.Intersect(playerRect, enemyRect);
+
+                if (intersectRect is null)
+                {
+                    continue;
+                }
+
+                if (player.VerticalAction == Player.VerticalActions.IsFalling)
+                {
+                    UpdateService.OnEnemyKilled(enemy, player);
+                }
+            }
+
+        }
 
         #endregion COLLISIONSCHECK
 

@@ -1,4 +1,6 @@
-﻿using Models;
+﻿using Core;
+using Models;
+using System.Numerics;
 
 namespace Services
 {
@@ -15,9 +17,14 @@ namespace Services
             {
                 if (player.HorizontalSpeed >= 0)
                 {
-                    
                     if (player.VerticalAction != Player.VerticalActions.IsStanding)
                     {
+                        if (player.HasKilledEnemyCooldown)
+                        {
+                            player.CurrentSpriteID = 1;
+                            return;
+                        }
+
                         player.CurrentSpriteID = 4;
 
                         return;
@@ -52,6 +59,12 @@ namespace Services
                 {
                     if (player.VerticalAction != Player.VerticalActions.IsStanding)
                     {
+                        if (player.HasKilledEnemyCooldown)
+                        {
+                            player.CurrentSpriteID = -1;
+                            return;
+                        }
+
                         player.CurrentSpriteID = -4;
 
                         return;
@@ -89,6 +102,8 @@ namespace Services
 
             if (player.CurrentSpriteID > 0)
             {
+                
+
                 if (player.CurrentSpriteID < 3)
                 {
                     player.CurrentSpriteID++;
@@ -101,6 +116,7 @@ namespace Services
             }
             else
             {
+
                 if (player.CurrentSpriteID > -3)
                 {
                     player.CurrentSpriteID--;
@@ -130,7 +146,7 @@ namespace Services
 
                 foreach (Enemy enemy in enemies)
                 {
-                    if (enemy.FileName == "Mushroom")
+                    if (enemy.FileName == "Mushroom" && !enemy.HasBeenKilled)
                     {
                         enemy.SpriteID += 1;
 
@@ -206,21 +222,28 @@ namespace Services
         {
             foreach (Enemy enemy in enemies)
             {
+                if (enemy.HasBeenKilled)
+                {
+                    continue;
+                }
+
                 enemy.XCoordinate += enemy.HorizontalSpeed;
 
                 Collisions.HorizontalEnemyBoundariesCheck(enemy, blocks);
 
                 if (enemy.VerticalSpeed < 0)
                 {
-                    enemy.VerticalSpeed = Movement.CalculateVerticalSpeed(enemy, true);
+                    enemy.VerticalSpeed = Movement.CalculateVerticalSpeed(GameInfo.PLAYER_VERTICAL_SPEED, GameInfo.GAME_GRAVITY,
+                                                                        enemy.YCoordinate, enemy.InitialY, true);
                 }
 
                 enemy.YCoordinate += enemy.VerticalSpeed;
 
                 Collisions.VerticalEnemyBoundariesCheck(enemy, blocks);
+
+                UpdateMobsSprite(enemies);
             }
 
-            UpdateMobsSprite(enemies);
         }
         private static void CreateMovementTask(Block block)
         {
@@ -268,5 +291,28 @@ namespace Services
         }
 
         #endregion Update World
+        public static async void OnEnemyKilled(Enemy enemy, Player player)
+        {
+            enemy.HorizontalSpeed = 0;
+            enemy.VerticalSpeed = 0;
+
+
+            player.CurrentSpriteID = 1;
+            player.HasKilledEnemyCooldown = true;
+
+            Movement.OnJump(player);
+
+            switch (enemy.FileName)
+            {
+                case "Mushroom":
+                    enemy.SpriteID = 52;
+                    break;
+            }
+
+            await Task.Delay(100);
+
+            enemy.HasBeenKilled = true;
+
+        }
     }
 }
