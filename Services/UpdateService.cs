@@ -295,6 +295,7 @@ namespace Services
         {
             enemy.HorizontalSpeed = 0;
             enemy.VerticalSpeed = 0;
+            enemy.HasBeenKilled = true;
 
 
             player.CurrentSpriteID = 1;
@@ -311,7 +312,8 @@ namespace Services
 
             await Task.Delay(100);
 
-            enemy.HasBeenKilled = true;
+            enemy.XCoordinate = -999;
+            enemy.YCoordinate = -999;
 
         }
     }
