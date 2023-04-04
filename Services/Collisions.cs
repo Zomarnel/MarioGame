@@ -198,6 +198,10 @@ namespace Services
                 {
                     UpdateService.OnEnemyKilled(enemy, player);
                 }
+                else
+                {
+                    UpdateService.OnPlayerDeath(player);
+                }
             }
 
         }

@@ -1,6 +1,5 @@
 ﻿using Models;
 using Core;
-using System.Diagnostics;
 
 namespace Services
 {
@@ -30,7 +29,42 @@ namespace Services
             {
                 player.HasKilledEnemyCooldown = false;
             }
+
+            double speed;
+            double gravity;
+            bool isFall;
+
+            if (player.VerticalAction != Player.VerticalActions.IsStanding)
+            {
+                if (player.IsDead)
+                {
+                    speed = Math.Sqrt(30);
+                    gravity = 0.234;
+                }
+                else if (player.HasKilledEnemyCooldown)
+                {
+                    speed = Math.Sqrt(10);
+                    gravity = 0.5;
+                }
+                else
+                {
+                    speed = GameInfo.PLAYER_VERTICAL_SPEED;
+                    gravity = GameInfo.GAME_GRAVITY;
+                }
+
+                if (player.VerticalAction == Player.VerticalActions.IsFalling)
+                {
+                    isFall = true;
+                }
+                else
+                {
+                    isFall = false;
+                }
+
+                player.VerticalSpeed = CalculateVerticalSpeed(speed, gravity, player.YCoordinate, _initialY, isFall);
+            }
             
+            /*
             if (player.VerticalAction != Player.VerticalActions.IsStanding)
             {
                 if (player.VerticalAction == Player.VerticalActions.IsFalling)
@@ -45,6 +79,8 @@ namespace Services
                         player.VerticalSpeed = CalculateVerticalSpeed(GameInfo.PLAYER_VERTICAL_SPEED, GameInfo.GAME_GRAVITY,
                                               player.YCoordinate, _initialY, true);
                     }
+
+                    if 
 
                 }
                 else
@@ -61,7 +97,7 @@ namespace Services
                     }
                 }
             }
-
+            */
              
             if (player.VerticalAction == Player.VerticalActions.IsJumping)
             {
@@ -157,14 +193,14 @@ namespace Services
         {
             _initialY = player.YCoordinate;
 
-            if (!player.HasKilledEnemyCooldown)
+            if (!player.HasKilledEnemyCooldown && !player.IsDead)
             {
                 player.JumpLimit = player.YCoordinate + 4 * GameInfo.SPRITE_HEIGHT;
 
                 player.VerticalSpeed = CalculateVerticalSpeed(GameInfo.PLAYER_VERTICAL_SPEED, GameInfo.GAME_GRAVITY,
                                               player.YCoordinate, _initialY);
             }
-            else
+            else if (player.HasKilledEnemyCooldown)
             {
                 player.JumpLimit = player.YCoordinate + 10;
                 player.VerticalAction = Player.VerticalActions.IsJumping;
@@ -173,7 +209,15 @@ namespace Services
                 player.VerticalSpeed = CalculateVerticalSpeed(Math.Sqrt(10), 0.5,
                               player.YCoordinate, _initialY);
             }
+            else if (player.IsDead)
+            {
+                player.JumpLimit = player.YCoordinate + 64;
+                player.VerticalAction = Player.VerticalActions.IsJumping;
+                player.VerticalSpeed = 0;
 
+                player.VerticalSpeed = CalculateVerticalSpeed(Math.Sqrt(30), 0.234,
+                              player.YCoordinate, _initialY);
+            }
 
         }
 

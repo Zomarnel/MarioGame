@@ -8,6 +8,8 @@ namespace Models
 
         public bool HasKilledEnemyCooldown { get; set; } = false;
 
+        public bool IsDead { get; set; } = false;
+
         public int CurrentSpriteID { get; set; }
 
         public enum HorizontalActions

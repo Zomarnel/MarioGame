@@ -95,7 +95,7 @@ namespace ViewModels
         }
         private void MovePlayerHorizontally()
         {
-            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.Blocks))
+            if (Collisions.CanPlayerMoveHorizontally(CurrentPlayer, CurrentWorld.Blocks) && !CurrentPlayer.IsDead)
             {
                 Movement.MovePlayerXCoordinate(CurrentPlayer);
 
@@ -112,9 +112,12 @@ namespace ViewModels
         {
             Movement.MovePlayerYCoordinate(CurrentPlayer);
 
-            Collisions.VerticalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
+            if (!CurrentPlayer.IsDead)
+            {
+                Collisions.VerticalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
 
-            Collisions.EntitiesCollisionsCheck(CurrentPlayer, CurrentWorld.Enemies);
+                Collisions.EntitiesCollisionsCheck(CurrentPlayer, CurrentWorld.Enemies);
+            }
 
             UpdateService.UpdatePlayerSprite(CurrentPlayer);
         }

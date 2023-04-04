@@ -49,6 +49,19 @@ namespace Models
                 }
             }
 
+            if (rect1.Y == rect2.Y && rect1.Height == rect2.Height)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Point point = rect1.Corners[i];
+
+                    if (point.X > rect2.X && point.X < rect2.X + rect2.Width)
+                    {
+                        commonRectangles.Add(new Rectangle((int)Math.Abs(point.X - rect2.X), rect1.Height, rect2.X, rect2.Y));
+                    }
+                }
+            }
+
             for (int i = 0; i < 4; i++)
             {
                 Point point = rect1.Corners[i];

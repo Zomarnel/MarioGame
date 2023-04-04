@@ -25,6 +25,12 @@ namespace Services
                             return;
                         }
 
+                        if (player.IsDead)
+                        {
+                            player.CurrentSpriteID = 8;
+                            return;
+                        }
+
                         player.CurrentSpriteID = 4;
 
                         return;
@@ -62,6 +68,12 @@ namespace Services
                         if (player.HasKilledEnemyCooldown)
                         {
                             player.CurrentSpriteID = -1;
+                            return;
+                        }
+
+                        if (player.IsDead)
+                        {
+                            player.CurrentSpriteID = 8;
                             return;
                         }
 
@@ -315,6 +327,16 @@ namespace Services
             enemy.XCoordinate = -999;
             enemy.YCoordinate = -999;
 
+        }
+        public static void OnPlayerDeath(Player player)
+        {
+            player.IsDead = true;
+            player.CurrentSpriteID = 8;
+
+            player.HorizontalSpeed = 0;
+            player.VerticalSpeed = 0;
+
+            Movement.OnJump(player);
         }
     }
 }
