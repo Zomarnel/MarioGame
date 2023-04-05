@@ -114,7 +114,7 @@ namespace ViewModels
 
             if (!CurrentPlayer.IsDead)
             {
-                Collisions.VerticalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
+                Collisions.VerticalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks, CurrentWorld.Enemies);
 
                 Collisions.EntitiesCollisionsCheck(CurrentPlayer, CurrentWorld.Enemies);
             }

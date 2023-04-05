@@ -158,15 +158,29 @@ namespace Services
 
                 foreach (Enemy enemy in enemies)
                 {
-                    if (enemy.FileName == "Mushroom" && !enemy.HasBeenKilled)
+                    if (enemy.FileName == "Mushroom")
                     {
-                        enemy.SpriteID += 1;
-
-                        if (enemy.SpriteID > 51)
+                        if (!enemy.HasBeenKilled)
                         {
-                            enemy.SpriteID = 50;
+                            enemy.SpriteID += 1;
+
+                            if (enemy.SpriteID > 51)
+                            {
+                                enemy.SpriteID = 50;
+                            }
                         }
+                        else if (enemy.SpriteID < 0)
+                        {
+                            enemy.SpriteID--;
+
+                            if (enemy.SpriteID < -51)
+                            {
+                                enemy.SpriteID = -50;
+                            }
+                        }
+           
                     }
+
                 }
 
                 _isMobsUpdating = false;
@@ -236,6 +250,18 @@ namespace Services
             {
                 if (enemy.HasBeenKilled)
                 {
+                    if (enemy.SpriteID < 0)
+                    {
+                        if (enemy.VerticalSpeed == 0)
+                        {
+                            enemy.InitialY = enemy.YCoordinate;
+                        }
+
+                        enemy.VerticalSpeed = Movement.CalculateVerticalSpeed(GameInfo.PLAYER_VERTICAL_SPEED/10, GameInfo.GAME_GRAVITY,
+                                                                        enemy.YCoordinate, enemy.InitialY, true);
+
+                        enemy.YCoordinate += enemy.VerticalSpeed;
+                    }
                     continue;
                 }
 
@@ -338,6 +364,28 @@ namespace Services
             player.VerticalSpeed = 0;
 
             Movement.OnJump(player);
+        }
+        public static void OnPlayerInteractedBlock(Block block, List<Enemy> enemies)
+        {
+            block.PlayerHasInteracted = true;
+
+            // TODO: IF LUCKYBLOCK SPAWN ITEM
+
+            // Check if enemy was on top of the block
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.YCoordinate == block.YCoordinate + block.Height)
+                {
+                    if ((enemy.XCoordinate >= block.XCoordinate && enemy.XCoordinate <= block.XCoordinate + block.Width) ||
+                        (enemy.XCoordinate + enemy.Width >= block.XCoordinate && enemy.XCoordinate + enemy.Width <= block.XCoordinate + block.Width))
+                    {
+                        enemy.HasBeenKilled = true;
+                        enemy.SpriteID = -enemy.SpriteID;
+                    }
+                    
+                }
+            }
         }
     }
 }

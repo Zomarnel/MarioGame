@@ -56,7 +56,7 @@ namespace Services
                 Movement.StopMovingHorizontally(player);
             }
         }
-        public static void VerticalPlayerBoundariesCheck(Player player, List<Block> blocks)
+        public static void VerticalPlayerBoundariesCheck(Player player, List<Block> blocks, List<Enemy> enemies)
         {
             int xCoordinate = (int)(player.XCoordinate + Math.Round(Math.Abs(MapService.MapXCoordinate), 1));
             int yCoordinate = (int)(player.YCoordinate);
@@ -83,7 +83,7 @@ namespace Services
             {
                 player.YCoordinate = intersectBlock.YCoordinate - 32;
 
-                intersectBlock.PlayerHasInteracted = true;
+                UpdateService.OnPlayerInteractedBlock(intersectBlock, enemies);
 
                 Movement.StopMovingVertically(player, true);
             }

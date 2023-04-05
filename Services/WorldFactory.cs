@@ -75,6 +75,7 @@ namespace Services
 
             //Mobs
             AddNewEnemy("Mushroom", 0, 704, 64, 32, 32, 1, 50, -1);
+            AddNewEnemy("Mushroom", 0, 640, 192, 32, 32, 2, 50, 1);
 
             //Tunnels
             AddNewBlock("", 0, 900, 64, 55, 65);
@@ -203,6 +204,11 @@ namespace Services
             {
 
                 if (e.XCoordinate < world.WorldXCoordinate && e.XCoordinate + e.Width < world.WorldXCoordinate)
+                {
+                    enemiesToRemove.Add(e);
+                }
+
+                if (e.YCoordinate < 0)
                 {
                     enemiesToRemove.Add(e);
                 }

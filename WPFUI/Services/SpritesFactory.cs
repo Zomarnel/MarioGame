@@ -83,6 +83,8 @@ namespace WPFUI.Services
             AddNewSprite(50, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(0, 0, 16, 16)));
             AddNewSprite(51, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(16, 0, 16, 16)));
             AddNewSprite(52, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(32, 0, 16, 16)));
+            AddNewSprite(-50, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(48, 0, 16, 16)));
+            AddNewSprite(-51, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(64, 0, 16, 16)));
 
         }
         public static CroppedBitmap GetSprite(int id)
