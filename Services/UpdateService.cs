@@ -253,8 +253,9 @@ namespace Services
 
                 Collisions.VerticalEnemyBoundariesCheck(enemy, blocks);
 
-                UpdateMobsSprite(enemies);
             }
+
+            UpdateMobsSprite(enemies);
 
         }
         private static void CreateMovementTask(Block block)

@@ -172,11 +172,15 @@ namespace Services
                 enemy.VerticalSpeed = 0;
             }
         }
+
+        private static List<Enemy> _collidedEnemies = new List<Enemy>();    
         public static void EntitiesCollisionsCheck(Player player, List<Enemy> enemies)
         {
             double xCoordinate = player.XCoordinate + Math.Abs(MapService.MapXCoordinate);
 
             Rectangle playerRect = new Rectangle(player.Width, player.Height, xCoordinate, player.YCoordinate);
+
+            // Player to enemy collision
 
             foreach (Enemy enemy in enemies)
             {
@@ -198,12 +202,67 @@ namespace Services
                 {
                     UpdateService.OnEnemyKilled(enemy, player);
                 }
-                else
+                else if (!player.HasKilledEnemyCooldown)
                 {
                     UpdateService.OnPlayerDeath(player);
                 }
             }
 
+            // Enemy to enemy collision
+            if (_collidedEnemies.Count > 0)
+            {
+                for (int i = 0; i < _collidedEnemies.Count-1; i += 2)
+                {
+                    Enemy enemy1 = _collidedEnemies[i];
+                    Enemy enemy2 = _collidedEnemies[i + 1];
+
+                    if (((int)Math.Abs(enemy1.XCoordinate - enemy2.XCoordinate)) >= enemy1.Width)
+                    {
+                        _collidedEnemies.Remove(enemy1);
+                        _collidedEnemies.Remove(enemy2);
+                    }
+                }
+            }
+
+            foreach (Enemy enemy in enemies)
+            {
+                if (enemy.HasBeenKilled)
+                {
+                    continue;
+                }
+
+                Rectangle enemyRect = Rectangle.ConvertEntityToRectangle(enemy);
+
+                foreach (Enemy enemy1 in enemies)
+                {
+
+                    if (enemy == enemy1 || enemy1.HasBeenKilled)
+                    {
+                        continue;
+                    }
+
+                    if (_collidedEnemies.Contains(enemy) && _collidedEnemies.Contains(enemy1))
+                    {
+                        continue;
+                    }
+
+                    Rectangle enemy1_Rect = Rectangle.ConvertEntityToRectangle(enemy1);
+
+                    Rectangle? intersectRect = Rectangle.Intersect(enemyRect, enemy1_Rect);
+
+                    if (intersectRect is not null)
+                    {
+                        enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
+                        enemy1.HorizontalSpeed = -enemy1.HorizontalSpeed;
+
+                        _collidedEnemies.Add(enemy);
+                        _collidedEnemies.Add(enemy1);
+
+                        break;
+                    }
+
+                }
+            }
         }
 
         #endregion COLLISIONSCHECK

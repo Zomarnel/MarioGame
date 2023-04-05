@@ -103,7 +103,7 @@ namespace ViewModels
 
                 Collisions.HorizontalPlayerBoundariesCheck(CurrentPlayer, CurrentWorld.Blocks);
 
-                Collisions.EntitiesCollisionsCheck(CurrentPlayer, CurrentWorld.Enemies);
+                Collisions.EntitiesCollisionsCheck(CurrentPlayer, WorldFactory.ReturnVisibleEnemies(CurrentWorld));
             }
 
             UpdateService.UpdatePlayerSprite(CurrentPlayer);

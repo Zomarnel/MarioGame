@@ -182,6 +182,8 @@ namespace Services
                 if (e.XCoordinate > world.WorldXCoordinate && e.XCoordinate < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH)
                 {
                     enemiesToReturn.Add(e);
+
+                    e.HasBeenDrawn = true;
                 }
                 else if (e.XCoordinate + e.Width > world.WorldXCoordinate && e.XCoordinate + e.Width < world.WorldXCoordinate + GameInfo.SCREEN_WIDTH)
                 {
