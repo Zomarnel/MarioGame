@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using System;
 using System.Windows;
 using System.Linq;
+using System.Diagnostics;
 
 namespace WPFUI.Services
 {
@@ -16,6 +17,8 @@ namespace WPFUI.Services
         private static readonly BitmapImage _blocksSpritesheet;
 
         private static readonly BitmapImage _mushroomSpritesheet;
+
+        private static readonly BitmapImage _turtleSpriteSheet;
         static SpritesFactory()
         {
 
@@ -30,6 +33,10 @@ namespace WPFUI.Services
             _mushroomSpritesheet = new BitmapImage(new Uri("/Images/Mobs/Mushroom.png", UriKind.Relative));
 
             _mushroomSpritesheet.BaseUri = Application.Current.StartupUri;
+
+            _turtleSpriteSheet = new BitmapImage(new Uri("/Images/Mobs/Turtle.png", UriKind.Relative));
+
+            _turtleSpriteSheet.BaseUri = Application.Current.StartupUri;
 
             //Standing
             AddNewSprite(1, new CroppedBitmap(_littleMarioSpritesheet, new Int32Rect(0, 0, 12, 15)));
@@ -85,6 +92,18 @@ namespace WPFUI.Services
             AddNewSprite(52, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(32, 0, 16, 16)));
             AddNewSprite(-50, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(48, 0, 16, 16)));
             AddNewSprite(-51, new CroppedBitmap(_mushroomSpritesheet, new Int32Rect(64, 0, 16, 16)));
+
+            //Turtle
+            AddNewSprite(60, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(0, 0, 16, 24)));
+            AddNewSprite(61, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(17, 0, 16, 24)));
+            AddNewSprite(-60, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(51, 0, 16, 24)));
+            AddNewSprite(-61, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(34, 0, 16, 24)));
+
+            //Turtle Shell
+            AddNewSprite(62, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(0, 25, 16, 14)));
+            AddNewSprite(63, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(17, 25, 16, 14)));
+            AddNewSprite(64, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(34, 25, 16, 14)));
+            AddNewSprite(64, new CroppedBitmap(_turtleSpriteSheet, new Int32Rect(51, 25, 16, 14)));
 
         }
         public static CroppedBitmap GetSprite(int id)

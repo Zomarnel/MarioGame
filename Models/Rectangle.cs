@@ -49,7 +49,7 @@ namespace Models
                 }
             }
 
-            if (rect1.Y == rect2.Y && rect1.Height == rect2.Height)
+            if (rect1.Y == rect2.Y)
             {
                 for (int i = 0; i < 4; i++)
                 {

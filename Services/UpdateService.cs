@@ -181,6 +181,56 @@ namespace Services
            
                     }
 
+                    if (enemy.FileName == "Turtle")
+                    {
+                        if (!enemy.HasBeenKilled)
+                        {
+                            if (enemy.SpriteID >= 62)
+                            {
+                                if (enemy.HorizontalSpeed != 0)
+                                {
+                                    enemy.SpriteID++;
+
+                                    if (enemy.SpriteID > 64)
+                                    {
+                                        enemy.SpriteID = 62;
+                                    }
+                                }
+
+                                continue;
+                            }
+
+                            if (enemy.HorizontalSpeed > 0)
+                            {
+                                if (enemy.SpriteID < 0)
+                                {
+                                    enemy.SpriteID = -enemy.SpriteID;
+                                }
+
+                                enemy.SpriteID++;
+
+                                if (enemy.SpriteID > 61)
+                                {
+                                    enemy.SpriteID = 60;
+                                }
+                            }
+                            else
+                            {
+                                if (enemy.SpriteID > 0)
+                                {
+                                    enemy.SpriteID = -enemy.SpriteID;
+                                }
+
+                                enemy.SpriteID--;
+
+                                if (enemy.SpriteID < -61)
+                                {
+                                    enemy.SpriteID = -60;
+                                }
+                            }
+                        }
+                    }
+
                 }
 
                 _isMobsUpdating = false;
@@ -250,7 +300,7 @@ namespace Services
             {
                 if (enemy.HasBeenKilled)
                 {
-                    if (enemy.SpriteID < 0)
+                    if (enemy.SpriteID < 0 && enemy.FileName == "Mushroom")
                     {
                         if (enemy.VerticalSpeed == 0)
                         {
@@ -330,30 +380,38 @@ namespace Services
         }
 
         #endregion Update World
-        public static async void OnEnemyKilled(Enemy enemy, Player player)
+        public static async void OnEnemyKilled(Enemy enemy, Player player = null)
         {
             enemy.HorizontalSpeed = 0;
             enemy.VerticalSpeed = 0;
             enemy.HasBeenKilled = true;
 
+            if (player is not null)
+            {
+                player.CurrentSpriteID = 1;
+                player.HasKilledEnemyCooldown = true;
 
-            player.CurrentSpriteID = 1;
-            player.HasKilledEnemyCooldown = true;
-
-            Movement.OnJump(player);
+                Movement.OnJump(player);
+            }
 
             switch (enemy.FileName)
             {
                 case "Mushroom":
                     enemy.SpriteID = 52;
+                    enemy.HorizontalSpeed = 0;
+
+                    await Task.Delay(100);
+
+                    enemy.XCoordinate = -999;
+                    enemy.YCoordinate = -999;
+
+                    break;
+
+                case "Turtle":
+                    enemy.SpriteID = 62;
+                    enemy.Height = 28;
                     break;
             }
-
-            await Task.Delay(100);
-
-            enemy.XCoordinate = -999;
-            enemy.YCoordinate = -999;
-
         }
         public static void OnPlayerDeath(Player player)
         {

@@ -129,6 +129,9 @@ namespace WPFUI.Services
 
                     enemyImage.Source = SpritesFactory.GetSprite(enemy.SpriteID);
 
+                    enemyImage.Width = enemy.Width;
+                    enemyImage.Height = enemy.Height;
+
                     Canvas.SetLeft(enemyImage, enemy.XCoordinate - Math.Abs(MapService.MapXCoordinate));
                     Canvas.SetBottom(enemyImage, enemy.YCoordinate);
                 }

@@ -173,7 +173,9 @@ namespace Services
             }
         }
 
-        private static List<Enemy> _collidedEnemies = new List<Enemy>();    
+        private static List<Enemy> _collidedEnemies = new List<Enemy>();
+
+        private static int _hasTouchedTurtleID = 0;
         public static void EntitiesCollisionsCheck(Player player, List<Enemy> enemies)
         {
             double xCoordinate = player.XCoordinate + Math.Abs(MapService.MapXCoordinate);
@@ -184,7 +186,7 @@ namespace Services
 
             foreach (Enemy enemy in enemies)
             {
-                if (enemy.HasBeenKilled)
+                if (enemy.HasBeenKilled && enemy.FileName != "Turtle")
                 {
                     continue;
                 }
@@ -204,7 +206,40 @@ namespace Services
                 }
                 else if (!player.HasKilledEnemyCooldown)
                 {
-                    UpdateService.OnPlayerDeath(player);
+                    if (enemy.FileName != "Turtle" || !enemy.HasBeenKilled)
+                    {
+                        if (enemy.FileName == "Turtle" && _hasTouchedTurtleID == enemy.EntityID)
+                        {
+                            continue;
+                        }
+
+                        UpdateService.OnPlayerDeath(player);
+
+                        continue;
+                    }
+
+                    if (player.CurrentSpriteID > 0)
+                    {
+                        enemy.HorizontalSpeed = 4;
+                    }
+                    else
+                    {
+                        enemy.HorizontalSpeed = -4;
+                    }
+
+                    enemy.HasBeenKilled = false;
+
+                    _hasTouchedTurtleID = enemy.EntityID;
+
+                    void localFunc()
+                    {
+                        Thread.Sleep(100);
+
+                        _hasTouchedTurtleID = 0;
+                    }
+
+                    Thread cooldownThread = new Thread(localFunc);
+                    cooldownThread.Start();
                 }
             }
 
@@ -226,7 +261,7 @@ namespace Services
 
             foreach (Enemy enemy in enemies)
             {
-                if (enemy.HasBeenKilled)
+                if (enemy.HasBeenKilled && enemy.FileName != "Turtle")
                 {
                     continue;
                 }
@@ -236,7 +271,7 @@ namespace Services
                 foreach (Enemy enemy1 in enemies)
                 {
 
-                    if (enemy == enemy1 || enemy1.HasBeenKilled)
+                    if (enemy == enemy1 || (enemy1.HasBeenKilled && enemy1.FileName != "Turtle"))
                     {
                         continue;
                     }
@@ -252,6 +287,18 @@ namespace Services
 
                     if (intersectRect is not null)
                     {
+                        if (enemy.FileName == "Turtle" && (enemy.HorizontalSpeed % 4) == 0)
+                        {
+                            UpdateService.OnEnemyKilled(enemy1);
+                            break;
+                        }
+
+                        if (enemy1.FileName == "Turtle" && (enemy1.HorizontalSpeed % 4) == 0)
+                        {
+                            UpdateService.OnEnemyKilled(enemy);
+                            break;
+                        }
+
                         enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
                         enemy1.HorizontalSpeed = -enemy1.HorizontalSpeed;
 
