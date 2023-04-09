@@ -83,7 +83,9 @@ namespace Services
             {
                 player.YCoordinate = intersectBlock.YCoordinate - 32;
 
-                UpdateService.OnPlayerInteractedBlock(intersectBlock, enemies);
+                intersectBlock.PlayerHasInteracted = true;
+
+                EntityService.OnPlayerInteractedBlock(intersectBlock, enemies);
 
                 Movement.StopMovingVertically(player, true);
             }
@@ -174,8 +176,6 @@ namespace Services
         }
 
         private static List<Enemy> _collidedEnemies = new List<Enemy>();
-
-        private static int _hasTouchedTurtleID = 0;
         public static void EntitiesCollisionsCheck(Player player, List<Enemy> enemies)
         {
             double xCoordinate = player.XCoordinate + Math.Abs(MapService.MapXCoordinate);
@@ -186,7 +186,7 @@ namespace Services
 
             foreach (Enemy enemy in enemies)
             {
-                if (enemy.HasBeenKilled && enemy.FileName != "Turtle")
+                if (enemy.HasBeenKilled || !enemy.PlayerInteractable)
                 {
                     continue;
                 }
@@ -202,22 +202,62 @@ namespace Services
 
                 if (player.VerticalAction == Player.VerticalActions.IsFalling)
                 {
-                    UpdateService.OnEnemyKilled(enemy, player);
+                    if (enemy.IsShelled && enemy.PlayerInteractable)
+                    {
+                        if (enemy.HorizontalSpeed == 0)
+                        {
+                            if (player.CurrentSpriteID > 0)
+                            {
+                                enemy.HorizontalSpeed = 4;
+                            }
+                            else
+                            {
+                                enemy.HorizontalSpeed = -4;
+                            }
+                        }
+                        else
+                        {
+                            enemy.HorizontalSpeed = 0;
+                        }
+
+                        enemy.PlayerInteractionCooldown();
+
+
+                    }
+                    else
+                    {
+                        if (enemy.FileName == "Turtle")
+                        {
+                            enemy.SpriteID = 62;
+                            enemy.Height = 28;
+                            enemy.HorizontalSpeed = 0;
+                            enemy.IsShelled = true;
+
+                            enemy.PlayerInteractionCooldown();
+                        }
+                        else
+                        {
+                            EntityService.OnEnemyDeath(enemy, player, "crushed");
+                        }
+                    }
+
+                    player.CurrentSpriteID = 1;
+                    player.HasKilledEnemyCooldown = true;
+
+                    Movement.OnJump(player);
                 }
                 else if (!player.HasKilledEnemyCooldown)
                 {
-                    if (enemy.FileName != "Turtle" || !enemy.HasBeenKilled)
-                    {
-                        if (enemy.FileName == "Turtle" && _hasTouchedTurtleID == enemy.EntityID)
-                        {
-                            continue;
-                        }
 
-                        UpdateService.OnPlayerDeath(player);
+                    // In case turtle is shelled
+                    if (!enemy.IsShelled)
+                    {
+                        EntityService.OnPlayerDeath(player);
 
                         continue;
                     }
 
+                    // If turtle is shelled then start moving it
                     if (player.CurrentSpriteID > 0)
                     {
                         enemy.HorizontalSpeed = 4;
@@ -227,19 +267,8 @@ namespace Services
                         enemy.HorizontalSpeed = -4;
                     }
 
-                    enemy.HasBeenKilled = false;
+                    enemy.PlayerInteractionCooldown();
 
-                    _hasTouchedTurtleID = enemy.EntityID;
-
-                    void localFunc()
-                    {
-                        Thread.Sleep(100);
-
-                        _hasTouchedTurtleID = 0;
-                    }
-
-                    Thread cooldownThread = new Thread(localFunc);
-                    cooldownThread.Start();
                 }
             }
 
@@ -261,7 +290,7 @@ namespace Services
 
             foreach (Enemy enemy in enemies)
             {
-                if (enemy.HasBeenKilled && enemy.FileName != "Turtle")
+                if (enemy.HasBeenKilled)
                 {
                     continue;
                 }
@@ -271,7 +300,7 @@ namespace Services
                 foreach (Enemy enemy1 in enemies)
                 {
 
-                    if (enemy == enemy1 || (enemy1.HasBeenKilled && enemy1.FileName != "Turtle"))
+                    if (enemy == enemy1 || enemy1.HasBeenKilled)
                     {
                         continue;
                     }
@@ -287,23 +316,24 @@ namespace Services
 
                     if (intersectRect is not null)
                     {
-                        if (enemy.FileName == "Turtle" && (enemy.HorizontalSpeed % 4) == 0)
+
+                        // If the turtle is shelled and is moving, then it will kill the other mob
+                        if (enemy.IsShelled && enemy.HorizontalSpeed != 0)
                         {
-                            UpdateService.OnEnemyKilled(enemy1);
-                            break;
+                            EntityService.OnEnemyDeath(enemy1, null, "fall");
                         }
-
-                        if (enemy1.FileName == "Turtle" && (enemy1.HorizontalSpeed % 4) == 0)
+                        else if (enemy1.IsShelled && enemy1.HorizontalSpeed != 0)
                         {
-                            UpdateService.OnEnemyKilled(enemy);
-                            break;
+                            EntityService.OnEnemyDeath(enemy, null, "fall");
                         }
+                        else
+                        {
+                            enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
+                            enemy1.HorizontalSpeed = -enemy1.HorizontalSpeed;
 
-                        enemy.HorizontalSpeed = -enemy.HorizontalSpeed;
-                        enemy1.HorizontalSpeed = -enemy1.HorizontalSpeed;
-
-                        _collidedEnemies.Add(enemy);
-                        _collidedEnemies.Add(enemy1);
+                            _collidedEnemies.Add(enemy);
+                            _collidedEnemies.Add(enemy1);
+                        }
 
                         break;
                     }

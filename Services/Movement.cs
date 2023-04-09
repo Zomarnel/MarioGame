@@ -236,45 +236,6 @@ namespace Services
             }
 
             return speed;
-            /*
-            double player_vertical_speed = GameInfo.PLAYER_VERTICAL_SPEED;
-            double game_gravity = GameInfo.GAME_GRAVITY;
-
-
-            if (entity is Player)
-            {
-                if (((Player)entity).HasKilledEnemyCooldown)
-                {
-                    player_vertical_speed = Math.Sqrt(10);
-                    game_gravity = 0.5;
-                }
-            }
-            double u = player_vertical_speed * player_vertical_speed;
-
-            double gravity;
-
-            if (entity is Player)
-            {
-                gravity = -2 * game_gravity * (entity.YCoordinate - _initialY);
-            }
-            else
-            {
-                gravity = -2 * game_gravity * (entity.YCoordinate - ((Enemy)entity).InitialY);
-            }
-
-            double speed;
-
-            if (isFalling)
-            {
-                speed = u + gravity;
-
-                return -Math.Sqrt(Math.Abs(speed));
-            }
-
-            speed = u + gravity;
-
-            return Math.Sqrt(Math.Abs(speed));
-            */
         }
     }
 }
