@@ -234,6 +234,8 @@ namespace Services
                             enemy.IsShelled = true;
 
                             enemy.PlayerInteractionCooldown();
+
+                            player.HorizontalSpeed = 0;
                         }
                         else
                         {
@@ -251,6 +253,13 @@ namespace Services
 
                     // In case turtle is shelled
                     if (!enemy.IsShelled)
+                    {
+                        EntityService.OnPlayerDeath(player);
+
+                        continue;
+                    }
+
+                    if (enemy.IsShelled && enemy.HorizontalSpeed != 0)
                     {
                         EntityService.OnPlayerDeath(player);
 
